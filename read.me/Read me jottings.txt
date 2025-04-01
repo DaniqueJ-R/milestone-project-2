@@ -1,0 +1,9 @@
+Sites used
+Favicon image - https://www.vecteezy.com/vector-art/14863717-vinyl-disk-playlist-icon-simple-vector-music-song
+Edit fav-icon - Canva
+images - https://www.freepik.com/free-photos-vectors/turntable
+Find image colour - https://imagecolorpicker.com/#google_vignette
+Find colour pallet - https://mycolor.space/?hex=%23E5615A&sub=1
+
+
+Decided to make a playlist generator as I love music and finding new songs. Torn between this and Recipe finder
