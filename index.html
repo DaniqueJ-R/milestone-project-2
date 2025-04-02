@@ -22,43 +22,48 @@
     />
     <link rel="manifest" href="/site.webmanifest" />
     <title>JamJar | Home</title>
-    <link rel="stylesheet" href="css/style.cs" />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
 
 <!-- Header with vinyl -->
 <!-- Header text -->
 <header id="header" class="container">
-<div id="app" style="background: rgb(221, 218, 23)">
+<div id="app">
+  <!-- Spotify logo -->
   <div class="container">
     <div class="spotify-logo">
-      <span class="text-grey text-small mobile--hidden"
-        >made for</span
-      ><i class="fa-brands fa-spotify"></i>
-    </div>
-    <div class="intro">
-      <strong class="text-big">Welcome to</strong>
+      <span class="logo-text">made for</span>
+      <i class="fa-brands fa-spotify"></i>
+    </div> 
+  </div>
+</div>
+  <!-- Header text -->
+  <div class="container">
+    <div class="relative intro-text">
+      <span class="text-big">Welcome to</span>
       <h1>JamJar</h1>
-      <strong class="text-medium">
+      <span class="text-medium">
         Find your jams, 
-        <span class="text-grey">
+        <span class>
             stack your playlists!</span
-        ></strong>
+        ></span>
+      </div>
+    </div>
 
-
-      
-<!-- header image scrpted -->
-     <img src="images/turntable-base.png" alt="Vinyl Record" class="turntable" />
-        <img src="images/turntable-vinyl.png" alt="Vinyl Record" class="vinyl " />
-        <img src="images/turntable-button.png" alt="Vinyl Record" class="button" /> 
+    <div class="relative container header-image">
+        <!-- header image -->
+        <img src="images/turntable-base.png" alt="Vinyl Record" class="turntable" />
+        <img src="images/turntable-vinyl.png" alt="Vinyl Record" class="vinyl" />
+        <img src="images/turntable-button.png" alt="Vinyl Record" class="slider" /> 
     </div>
     </header>
 
     <main class="container">
-      <section>      
-        <p class="steps">Connect your Spotify > Choose artists/songs > Generate your custom playlist</p>
+      <section class="starter">      
+        <p class="steps text-medium ">Connect your Spotify > Choose artists/songs > Generate your custom playlist</p>
         <p class="instructions">Click the button below to log in and start creating your personalized playlists.</p>
-        <button  type="button" class="button">
+        <button data-type="submit" class="btn btn--big">
           Jam me up!
         </button>
       </section>
@@ -66,36 +71,42 @@
 </main>
 
     <footer class="container section">
-      <div class="follow-us">
-        <span>Follow us on social media:</span>
+      <div class="footer-links">
+        <span class="follow-us"><span>Follow us on social media:</span>
         <span><a href="https://www.youtube.com"><i class="fa-brands fa-youtube"></i></a>
             </span>
             <span><a href="https://open.spotify.com"><i class="fa-brands fa-spotify"></i></a>
             </span>
-          </div>
-        <div class="footer">
-            <a
-              href="https://www.universal-music.de/rechtliche-hinweise/imprint"
-              target="_blank"
-              rel="noopener noreferrer"
-              >Imprint</a
-            >
+          </span>
+          
+          <span class="important">
             |
             <a
-              href="https://www.universal-music.de/rechtliche-hinweise/security-and-privacy"
-              target="_blank"
-              rel="noopener noreferrer"
-              >Security &amp; Privacy</a
-            >
+            href="https://www.universal-music.de/rechtliche-hinweise/imprint"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Imprint</a
+          >
+          |
+          <a
+            href="https://www.universal-music.de/rechtliche-hinweise/security-and-privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Security &amp; Privacy</a
+          >
+        </span>
           </div>
+
     
     <div class="ast-small-footer-wrap">
-        <div class=>
-    Copyright © 2025 <span class="ast-footer-site-title">JamJar</span> 					</div>
+        <div class="copyright">
+    Copyright © 2025 JamJar</span> 					</div>
     
-        <div class=>
-    Music data on our tools and pages (except Music Downloads pages) is provided by Spotify AB. chosic.com is not affiliated with Spotify AB in any way.					</div>
-    
+        <div class="ast-footer-credits">
+    <span class="ast-footer-credits-text">All rights reserved.				
+    Music data on our tools and pages (except Music Downloads pages) is provided by Spotify AB. jamjar.com is not affiliated with Spotify AB in any way.			
+   </span> 		
+  </div>
     </div>
     </footer>
 

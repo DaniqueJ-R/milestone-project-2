@@ -5,7 +5,7 @@
 :root {
   --main-font: "Boldonse", sans-serif;
   --paragraph-font: "IBM Plex Sans", sans-serif;
-  --background-color: #0068ac;
+  --background-color: #405376;
   /* Dark Blue */
   --Nav-color: #5c64b3;
   /* Blue */
@@ -31,8 +31,8 @@ body {
   background-position: center;
   font-family: var(--paragraph-font);
   color: var(--secondary-color);
-  text-align: center;
   padding: 20px;
+  margin: 0 auto;
 }
 
 h1,
@@ -42,33 +42,75 @@ h3 {
   color: var(--primary-color);
 }
 
+h1 {
+  font-size: 150px;
+  margin-top: -28px;
+  margin-left: 59px;
+  margin-bottom: -18px;
+}
+
 .sub-heading {
   color: var( --additional-color);
   padding-top: 25px;
 }
 
+.relative {
+  position: relative
+}
+
+/* Heading section */
+
+.spotify-logo{
+  margin-left: 1200px;
+  font-size: 20px;
+}
+
+/* Header Text */
+.text-big {
+  font-size: 37px;
+  font-weight: bold;
+}
+
+.text-medium {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.intro-text{
+  top: 111px;
+  padding-left: 30px;
+}
 
 /* Header turn table styles */
 
-.turntable {
-  width: 100%;
-  height: 100%;
+.header-image {
   position: relative;
+  margin-top: -200px;
+}
+
+.turntable {
+  width: 50%;
+  height: auto;
+  position: relative;
+  top: 40px;
   margin-bottom: 20px;
-  max-width: 600px;
-  margin: 50px auto;
+  max-width: 500px;
+  left: 61.41%;
+  box-shadow: 9px 9px 10px rgba(0, 0, 0, 0.5);
 }
 
 .vinyl {
-  /*width: 51%;
-    height: 51%;*/
+  width: 25%;
+  height: auto;
   position: absolute;
-  top: 330px;
-  left: 88px;
   animation: spin 10s linear infinite;
   transform-origin: center; /* Spins around its own center */
+  top: 16%;
+  left: 64.81%;
+  transform: translate(-50%, -50%);
 }
 
+/* Turntable arm styles */
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -78,67 +120,101 @@ h3 {
   }
 }
 
-.button {
+.slider {
   position: absolute;
-  top: 330px;
-  left: 88px;
+  top: 70%;
+  left: 95.3%;
 }
 
-@media screen and (min-width: 1024px) {
-  .turntable {
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    max-width: 500px;
-    left: 50%;
-  }
+/* Main section */
 
-  .vinyl {
-    width: 100%;
-    height: auto;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+.starter {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center; /* Centers the content horizontally */
+  align-items: left;
+  flex-direction: column; /* Aligns items under eachother */
+  padding-top: 30px;
 }
-/*
-#mood-selector {
-    margin: 20px 0;
+
+.steps {
+  margin-top: -39px;
+  margin-left: 15px;
 }
-.mood-btn {
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: transform 0.2s;
+
+.instructions{
+  margin-top: -21px;
+  margin-left: 95px;
 }
-.mood-btn:hover {
-    transform: scale(1.1);
+
+/* --------- Buttons */
+
+.btn {
+  background: #fff;
+  width: 45%;
+  padding: 20px 0;
+  color: var(--highlight-color);
+  margin-left: 78px;
+  margin-top: 60px;
+  font-size: 25px;
+  font-weight: 700;
+  border-radius: 30px;
+  border: none
 }
-.happy { background: #ffeb3b; color: #333; }
-.sad { background: #2196f3; color: white; }
-.relaxed { background: #4caf50; color: white; }
-.energetic { background: #ff5722; color: white; }
-#playlist-container {
-    margin-top: 20px;
+
+.btn:hover {
+  background: var(--highlight-color);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
-#playlist {
-    list-style: none;
-    padding: 0;
+
+/* Footer section */
+footer {
+  margin-top: 100px; /* Pushes the footer to the bottom */
 }
-#playlist li {
-    background: #ddd;
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 5px;
-}*/
+
+.footer-links{
+  display: flex;
+  justify-content: center; /* Centers the content horizontally */
+  align-items: left;
+  padding-right: 50px;
+  
+}
+
+.follow-us {
+  margin-right: 20px;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+.follow-us i{
+  color: var(--additional-color);
+padding-left: 3.5px;
+}
+
+.important{
+  margin-left: 20px;
+  font-size: 20px;
+  color: var(--primary-color);
+}
+.important a{
+  color: var(--additional-color);
+  text-decoration: none;
+}
+
+.important a:hover{
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+.ast-small-footer-wrap{
+  padding-top: 10px;
+  text-align: center;
+} 
 
 /*to delete*/
 /*.container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
     border: 1px solid black;
 }*/
