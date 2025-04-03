@@ -1,0 +1,94 @@
+
+First page - 
+What supposed to happen when you click the first button 
+- The title is supposed to change to "Log into Spotify" And the user gets 2(3?) buttons "log in", "sign up" or "sontinue without sign up" ad has warning under about low functionality. 
+
+--What is needed-
+-- Change background colour/image? Change all colours?
+-- Alter the "Welcome to" to say "Step 1", h1 tag(JamJar) to show "Log into Spotify", change Slogan to encourage logging in before next step (Change lower text to instructions text and remove from first page?)
+-- Current button to say text "Log in", change function to then follow the above
+
+- Log in - 
+- What happens when they select log in - Pop up comes where ser can add log in info to log into spotify, then takes them to second page
+
+--What is needed-
+-- Alter Current button to say text "Log in", change function to then follow the above
+
+- Sign up - 
+- What happens when they select Sign up - New browser window opens where user can sign up then come back, log in, and follow above
+
+- Continue without - 
+- What happens when they select Continue without log in - Takes user to second page as Log in, but as they are not logged in, some functions are capped. (not sure what yet)
+
+StartFunction() / NextFunction() - To remove all text, then next function to add the new correct one?
+
+
+
+-----------------------------------------------------
+  /*
+  const searchInput = document.getElementById('songSearch');
+  const resultsList = document.getElementById('resultsList');
+  // Display songs based on search query
+  function displaySongs(query) {
+    resultsList.innerHTML = ''; // Clear previous results
+  
+    const filteredSongs = songList.filter(song =>
+      song.title.toLowerCase().includes(query.toLowerCase()) ||
+      song.artist.toLowerCase().includes(query.toLowerCase())
+    );
+  
+    filteredSongs.forEach(song => {
+      const li = document.createElement('li');
+      li.textContent = `${song.title} by ${song.artist}`;
+      resultsList.appendChild(li);
+    });
+  }
+  
+  // Event listener for user input
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim();
+    displaySongs(query);
+  });
+
+  ---------------------------------------
+
+  document.getElementById("search-btn").addEventListener("click", function() {
+    let query = document.getElementById("search-bar").value;
+    if (query) {
+        fetchSongs(query);
+    }
+});
+
+function fetchSongs(query) {
+    let apiUrl = `https://api.spotify.com/v1/search?q=${query}&type=track&limit=10`;
+    fetch(apiUrl, {
+        headers: {
+            "Authorization": "Bearer YOUR_SPOTIFY_API_TOKEN"
+        }
+    })
+    .then(response => response.json())
+    .then(data => displayResults(data.tracks.items))
+    .catch(error => console.error("Error fetching songs:", error));
+}
+
+function displayResults(songs) {
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = ''; // Clear previous results
+
+    songs.forEach(song => {
+        const songElement = document.createElement('div');
+        songElement.classList.add('song');
+        songElement.innerHTML = `
+            <img src="${song.album.images[0].url}" alt="${song.name}" />
+            <h3>${song.name}</h3>
+            <p>${song.artists.map(artist => artist.name).join(', ')}</p>
+            <audio controls>
+                <source src="${song.preview_url}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        `;
+        resultsDiv.appendChild(songElement);
+    });
+}
+
+  */
