@@ -20,10 +20,29 @@ What supposed to happen when you click the first button
 - Continue without - 
 - What happens when they select Continue without log in - Takes user to second page as Log in, but as they are not logged in, some functions are capped. (not sure what yet)
 
-StartFunction() / NextFunction() - To remove all text, then next function to add the new correct one?
+StartFunction() / NextFunction()** - To remove all text, then next function to add the new correct one?
+
+Going with nextFunction
+
+Functions needed
+
+nextFunction
+
+logIn(fos spotify?)?
+step1
+
+step2
+step3
+step4?
+
+previewSong
+goBack
+
+lists needed:
+Song list (api later)
 
 
-
+**Ask mentor if I sould use Hidden HTML oor use JS to add HTM to page?**
 -----------------------------------------------------
   /*
   const searchInput = document.getElementById('songSearch');

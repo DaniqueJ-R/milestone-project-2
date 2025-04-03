@@ -3,85 +3,110 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description"
-        content="Store your favorite jams in one place. JamJar is a mood-based playlist generator that creates personalized playlists based on your current mood. Whether you're feeling happy, sad, relaxed, or energetic, JamJar has the perfect tunes for you." />
-    <meta name="keywords" content="JamJar, playlist generator, mood-based playlists, Spotify, music" />
+    <meta
+      name="description"
+      content="Store your favorite jams in one place. JamJar is a mood-based playlist generator that creates personalized playlists based on your current mood."/>
+    <meta
+      name="keywords"
+      content="JamJar, playlist generator, mood-based playlists, Spotify, music"/>
+
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png"/>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="images/apple-touch-icon.png"/>
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="images/favicon-32x32.png"
-    />
+      href="images/favicon-32x32.png"/>
     <link
       rel="icon"
       type="image/png"
       sizes="16x16"
-      href="images/favicon-16x16.png"
-    />
-    <link rel="manifest" href="/site.webmanifest" />
+      href="images/favicon-16x16.png"/>
+    <link rel="manifest" href="/site.webmanifest"/>
+
     <title>JamJar | Home</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.css"/>
   </head>
   <body>
 
-<!-- Header with vinyl -->
-<!-- Header text -->
-<header id="header" class="container">
-<div id="app">
-  <!-- Spotify logo -->
-  <div class="container">
-    <div class="spotify-logo">
-      <span class="logo-text">made for</span>
-      <i class="fa-brands fa-spotify"></i>
-    </div> 
-  </div>
-</div>
-  <!-- Header text -->
-  <div class="container">
-    <div class="relative intro-text">
-      <span class="text-big">Welcome to</span>
-      <h1>JamJar</h1>
-      <span class="text-medium">
-        Find your jams, 
-        <span class>
-            stack your playlists!</span
-        ></span>
+    <!-- Header Section -->
+     <!-- This part stays the same (delete later) -->
+    <header id="header" class="container">
+      <div id="app">
+        <div class="container">
+          <div class="spotify-logo">
+            <span class="logo-text">made for</span>
+            <i class="fa-brands fa-spotify"></i>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="relative container header-image">
-        <!-- header image -->
-        <img src="images/turntable-base.png" alt="Vinyl Record" class="turntable" />
-        <img src="images/turntable-vinyl.png" alt="Vinyl Record" class="vinyl" />
-        <img src="images/turntable-button.png" alt="Vinyl Record" class="slider" /> 
-    </div>
+      <!-- Header Text -->
+      <div id="step0" class="container">
+        <div class="relative intro-text hidden active">
+          <span class="text-big">Welcome to</span>
+          <h1>JamJar</h1>
+          <span class="text-medium">Find your jams, stack your playlists!</span>
+        </div>
+
+        <div id="step1" class="relative intro-text hidden">
+          <span class="text-big">Step 1</span>
+          <h2>Log Into Spotify</h2>
+          <span class="text-medium">Click the button below to log in to your Spotify account.</span>
+        </div>
+
+      </div>
+
+      <!-- Header Image -->
+      <div class="relative container header-image">
+        <img
+          src="images/turntable-base.png"
+          alt="Vinyl Record"
+          class="turntable"/>
+        <img
+          src="images/turntable-vinyl.png"
+          alt="Vinyl Record"
+          class="vinyl"/>
+        <img
+          src="images/turntable-button.png"
+          alt="Vinyl Record"
+          class="slider"/>
+      </div>
     </header>
 
+    <!-- Main Content -->
     <main class="container">
-      <section class="starter">      
-        <p class="steps text-medium ">Connect your Spotify > Choose artists/songs > Generate your custom playlist</p>
-        <p class="instructions">Click the button below to log in and start creating your personalized playlists.</p>
-        <button data-type="submit" class="btn btn--big">
-          Jam me up!
-        </button>
+      <section class="starter step active">
+        <p class="steps text-medium">
+          Connect your Spotify > Choose artists/songs > Generate your custom
+          playlist
+        </p>
+        <p class="instructions">
+          Click the button below to log in and start creating your personalized
+          playlists.
+        </p>
+        <button class="btn btn--big" onclick="nextFunction()">Jam me up!</button>
       </section>
+    </main>
 
-</main>
-
+    <!-- Footer -->
     <footer class="container section">
       <div class="footer-links">
-        <span class="follow-us"><span>Follow us on social media:</span>
-        <span><a href="https://www.youtube.com"><i class="fa-brands fa-youtube"></i></a>
-            </span>
-            <span><a href="https://open.spotify.com"><i class="fa-brands fa-spotify"></i></a>
-            </span>
-          </span>
-          
-          <span class="important">
-            |
-            <a
+        <span class="follow-us">
+          <span>Follow us on social media:</span>
+          <a href="https://www.youtube.com"
+            ><i class="fa-brands fa-youtube"></i
+          ></a>
+          <a href="https://open.spotify.com"
+            ><i class="fa-brands fa-spotify"></i
+          ></a>
+        </span>
+        <span class="important">
+          |
+          <a
             href="https://www.universal-music.de/rechtliche-hinweise/imprint"
             target="_blank"
             rel="noopener noreferrer"
@@ -95,29 +120,30 @@
             >Security &amp; Privacy</a
           >
         </span>
-          </div>
+      </div>
 
-    
-    <div class="ast-small-footer-wrap">
-        <div class="copyright">
-    Copyright © 2025 JamJar</span> 					</div>
-    
+      <div class="ast-small-footer-wrap">
+        <div class="copyright">Copyright © 2025 JamJar</div>
         <div class="ast-footer-credits">
-    <span class="ast-footer-credits-text">All rights reserved.				
-    Music data on our tools and pages (except Music Downloads pages) is provided by Spotify AB. jamjar.com is not affiliated with Spotify AB in any way.			
-   </span> 		
-  </div>
-    </div>
+          <span class="ast-footer-credits-text"
+            >All rights reserved. Music data on our tools and pages (except
+            Music Downloads pages) is provided by Spotify AB. jamjar.com is not
+            affiliated with Spotify AB in any way.</span
+          >
+        </div>
+      </div>
     </footer>
 
+    <script src="/js/search.js"></script>
 
+    <!-- FontAwesome Icons -->
+    <script
+      src="https://kit.fontawesome.com/9e540e0242.js"
+      crossorigin="anonymous"
+    ></script>
 
-   
-    <!-- Fontawsome Link -->
-    <script src="https://kit.fontawesome.com/9e540e0242.js" crossorigin="anonymous"></script>
-  
     <!-- Spotify API -->
-    <script>
+   <!--  <script>
       const clientId = "YOUR_SPOTIFY_CLIENT_ID";
       const redirectUri = "http://localhost:5500/callback";
       const authEndpoint = "https://accounts.spotify.com/authorize";
@@ -129,11 +155,9 @@
         )}&response_type=token&show_dialog=true`;
       }
 
-      document.querySelectorAll(".mood-btn").forEach((button) => {
-        button.addEventListener("click", () => {
-          loginWithSpotify();
-        });
-      });
-    </script>
+      document
+        .querySelector(".btn--big")
+        .addEventListener("click", loginWithSpotify);
+    </script>-->
   </body>
 </html>

@@ -17,6 +17,10 @@
   "homepage": "https://github.com/DaniqueJ-R/milestone-project-2#readme",
   "description": "",
   "devDependencies": {
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
   }
 }

@@ -40,9 +40,6 @@ h2,
 h3 {
   font-family: var(--primary-font);
   color: var(--primary-color);
-}
-
-h1 {
   font-size: 150px;
   margin-top: -28px;
   margin-left: 59px;
@@ -50,17 +47,25 @@ h1 {
 }
 
 .sub-heading {
-  color: var( --additional-color);
+  color: var(--additional-color);
   padding-top: 25px;
 }
 
 .relative {
-  position: relative
+  position: relative;
 }
+
+.hidden {
+  display: none;
+} /* Hide all steps initially */
+
+.active {
+  display: block;
+} /* Show only active step */
 
 /* Heading section */
 
-.spotify-logo{
+.spotify-logo {
   margin-left: 1200px;
   font-size: 20px;
 }
@@ -76,7 +81,7 @@ h1 {
   font-weight: bold;
 }
 
-.intro-text{
+.intro-text {
   top: 111px;
   padding-left: 30px;
 }
@@ -143,7 +148,7 @@ h1 {
   margin-left: 15px;
 }
 
-.instructions{
+.instructions {
   margin-top: -21px;
   margin-left: 95px;
 }
@@ -160,7 +165,7 @@ h1 {
   font-size: 25px;
   font-weight: 700;
   border-radius: 30px;
-  border: none
+  border: none;
 }
 
 .btn:hover {
@@ -175,12 +180,11 @@ footer {
   margin-top: 100px; /* Pushes the footer to the bottom */
 }
 
-.footer-links{
+.footer-links {
   display: flex;
   justify-content: center; /* Centers the content horizontally */
   align-items: left;
   padding-right: 50px;
-  
 }
 
 .follow-us {
@@ -189,30 +193,30 @@ footer {
   font-weight: 500;
   color: var(--primary-color);
 }
-.follow-us i{
+.follow-us i {
   color: var(--additional-color);
-padding-left: 3.5px;
+  padding-left: 3.5px;
 }
 
-.important{
+.important {
   margin-left: 20px;
   font-size: 20px;
   color: var(--primary-color);
 }
-.important a{
+.important a {
   color: var(--additional-color);
   text-decoration: none;
 }
 
-.important a:hover{
+.important a:hover {
   color: var(--secondary-color);
   text-decoration: underline;
 }
 
-.ast-small-footer-wrap{
+.ast-small-footer-wrap {
   padding-top: 10px;
   text-align: center;
-} 
+}
 
 /*to delete*/
 /*.container {
