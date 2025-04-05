@@ -5,35 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Store your favorite jams in one place. JamJar is a mood-based playlist generator that creates personalized playlists based on your current mood."/>
+      content="Store your favorite jams in one place. JamJar is a mood-based playlist generator that creates personalized playlists based on your current mood."
+    />
     <meta
       name="keywords"
-      content="JamJar, playlist generator, mood-based playlists, Spotify, music"/>
+      content="JamJar, playlist generator, mood-based playlists, Spotify, music"
+    />
 
     <!-- Favicon -->
     <link
       rel="apple-touch-icon"
       sizes="180x180"
-      href="images/apple-touch-icon.png"/>
+      href="images/apple-touch-icon.png"
+    />
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="images/favicon-32x32.png"/>
+      href="images/favicon-32x32.png"
+    />
     <link
       rel="icon"
       type="image/png"
       sizes="16x16"
-      href="images/favicon-16x16.png"/>
-    <link rel="manifest" href="/site.webmanifest"/>
+      href="images/favicon-16x16.png"
+    />
+    <!-- <link rel="manifest" href="/site.webmanifest"/> -->
 
     <title>JamJar | Home</title>
-    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-
     <!-- Header Section -->
-     <!-- This part stays the same (delete later) -->
+    <!-- This part stays the same (delete later) -->
     <header id="header" class="container">
       <div id="app">
         <div class="container">
@@ -44,52 +48,53 @@
         </div>
       </div>
 
+                        <!-- Header Image -->
+                        <div class="relative container header-image">
+                          <img src="images/turntable-base.png" alt="Vinyl Record" class="turntable"/>
+                          <img src="images/turntable-vinyl.png" alt="Vinyl Record" class="vinyl"/>
+                          <img src="images/turntable-button.png" alt="Vinyl Record" class="slider"/>
+                        </div>
+
       <!-- Header Text -->
-      <div id="step0" class="container">
-        <div class="relative intro-text hidden active">
+      <section id="step0" class=" relative container hidden active">
+        <div  class="relative intro-text ">
           <span class="text-big">Welcome to</span>
           <h1>JamJar</h1>
           <span class="text-medium">Find your jams, stack your playlists!</span>
         </div>
-
-        <div id="step1" class="relative intro-text hidden">
-          <span class="text-big">Step 1</span>
-          <h2>Log Into Spotify</h2>
-          <span class="text-medium">Click the button below to log in to your Spotify account.</span>
+        <div>
+          <div class="starter steps">
+            <p class="steps text-medium">
+              Connect your Spotify > Choose artists/songs > Generate your custom
+              playlist
+            </p>
+            <p class="instructions">
+              Click the button below to log in and start creating your
+              personalized playlists.
+            </p>
+            <button class="btn btn--big" id="nextButton">Jam me up!</button>
+          </div>
         </div>
+      </section>
 
-      </div>
 
-      <!-- Header Image -->
-      <div class="relative container header-image">
-        <img
-          src="images/turntable-base.png"
-          alt="Vinyl Record"
-          class="turntable"/>
-        <img
-          src="images/turntable-vinyl.png"
-          alt="Vinyl Record"
-          class="vinyl"/>
-        <img
-          src="images/turntable-button.png"
-          alt="Vinyl Record"
-          class="slider"/>
-      </div>
+
     </header>
 
     <!-- Main Content -->
     <main class="container">
-      <section class="starter step active">
-        <p class="steps text-medium">
-          Connect your Spotify > Choose artists/songs > Generate your custom
-          playlist
-        </p>
-        <p class="instructions">
-          Click the button below to log in and start creating your personalized
-          playlists.
-        </p>
-        <button class="btn btn--big" onclick="nextFunction()">Jam me up!</button>
-      </section>
+      <div id="step1" class="relative intro-text hidden">
+        <span class="text-big">Step 1</span>
+        <h2>Log Into Spotify</h2>
+        <span class="text-medium"
+          >Click the button below to log in to your Spotify account.</span>
+
+        <div class="step1 relative">
+          <button class="btn btn--big" id="logInWithSpotify">Log In</button> <!-- pop up to log into spotify -->
+          <button class="btn btn--big" id="signInWithSpotify">Sign up</button> <!-- pop up to sign up for spotify -->
+          <button class="btn btn--big" id="noLogIn">Continue without login(limited Fuctionality)</button> 
+        </div>
+      </div>
     </main>
 
     <!-- Footer -->
@@ -143,7 +148,7 @@
     ></script>
 
     <!-- Spotify API -->
-   <!--  <script>
+    <!--  <script>
       const clientId = "YOUR_SPOTIFY_CLIENT_ID";
       const redirectUri = "http://localhost:5500/callback";
       const authEndpoint = "https://accounts.spotify.com/authorize";

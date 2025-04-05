@@ -4,6 +4,7 @@ Edit fav-icon - Canva
 images - https://www.freepik.com/free-photos-vectors/turntable
 Find image colour - https://imagecolorpicker.com/#google_vignette
 Find colour pallet - https://mycolor.space/?hex=%23E5615A&sub=1
+helped understand tests - https://www.youtube.com/watch?v=x6NUZ8dc9Qg
 
 
 Decided to make a playlist generator as I love music and finding new songs. Torn between this and Recipe finder
