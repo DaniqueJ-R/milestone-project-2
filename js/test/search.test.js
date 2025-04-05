@@ -1,4 +1,20 @@
-const { stepTracker, nextFunction, noLogIn} = require("../search.js");
+const {  stepTracker, nextFunction, logInWithSpotify, signInWithSpotify, noLogIn } = require("../search.js");
+
+beforeEach(() => {
+  // Set up the initial DOM state for each test
+  stepTracker.currentStep = 0; // Reset currentStep before each test
+  document.body.innerHTML = `
+          <div id="step0" class="active">Step 0</div>
+          <div id="step1" class="page">Step 1</div>
+          <div id="step2" class="page">Step 2</div>
+          <button id="nextButton">Next</button>
+      `;
+});
+
+afterEach(() => {
+  stepTracker.currentStep = 0;
+  document.body.innerHTML = "";
+});
 
 describe("currentStep to show correct number", () => {
   test("currentStep should be set to 0", () => {
@@ -7,21 +23,7 @@ describe("currentStep to show correct number", () => {
 });
 
 describe("nextFunction working correctly", () => {
-  beforeEach(() => {
-    // Set up the initial DOM state for each test
-    stepTracker.currentStep = 0; // Reset currentStep before each test
-    document.body.innerHTML = `
-            <div id="step0" class="active">Step 0</div>
-            <div id="step1" class="page">Step 1</div>
-            <div id="step2" class="page">Step 2</div>
-            <button id="nextButton">Next</button>
-        `;
-  });
 
-  afterEach(() => {
-    stepTracker.currentStep = 0;
-    document.body.innerHTML = "";
-  });
 
   test("nextFunction should find the current step element", () => {
     let currentPage = document.getElementById(`step${stepTracker.currentStep}`);
@@ -54,20 +56,77 @@ test("nextFunction should not exceed the number of steps", () => {
 });
 
 describe("noLogIn function conntinues sequence correctly", () => {
-    beforeEach(() => {
-        stepTracker.currentStep = 1; // Reset currentStep before each test
+      beforeEach(() => {
+        stepTracker.currentStep = 0; // Reset currentStep before each test
         document.body.innerHTML = `
-                <div id="step0" class="active">Step 0</div>
-                <div id="step1" class="page">Step 1</div>
-                <div id="step2" class="page">Step 2</div>
-                <button id="nextButton">Next</button>
+                <button onclick="noLogIn()">Next</button>
             `;
     });
-    
     
     test("noLogIn should alert the user", () => {
         global.alert = jest.fn(); // Mock the alert function
         noLogIn();
-        expect(global.alert).toHaveBeenCalledWith("{Pleasae remeber if you don't log in, you will have limited use!");
+        expect(global.alert).toHaveBeenCalledWith("Please remeber if you don't log in, you will have limited use!");
     });
+
+    test("noLogIn should call nextFunction", () => {
+      noLogIn();
+      expect(global.alert).toHaveBeenCalled(); 
+      });
+
+    });
+
+    describe("logInWithSpotify function conntinues sequence correctly", () => {
+      beforeEach(() => {
+        stepTracker.currentStep = 0;
+        document.body.innerHTML = `
+                <button onclick="logInWithSpotify()">Next</button>
+            `;
+    });
+    
+    test("logInWithSpotify should alert the user", () => {
+        global.alert = jest.fn(); 
+        logInWithSpotify();
+        expect(global.alert).toHaveBeenCalledWith("pop up to log into spotify then continues sequence");
+    });
+
+    test("logInWithSpotify should call nextFunction", () => {
+      logInWithSpotify();
+      expect(global.alert).toHaveBeenCalled(); 
+      });
+
+      test("logInWithSpotify should open new tab/popup to log in", () => {
+        window.open = jest.fn()
+        logInWithSpotify();
+        expect(window.open).toHaveBeenCalledTimes(1)
+
+      });
+    });
+
+    
+    describe("signInWithSpotify function conntinues sequence correctly", () => {
+      beforeEach(() => {
+        stepTracker.currentStep = 0;
+        document.body.innerHTML = `
+                <button onclick="logInWithSpotify()">Next</button>
+            `;
+    });
+    
+    test("signInWithSpotify should alert the user", () => {
+        global.alert = jest.fn(); 
+        signInWithSpotify();
+        expect(global.alert).toHaveBeenCalledWith("New tab to sign up for spotify");
+    });
+
+    test("signInWithSpotify should call nextFunction", () => {
+      signInWithSpotify();
+      expect(global.alert).toHaveBeenCalled(); 
+      });
+
+      test("signInWithSpotify should open new tab/popup to log in", () => {
+        window.open = jest.fn()
+        signInWithSpotify();
+        expect(window.open).toHaveBeenCalledTimes(1)
+
+      });
     });

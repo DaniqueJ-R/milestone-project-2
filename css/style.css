@@ -23,6 +23,7 @@
 
 body {
   max-width: 2000px;
+  max-height: 2000px;
   margin: 0px auto;
   background-color: var(--background-color);
   background-image: url("../images/background.jpg");

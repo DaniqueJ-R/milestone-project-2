@@ -20,6 +20,8 @@ What supposed to happen when you click the first button
 - Continue without - 
 - What happens when they select Continue without log in - Takes user to second page as Log in, but as they are not logged in, some functions are capped. (not sure what yet)
 
+
+
 StartFunction() / NextFunction()** - To remove all text, then next function to add the new correct one?
 
 Going with nextFunction
@@ -43,6 +45,20 @@ Song list (api later)
 
 
 **Ask mentor if I sould use Hidden HTML oor use JS to add HTM to page?**
+
+
+Second page - 
+What supposed to happen when you click the first button 
+- The title is supposed to change to "Log into Spotify" And the user gets 2(3?) buttons "log in", "sign up" or "sontinue without sign up" ad has warning under about low functionality. 
+
+--What is needed-
+-- Change background colour/image? Change all colours?
+-- Alter the "Step 1" to say "Step 2", h1 tag(JamJar) to show "what are you in the mood for!", change instructions to give a suggestion on a song? Or overall encourage a search.   
+-- Current buttons to disappear and show search bar instead with dropdown for song/artist/album, and predictive search
+-- Sections under searchbar has a list of all related searches, that are scrollable but does not stretch scre
+stead with  text "Log in", change function to then follow the above
+
+
 -----------------------------------------------------
   /*
   const searchInput = document.getElementById('songSearch');
