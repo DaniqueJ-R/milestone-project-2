@@ -14,8 +14,8 @@ function nextFunction() {
             nextPage.classList.add("active");
         }
 
-        if (stepTracker.currentStep > 2) { // Assuming there are 3 steps (0, 1, 2) is actually 5 steps, update later
-            stepTracker.currentStep = 2; // Prevent going beyond the last step
+        if (stepTracker.currentStep > 5) { // Assuming there are 3 steps (0, 1, 2) is actually 5 steps, update later
+            stepTracker.currentStep = 5; // Prevent going beyond the last step
         }
     }; 
 

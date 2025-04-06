@@ -50,9 +50,9 @@ describe("nextFunction working correctly", () => {
 });
 
 test("nextFunction should not exceed the number of steps", () => {
-  stepTracker.currentStep = 2; // Set to the last step
+  stepTracker.currentStep = 5; // Set to the last step
   nextFunction(); // Call nextFunction to try to go to the next step
-  expect(stepTracker.currentStep).toEqual(2); // Should not exceed the last step
+  expect(stepTracker.currentStep).toEqual(5); // Should not exceed the last step
 });
 
 describe("noLogIn function conntinues sequence correctly", () => {

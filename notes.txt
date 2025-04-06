@@ -55,8 +55,26 @@ What supposed to happen when you click the first button
 -- Change background colour/image? Change all colours?
 -- Alter the "Step 1" to say "Step 2", h1 tag(JamJar) to show "what are you in the mood for!", change instructions to give a suggestion on a song? Or overall encourage a search.   
 -- Current buttons to disappear and show search bar instead with dropdown for song/artist/album, and predictive search
--- Sections under searchbar has a list of all related searches, that are scrollable but does not stretch scre
-stead with  text "Log in", change function to then follow the above
+-- Sections under searchbar has a list of all related searches, that are scrollable but does not stretch screen
+
+
+Text and vinyl 
+-- make them smaller or change vinyl overall to now show on page, for more space ( either make vinyl smaller or change it to new thing?)
+--Slider on side of screen to make song louder or lower?
+
+Search bar 
+- Make it page leangh, with song searches showing under it. 
+--predictive type so they dont have to type out full sentence
+
+Songs
+- same leangh as search bar. 
+- Shows album image, title, play button, add button, three dots for more options
+
+
+viewed details-
+-- Acordian style with song above in search and details show between it and song below
+-- info to be interactive? (PRess album and either take you to spotify or change search)
+
 
 
 -----------------------------------------------------
@@ -127,3 +145,18 @@ function displayResults(songs) {
 }
 
   */
+
+
+  To do list- * means done
+
+  Complete Css for all device sizes
+  figure out why deployment js missing
+  figure out api
+  Choose new background?
+  Search page
+  Generate PLaylist page
+  New turn table?
+  README
+  New Wireframes since idea kinda changed *
+  Wireframes for tablet and phone
+

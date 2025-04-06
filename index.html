@@ -48,16 +48,28 @@
         </div>
       </div>
 
-                        <!-- Header Image -->
-                        <div class="relative container header-image">
-                          <img src="images/turntable-base.png" alt="Vinyl Record" class="turntable"/>
-                          <img src="images/turntable-vinyl.png" alt="Vinyl Record" class="vinyl"/>
-                          <img src="images/turntable-button.png" alt="Vinyl Record" class="slider"/>
-                        </div>
+      <!-- Header Image -->
+      <div class="relative container header-image">
+        <img
+          src="images/turntable-base.png"
+          alt="Vinyl Record"
+          class="turntable"
+        />
+        <img
+          src="images/turntable-vinyl.png"
+          alt="Vinyl Record"
+          class="vinyl"
+        />
+        <img
+          src="images/turntable-button.png"
+          alt="Vinyl Record"
+          class="slider"
+        />
+      </div>
 
       <!-- Header Text -->
-      <section id="step0" class=" relative container hidden active">
-        <div  class="relative intro-text ">
+      <section id="step0" class="relative container hidden active">
+        <div class="relative intro-text">
           <span class="text-big">Welcome to</span>
           <h1>JamJar</h1>
           <span class="text-medium">Find your jams, stack your playlists!</span>
@@ -72,29 +84,92 @@
               Click the button below to log in and start creating your
               personalized playlists.
             </p>
-            <button class="btn btn--big" onclick="nextFunction()">Jam me up!</button>
+            <button class="btn btn--big" onclick="nextFunction()">
+              Jam me up!
+            </button>
           </div>
         </div>
       </section>
-
-
-
     </header>
 
     <!-- Main Content -->
     <main class="container">
-      <div id="step1" class="relative intro-text hidden">
-        <span class="text-big">Step 1</span>
-        <h2>Log Into Spotify</h2>
-        <span class="text-medium"
-          >Click the button below to log in to your Spotify account.</span>
+      <!-- Log In section -->
+      <section id="step1" class="container relative hidden">
+        <div class="intro-text">
+          <span class="text-big">Step 1</span>
+          <h2>Log Into Spotify</h2>
+          <span class="text-medium"
+            >Click the button below to log in to your Spotify account.</span
+          >
 
-        <div class="step1 relative">
-          <button class="btn btn--big" onclick="logInWithSpotify()">Log In</button> <!-- pop up to log into spotify -->
-          <button class="btn btn--big" onclick="signInWithSpotify()">Sign up</button> <!-- pop up to sign up for spotify -->
-          <button class="btn btn--big" onclick="noLogIn()">Continue without login(limited Fuctionality)</button> 
+          <button class="btn btn--big" onclick="logInWithSpotify()">
+            Log In
+          </button>
+          <!-- pop up to log into spotify -->
+          <button class="btn btn--big" onclick="signInWithSpotify()">
+            Sign up
+          </button>
+          <!-- pop up to sign up for spotify -->
+          <button class="btn btn--big" onclick="noLogIn()">
+            Continue without login(limited Fuctionality)
+          </button>
         </div>
-      </div>
+      </section>
+
+      <!-- Search Bar Page -->
+      <section id="step2" class="container relative hidden">
+        <div class="intro-text">
+          <span class="text-big">Step 2</span>
+          <h2>Search for your favorite songs</h2>
+          <p>Search for your favorite songs, artists, or albums.</p>
+          <form class="search-bar" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn--big" onclick="restart()">Start over</button> <!-- Back to step 2 -->
+          <button class="btn btn--big" onclick="nextFunction()"> <!-- TEMP -->
+              Lets get jammin!
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- playlist results from java -->
+      <!-- Fix as its not staying on page? -->
+      <section id="step3" class="container relative hidden">
+        <div class="intro-text">
+          <span class="text-big">Step 3</span>
+          <h2>🎶 Song Results</h2>
+          <p>Search for your favorite songs, artists, or albums.</p>
+          <ul id="search-results-list"></ul>
+          <button class="btn btn--big" onclick="prevPage()">Go Back</button>
+          <button class="btn btn--big" onclick="nextFunction()"> <!-- TEMP -->
+            Let's get jammin!
+          </button>
+        </div>
+      </section>
+
+      <!-- Final page, show playlist/link to playlist -->
+      <section id="step4" class="container relative hidden">
+        <div class="intro-text">
+          <span class="text-big">Wooh!</span>
+          <h2>🎶 Your Playlist is ready!</h2>
+          <p>Go to your spotify and start the party!</p>
+          <ul id="search-results-list"></ul>
+          <!-- Show playlist? -->
+          <button class="btn btn--big" onclick="newPlaylist()">
+            Make a new playlist
+          </button>
+          <button class="btn btn--big" onclick="goToPlaylist()">
+            <!-- Shows playlist in spotify? -->
+            Let's get jammin!
+          </button>
+        </div>
+      </section>
     </main>
 
     <!-- Footer -->
@@ -102,10 +177,10 @@
       <div class="footer-links">
         <span class="follow-us">
           <span>Follow us on social media:</span>
-          <a href="https://www.youtube.com"
+          <a href="https://www.youtube.com" target="_blank"
             ><i class="fa-brands fa-youtube"></i
           ></a>
-          <a href="https://open.spotify.com"
+          <a href="https://open.spotify.com" target="_blank"
             ><i class="fa-brands fa-spotify"></i
           ></a>
         </span>
