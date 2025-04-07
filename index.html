@@ -106,7 +106,7 @@
           <button class="btn btn--big" onclick="logInWithSpotify()">
             Log In
           </button>
-          <!-- pop up to log into spotify -->
+          <!-- pop up to log into spotify. Set API log in  -->
           <button class="btn btn--big" onclick="signInWithSpotify()">
             Sign up
           </button>
@@ -123,17 +123,42 @@
           <span class="text-big">Step 2</span>
           <h2>Search for your favorite songs</h2>
           <p>Search for your favorite songs, artists, or albums.</p>
+          <!-- Search bar -->
           <form class="search-bar" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn--big" onclick="restart()">Start over</button> <!-- Back to step 2 -->
-          <button class="btn btn--big" onclick="nextFunction()"> <!-- TEMP -->
-              Lets get jammin!
-            </button>
+
+            <!-- Search bar start -->
+            <div class="search-bar">
+
+              <!-- Dropdown start -->
+              <div class="dropdown" onclick="showDropdown(event)" > 
+                <div id="drop-text" class="dropdown-text"  onchange="showListItems()"> 
+                  <span>All</span>
+                  <i id="icon" class="fa-solid fa-caret-down"></i>
+                </div>
+                <ul id="list"  class="dropdown-list">
+                  <li class="dropdown-list-item">All</li>
+                  <li class="dropdown-list-item">Songs</li>
+                  <li class="dropdown-list-item">Album</li>
+                  <li class="dropdown-list-item">Artist</li>
+                  <li class="dropdown-list-item">Playlist</li>
+                </ul>
+                <!-- Dropdown end -->
+              </div>
+
+              <!-- Search input start -->
+              <div class="search-box">
+                <input 
+                  type="text"
+                  id="search-input"
+                  placeholder="Search All Media..."
+                />
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </div>
+              <!-- Search input end -->
+            </div>
+            <!-- Search bar ends -->
+            <button class="btn btn--big" onclick="restart()">Start over</button> <!-- restart list -->
+            <button class="btn btn--big" onclick="nextFunction()">Lets get jammin!</button><!-- TEMP -->
           </form>
         </div>
       </section>
@@ -147,7 +172,8 @@
           <p>Search for your favorite songs, artists, or albums.</p>
           <ul id="search-results-list"></ul>
           <button class="btn btn--big" onclick="prevPage()">Go Back</button>
-          <button class="btn btn--big" onclick="nextFunction()"> <!-- TEMP -->
+          <button class="btn btn--big" onclick="nextFunction()">
+            <!-- TEMP -->
             Let's get jammin!
           </button>
         </div>

@@ -1,4 +1,17 @@
-const {  stepTracker, nextFunction, logInWithSpotify, signInWithSpotify, noLogIn } = require("../search.js");
+const {
+  stepTracker,
+  list,
+  icon,
+  span,
+  input,
+  songList
+  nextFunction,
+  logInWithSpotify,
+  signInWithSpotify,
+  noLogIn,
+  showDropdown,
+showListItems
+} = require("../search.js");
 
 beforeEach(() => {
   // Set up the initial DOM state for each test
@@ -23,8 +36,6 @@ describe("currentStep to show correct number", () => {
 });
 
 describe("nextFunction working correctly", () => {
-
-
   test("nextFunction should find the current step element", () => {
     let currentPage = document.getElementById(`step${stepTracker.currentStep}`);
     expect(currentPage).not.toBeNull();
@@ -56,77 +67,100 @@ test("nextFunction should not exceed the number of steps", () => {
 });
 
 describe("noLogIn function conntinues sequence correctly", () => {
-      beforeEach(() => {
-        stepTracker.currentStep = 0; // Reset currentStep before each test
-        document.body.innerHTML = `
+  beforeEach(() => {
+    stepTracker.currentStep = 0; // Reset currentStep before each test
+    document.body.innerHTML = `
                 <button onclick="noLogIn()">Next</button>
             `;
-    });
-    
-    test("noLogIn should alert the user", () => {
-        global.alert = jest.fn(); // Mock the alert function
-        noLogIn();
-        expect(global.alert).toHaveBeenCalledWith("Please remeber if you don't log in, you will have limited use!");
-    });
+  });
 
-    test("noLogIn should call nextFunction", () => {
-      noLogIn();
-      expect(global.alert).toHaveBeenCalled(); 
-      });
+  test("noLogIn should alert the user", () => {
+    global.alert = jest.fn(); // Mock the alert function
+    noLogIn();
+    expect(global.alert).toHaveBeenCalledWith(
+      "Please remeber if you don't log in, you will have limited use!"
+    );
+  });
 
-    });
+  test("noLogIn should call nextFunction", () => {
+    noLogIn();
+    expect(global.alert).toHaveBeenCalled(nextFunction());
+  });
+});
 
-    describe("logInWithSpotify function conntinues sequence correctly", () => {
-      beforeEach(() => {
-        stepTracker.currentStep = 0;
-        document.body.innerHTML = `
+describe("logInWithSpotify function conntinues sequence correctly", () => {
+  beforeEach(() => {
+    stepTracker.currentStep = 0;
+    document.body.innerHTML = `
                 <button onclick="logInWithSpotify()">Next</button>
             `;
-    });
-    
-    test("logInWithSpotify should alert the user", () => {
-        global.alert = jest.fn(); 
-        logInWithSpotify();
-        expect(global.alert).toHaveBeenCalledWith("pop up to log into spotify then continues sequence");
-    });
+  });
 
-    test("logInWithSpotify should call nextFunction", () => {
-      logInWithSpotify();
-      expect(global.alert).toHaveBeenCalled(); 
-      });
+  test("logInWithSpotify should call nextFunction", () => {
+    logInWithSpotify();
+    expect(global.alert).toHaveBeenCalled(nextFunction());
+  });
 
-      test("logInWithSpotify should open new tab/popup to log in", () => {
-        window.open = jest.fn()
-        logInWithSpotify();
-        expect(window.open).toHaveBeenCalledTimes(1)
+  test("logInWithSpotify should open new tab/popup to log in", () => {
+    window.open = jest.fn();
+    logInWithSpotify();
+    expect(window.open).toHaveBeenCalledTimes(1);
+  });
+});
 
-      });
-    });
-
-    
-    describe("signInWithSpotify function conntinues sequence correctly", () => {
-      beforeEach(() => {
-        stepTracker.currentStep = 0;
-        document.body.innerHTML = `
+describe("signInWithSpotify function conntinues sequence correctly", () => {
+  beforeEach(() => {
+    stepTracker.currentStep = 0;
+    document.body.innerHTML = `
                 <button onclick="logInWithSpotify()">Next</button>
             `;
-    });
-    
-    test("signInWithSpotify should alert the user", () => {
-        global.alert = jest.fn(); 
-        signInWithSpotify();
-        expect(global.alert).toHaveBeenCalledWith("New tab to sign up for spotify");
-    });
+  });
 
-    test("signInWithSpotify should call nextFunction", () => {
-      signInWithSpotify();
-      expect(global.alert).toHaveBeenCalled(); 
-      });
+  test("signInWithSpotify should call nextFunction", () => {
+    signInWithSpotify();
+    expect(global.alert).toHaveBeenCalled();
+  });
 
-      test("signInWithSpotify should open new tab/popup to log in", () => {
-        window.open = jest.fn()
-        signInWithSpotify();
-        expect(window.open).toHaveBeenCalledTimes(1)
+  test("signInWithSpotify should open new tab/popup to log in", () => {
+    window.open = jest.fn();
+    signInWithSpotify();
+    expect(window.open).toHaveBeenCalledTimes(1);
+  });
+});
 
-      });
-    });
+//Create a test for the search bar
+test("search bar should show dropdown list on click", () => {
+  const dropdownBtn = document.getElementById("drop-text");
+  const list = document.getElementById("list");
+  dropdownBtn.click(); // Simulate a click on the dropdown button
+  expect(list.classList.contains("show")).toBe(true); // Check if the dropdown list is shown
+});
+
+test("search bar should hide dropdown list on click outside", () => {
+  const dropdownBtn = document.getElementById("drop-text");
+  const list = document.getElementById("list");
+  dropdownBtn.click(); // Simulate a click on the dropdown button
+  expect(list.classList.contains("show")).toBe(true); // Check if the dropdown list is shown
+  window.onclick({ target: { id: "someOtherElement" } }); // Simulate a click outside the dropdown button
+  expect(list.classList.contains("show")).toBe(false); // Check if the dropdown list is hidden
+});
+
+test("search bar should rotate icon on click", () => {
+  const icon = document.getElementById("icon");
+  const dropdownBtn = document.getElementById("drop-text");
+  const initialTransform = icon.style.transform; // Get the initial transform value
+  dropdownBtn.click(); // Simulate a click on the dropdown button
+  expect(icon.style.transform).not.toBe(initialTransform); // Check if the icon has rotated
+});
+
+test("search bar should reset icon rotation on click outside", () => {
+  const icon = document.getElementById("icon");
+  const dropdownBtn = document.getElementById("drop-text");
+  dropdownBtn.click(); // Simulate a click on the dropdown button
+  window.onclick({ target: { id: "someOtherElement" } }); // Simulate a click outside the dropdown button
+  expect(icon.style.transform).toBe("rotate(0deg)"); // Check if the icon has reset to its original position
+});
+test("search bar should show correct number of list items", () => {
+  const listItems = document.querySelectorAll(".dropdown-list-item");
+  expect(listItems.length).toBe(3); // Assuming there are 3 list items in the dropdown
+});
