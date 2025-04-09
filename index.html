@@ -37,23 +37,18 @@
   </head>
   <body>
     <!-- Header Section -->
-    <!-- This part stays the same (delete later) -->
-    <header id="header" class="container">
-      <div id="app">
-        <div class="container">
-          <div class="spotify-logo">
-            <span class="logo-text">made for</span>
-            <i class="fa-brands fa-spotify"></i>
-          </div>
-        </div>
-      </div>
+    <header id="header" class="container hidden">
+      <h1>JamJar</h1>
+    </header>
 
+    <!-- Main Content -->
+    <main class="container">
       <!-- Header Image -->
       <div class="relative container header-image">
         <img
-          src="images/turntable-base.png"
+          src="images/turntable-base.jpg"
           alt="Vinyl Record"
-          class="turntable"
+          class="turntable "
         />
         <img
           src="images/turntable-vinyl.png"
@@ -61,10 +56,16 @@
           class="vinyl"
         />
         <img
+        src="images/turntable-front.png"
+        alt="Vinyl Record"
+        class="foreground hidden"
+      />
+        <img
           src="images/turntable-button.png"
           alt="Vinyl Record"
           class="slider"
         />
+
       </div>
 
       <!-- Header Text -->
@@ -84,16 +85,13 @@
               Click the button below to log in and start creating your
               personalized playlists.
             </p>
-            <button class="btn btn--big" onclick="nextFunction()">
+            <button class="btn" onclick="nextFunction()">
               Jam me up!
             </button>
           </div>
         </div>
       </section>
-    </header>
 
-    <!-- Main Content -->
-    <main class="container">
       <!-- Log In section -->
       <section id="step1" class="container relative hidden">
         <div class="intro-text">
@@ -135,7 +133,7 @@
                   <span>All</span>
                   <i id="icon"  class="fa-solid fa-caret-down"></i>
                 </div>
-                <ul id="list" class="container"  class="dropdown-list">
+                <ul id="list" class="containe dropdown-list">
                   <li class="dropdown-list-item">All</li>
                   <li class="dropdown-list-item">Songs</li>
                   <li class="dropdown-list-item">Album</li>
@@ -166,8 +164,8 @@
             <ul id="search-results-list"></ul>
           </div>
           
-            <button class="btn btn--big" onclick="restart()">Start over</button> <!-- restart list -->
-            <button class="btn btn--big" onclick="nextFunction()">Lets get jammin!</button><!-- TEMP -->
+            <button class="btn" onclick="restart()">Start over</button> <!-- restart list -->
+            <button class="btn" onclick="nextFunction()">Lets get jammin!</button><!-- TEMP -->
           </form>
         </div>
       </section>
@@ -238,7 +236,7 @@
       </div>
 
       <div class="ast-small-footer-wrap">
-        <div class="copyright">Copyright © 2025 JamJar</div>
+        <div class="copyright">Copyright 2025 JamJar</div>
         <div class="ast-footer-credits">
           <span class="ast-footer-credits-text"
             >All rights reserved. Music data on our tools and pages (except
@@ -265,9 +263,9 @@
       const scopes = ["playlist-read-private", "playlist-read-collaborative"];
 
       function loginWithSpotify() {
-        window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
+        window.location = ${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
           "%20"
-        )}&response_type=token&show_dialog=true`;
+        )}&response_type=token&show_dialog=true;
       }
 
       document

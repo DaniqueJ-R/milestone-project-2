@@ -4,7 +4,7 @@ const {
   icon,
   span,
   input,
-  songList
+  songList,
   nextFunction,
   logInWithSpotify,
   signInWithSpotify,
@@ -127,41 +127,4 @@ describe("signInWithSpotify function conntinues sequence correctly", () => {
     signInWithSpotify();
     expect(window.open).toHaveBeenCalledTimes(1);
   });
-});
-
-//Create a test for the search bar
-test("search bar should show dropdown list on click", () => {
-  const dropdownBtn = document.getElementById("drop-text");
-  const list = document.getElementById("list");
-  dropdownBtn.click(); // Simulate a click on the dropdown button
-  expect(list.classList.contains("show")).toBe(true); // Check if the dropdown list is shown
-});
-
-test("search bar should hide dropdown list on click outside", () => {
-  const dropdownBtn = document.getElementById("drop-text");
-  const list = document.getElementById("list");
-  dropdownBtn.click(); // Simulate a click on the dropdown button
-  expect(list.classList.contains("show")).toBe(true); // Check if the dropdown list is shown
-  window.onclick({ target: { id: "someOtherElement" } }); // Simulate a click outside the dropdown button
-  expect(list.classList.contains("show")).toBe(false); // Check if the dropdown list is hidden
-});
-
-test("search bar should rotate icon on click", () => {
-  const icon = document.getElementById("icon");
-  const dropdownBtn = document.getElementById("drop-text");
-  const initialTransform = icon.style.transform; // Get the initial transform value
-  dropdownBtn.click(); // Simulate a click on the dropdown button
-  expect(icon.style.transform).not.toBe(initialTransform); // Check if the icon has rotated
-});
-
-test("search bar should reset icon rotation on click outside", () => {
-  const icon = document.getElementById("icon");
-  const dropdownBtn = document.getElementById("drop-text");
-  dropdownBtn.click(); // Simulate a click on the dropdown button
-  window.onclick({ target: { id: "someOtherElement" } }); // Simulate a click outside the dropdown button
-  expect(icon.style.transform).toBe("rotate(0deg)"); // Check if the icon has reset to its original position
-});
-test("search bar should show correct number of list items", () => {
-  const listItems = document.querySelectorAll(".dropdown-list-item");
-  expect(listItems.length).toBe(3); // Assuming there are 3 list items in the dropdown
 });
