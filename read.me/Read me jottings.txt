@@ -6,7 +6,9 @@ Find image colour - https://imagecolorpicker.com/#google_vignette
 Find colour pallet - https://mycolor.space/?hex=%23E5615A&sub=1
 helped understand tests - https://www.youtube.com/watch?v=x6NUZ8dc9Qg
 Helped set up dropdown search - https://www.youtube.com/watch?v=YXalp9Fr4-4
-Helped with Overall JS functionings - https://www.w3schools.com/js/js_htmldom_events.asp
+Helped with Overall JS functionings - 
+https://www.w3schools.com/js/js_htmldom_events.asp
+Helped with predictive searcg- https://www.youtube.com/watch?v=TlP5WIxVirU&t=600s
 
 
 Decided to make a playlist generator as I love music and finding new songs. Torn between this and Recipe finder

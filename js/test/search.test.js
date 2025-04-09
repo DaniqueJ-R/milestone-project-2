@@ -10,7 +10,8 @@ const {
   signInWithSpotify,
   noLogIn,
   showDropdown,
-showListItems
+showListItems,
+searchSong,
 } = require("../search.js");
 
 beforeEach(() => {

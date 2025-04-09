@@ -119,7 +119,7 @@
 
       <!-- Search Bar Page -->
       <section id="step2" class="container relative hidden">
-        <div class="intro-text">
+        <div class="intro-text" class="container" >
           <span class="text-big">Step 2</span>
           <h2>Search for your favorite songs</h2>
           <p>Search for your favorite songs, artists, or albums.</p>
@@ -130,12 +130,12 @@
             <div class="search-bar">
 
               <!-- Dropdown start -->
-              <div class="dropdown" onclick="showDropdown(event)" > 
+              <div class="dropdown" class="container" onclick="showDropdown(event)" > 
                 <div id="drop-text" class="dropdown-text"  onchange="showListItems()"> 
                   <span>All</span>
-                  <i id="icon" class="fa-solid fa-caret-down"></i>
+                  <i id="icon"  class="fa-solid fa-caret-down"></i>
                 </div>
-                <ul id="list"  class="dropdown-list">
+                <ul id="list" class="container"  class="dropdown-list">
                   <li class="dropdown-list-item">All</li>
                   <li class="dropdown-list-item">Songs</li>
                   <li class="dropdown-list-item">Album</li>
@@ -146,17 +146,26 @@
               </div>
 
               <!-- Search input start -->
-              <div class="search-box">
+              <div class="search-box" class="container" >
                 <input 
-                  type="text"
-                  id="search-input"
-                  placeholder="Search All Media..."
+                type="text"
+                id="search-input"
+                placeholder="Search All Media..."
+                oninput="searchSong(event)"
+                autocomplete="off"
                 />
                 <i class="fa-solid fa-magnifying-glass"></i>
-              </div>
+                <!-- Empty <ul> to hold the search results -->
+
+
               <!-- Search input end -->
             </div>
             <!-- Search bar ends -->
+          </div>
+          <div id="search-results" class="search-results container">
+            <ul id="search-results-list"></ul>
+          </div>
+          
             <button class="btn btn--big" onclick="restart()">Start over</button> <!-- restart list -->
             <button class="btn btn--big" onclick="nextFunction()">Lets get jammin!</button><!-- TEMP -->
           </form>

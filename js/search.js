@@ -1,5 +1,12 @@
 const stepTracker = { currentStep: 0 };
-const songList = [
+
+// This is the values for the search bar
+let list = document.getElementById("list");
+let icon = document.getElementById("icon");
+let span = document.querySelector(".dropdown-text span");
+let input = document.getElementById("search-input");
+
+let songList = [
   { title: "Shape of You", artist: "Ed Sheeran" },
   { title: "Blinding Lights", artist: "The Weeknd" },
   { title: "Levitating", artist: "Dua Lipa" },
@@ -8,6 +15,7 @@ const songList = [
   { title: "Old Town Road", artist: "Lil Nas X" },
   { title: "Stay", artist: "Justin Bieber" },
 ];
+
 
 function nextFunction() {
   let currentPage = document.getElementById(`step${stepTracker.currentStep}`);
@@ -45,11 +53,7 @@ function noLogIn() {
   nextFunction();
 }
 
-// This is all the functions for the search bar
-let list = document.getElementById("list");
-let icon = document.getElementById("icon");
-let span = document.querySelector(".dropdown-text span");
-let input = document.getElementById("search-input");
+
 
 window.onload = function () {
   showListItems();
@@ -100,6 +104,42 @@ function showDropdown(e) {
     }
   };
 }
+//input.addEventListener("input", searchSong);
+// Add event listener to the input field for searching songs
+
+function searchSong(e) {
+  const value = e.target.value.toLowerCase();
+
+  // Clear the existing list first (if needed)
+  const resultsList = document.getElementById("search-results-list");
+  resultsList.innerHTML = ""; // Clear previous results
+
+  let matchCount = 0; // Counter to track number of matches
+
+  songList.forEach((song) => {
+    const isVisible =
+      song.title.toLowerCase().includes(value) ||
+      song.artist.toLowerCase().includes(value);
+
+    if (isVisible && matchCount < 10) {
+      // Create a new list item for each matching song
+      const li = document.createElement("li");
+      li.textContent = `${song.title} by ${song.artist}`;
+      li.className = "song-item";
+
+      // Append to the results list
+      resultsList.appendChild(li);
+
+      // Increment match count
+      matchCount++;
+    }
+  });
+};
+
+
+
+
+
 
 module.exports = {
   stepTracker,
@@ -114,4 +154,5 @@ module.exports = {
   noLogIn,
   showDropdown,
   showListItems,
+  searchSong,
 };
