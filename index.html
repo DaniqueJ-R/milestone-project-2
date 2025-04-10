@@ -37,18 +37,25 @@
   </head>
   <body>
     <!-- Header Section -->
-    <header id="header" class="container hidden">
-      <h1>JamJar</h1>
-    </header>
+    <!-- This part stays the same (delete later) -->
+    <header id="header" class="container">
+      <div id="app">
+        <div class="container">
+          <div class="spotify-logo">
+            <span class="logo-text">made for</span>
+            <i class="fa-brands fa-spotify"></i>
+          </div>
+        </div>
+      </div>
 
-    <!-- Main Content -->
-    <main class="container">
+      <h1 class="hidden">JamJar</h1>
+
       <!-- Header Image -->
       <div class="relative container header-image">
         <img
           src="images/turntable-base.jpg"
           alt="Vinyl Record"
-          class="turntable "
+          class="turntable"
         />
         <img
           src="images/turntable-vinyl.png"
@@ -56,18 +63,43 @@
           class="vinyl"
         />
         <img
-        src="images/turntable-front.png"
-        alt="Vinyl Record"
-        class="foreground hidden"
-      />
+          src="images/turntable-front.png"
+          alt="Vinyl Record"
+          class="foreground"
+        />
         <img
           src="images/turntable-button.png"
           alt="Vinyl Record"
           class="slider"
         />
-
       </div>
+    </header>
 
+    <!-- Main Content -->
+    <main class="container">
+      <!-- Header Image 
+      <div class="relative container header-image">
+        <img
+          src="images/turntable-base.jpg"
+          alt="Vinyl Record"
+          class="turntable"
+        />
+        <img
+          src="images/turntable-vinyl.png"
+          alt="Vinyl Record"
+          class="vinyl"
+        />
+        <img
+          src="images/turntable-front.png"
+          alt="Vinyl Record"
+          class="foreground"
+        />
+        <img
+          src="images/turntable-button.png"
+          alt="Vinyl Record"
+          class="slider"
+        />
+      </div>-->
       <!-- Header Text -->
       <section id="step0" class="relative container hidden active">
         <div class="relative intro-text">
@@ -85,9 +117,7 @@
               Click the button below to log in and start creating your
               personalized playlists.
             </p>
-            <button class="btn" onclick="nextFunction()">
-              Jam me up!
-            </button>
+            <button class="btn" onclick="nextFunction()">Jam me up!</button>
           </div>
         </div>
       </section>
@@ -117,21 +147,29 @@
 
       <!-- Search Bar Page -->
       <section id="step2" class="container relative hidden">
-        <div class="intro-text" class="container" >
+        <div class="intro-text" class="container">
           <span class="text-big">Step 2</span>
           <h2>Search for your favorite songs</h2>
-          <p>Search for your favorite songs, artists, or albums.</p>
+          <p class="text-medium">
+            Search for your favorite songs, artists, or albums.
+          </p>
           <!-- Search bar -->
           <form class="search-bar" role="search">
-
             <!-- Search bar start -->
             <div class="search-bar">
-
               <!-- Dropdown start -->
-              <div class="dropdown" class="container" onclick="showDropdown(event)" > 
-                <div id="drop-text" class="dropdown-text"  onchange="showListItems()"> 
+              <div
+                class="dropdown"
+                class="container"
+                onclick="showDropdown(event)"
+              >
+                <div
+                  id="drop-text"
+                  class="dropdown-text"
+                  onchange="showListItems()"
+                >
                   <span>All</span>
-                  <i id="icon"  class="fa-solid fa-caret-down"></i>
+                  <i id="icon" class="fa-solid fa-caret-down"></i>
                 </div>
                 <ul id="list" class="containe dropdown-list">
                   <li class="dropdown-list-item">All</li>
@@ -144,30 +182,34 @@
               </div>
 
               <!-- Search input start -->
-              <div class="search-box" class="container" >
-                <input 
-                type="text"
-                id="search-input"
-                placeholder="Search All Media..."
-                oninput="searchSong(event)"
-                autocomplete="off"
+              <div class="search-box" class="container">
+                <input
+                  type="text"
+                  id="search-input"
+                  placeholder="Search All Media..."
+                  oninput="searchSong(event)"
+                  autocomplete="off"
                 />
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <!-- Empty <ul> to hold the search results -->
 
+                <!-- Search input end -->
+              </div>
+              <!-- Search bar ends -->
 
-              <!-- Search input end -->
-            </div>
-            <!-- Search bar ends -->
-          </div>
-          <div id="search-results" class="search-results container">
-            <ul id="search-results-list"></ul>
-          </div>
-          
-            <button class="btn" onclick="restart()">Start over</button> <!-- restart list -->
-            <button class="btn" onclick="nextFunction()">Lets get jammin!</button><!-- TEMP -->
           </form>
         </div>
+        <div id="search-results" class="song-item container">
+          <ul id="search-results-list"></ul>
+        </div>
+        </div>
+        <!-- Buttons -->
+        <div>
+          <button class="btn" onclick="restart()">Start over</button>
+          <!-- restart list -->
+          <button class="btn" onclick="nextFunction()">Lets get jammin!</button>
+        </div>
+        <!-- TEMP -->
       </section>
 
       <!-- playlist results from java -->
@@ -236,7 +278,7 @@
       </div>
 
       <div class="ast-small-footer-wrap">
-        <div class="copyright">Copyright 2025 JamJar</div>
+        <div class="copyright">Copyright © 2025 JamJar</div>
         <div class="ast-footer-credits">
           <span class="ast-footer-credits-text"
             >All rights reserved. Music data on our tools and pages (except
