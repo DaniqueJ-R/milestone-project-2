@@ -77,31 +77,9 @@
 
     <!-- Main Content -->
     <main class="container">
-      <!-- Header Image 
-      <div class="relative container header-image">
-        <img
-          src="images/turntable-base.jpg"
-          alt="Vinyl Record"
-          class="turntable"
-        />
-        <img
-          src="images/turntable-vinyl.png"
-          alt="Vinyl Record"
-          class="vinyl"
-        />
-        <img
-          src="images/turntable-front.png"
-          alt="Vinyl Record"
-          class="foreground"
-        />
-        <img
-          src="images/turntable-button.png"
-          alt="Vinyl Record"
-          class="slider"
-        />
-      </div>-->
+
       <!-- Header Text -->
-      <section id="step0" class="relative container hidden active">
+      <section id="step0" class="relative container hidden active ">
         <div class="relative intro-text">
           <span class="text-big">Welcome to</span>
           <h1>JamJar</h1>
@@ -145,71 +123,91 @@
         </div>
       </section>
 
-      <!-- Search Bar Page -->
+      <!-- Radio Page -->
       <section id="step2" class="container relative hidden">
         <div class="intro-text" class="container">
           <span class="text-big">Step 2</span>
-          <h2>Search for your favorite songs</h2>
-          <p class="text-medium">
-            Search for your favorite songs, artists, or albums.
-          </p>
+          <h2>Choose your station</h2>
+
+
+<!-- Radio Controls -->
+
+          <div class="radio-container">
+            <p class="text-medium">Choose a playlist type:</p>
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="mood"
+                name="playlist-type"
+                value="mood"
+                checked
+              />
+              <label for="mood">Mood</label>
+            </div>
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="genre"
+                name="playlist-type"
+                value="genre"
+              />
+              <label for="genre">Genre</label>
+            </div>
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="artist"
+                name="playlist-type"
+                value="artist"
+              />
+              <label for="artist">Artist</label>
+            </div>
+
+
           <!-- Search bar -->
-          <form class="search-bar" role="search">
-            <!-- Search bar start -->
-            <div class="search-bar">
-              <!-- Dropdown start -->
-              <div
-                class="dropdown"
-                class="container"
-                onclick="showDropdown(event)"
-              >
-                <div
-                  id="drop-text"
-                  class="dropdown-text"
-                  onchange="showListItems()"
-                >
-                  <span>All</span>
-                  <i id="icon" class="fa-solid fa-caret-down"></i>
-                </div>
-                <ul id="list" class="containe dropdown-list">
-                  <li class="dropdown-list-item">All</li>
-                  <li class="dropdown-list-item">Songs</li>
-                  <li class="dropdown-list-item">Album</li>
-                  <li class="dropdown-list-item">Artist</li>
-                  <li class="dropdown-list-item">Playlist</li>
-                </ul>
-                <!-- Dropdown end -->
-              </div>
-
-              <!-- Search input start -->
-              <div class="search-box" class="container">
-                <input
-                  type="text"
-                  id="search-input"
-                  placeholder="Search All Media..."
-                  oninput="searchSong(event)"
-                  autocomplete="off"
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search for songs, artists, or albums..."
+          />
+          <button class="btn" onclick="search()">Search</button>
+        </div>
+          
+            <div class="relative container header-image">
+                <img
+                  src="../images/turntable-base.jpg"
+                  alt="Vinyl Record"
+                  class="turntable"
                 />
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <!-- Empty <ul> to hold the search results -->
-
-                <!-- Search input end -->
+                <img
+                  src="../images/turntable-vinyl.png"
+                  alt="Vinyl Record"
+                  class="vinyl"
+                />
+                <img
+                  src="../images/turntable-front.png"
+                  alt="Vinyl Record"
+                  class="foreground"
+                />
+                <img
+                  src="../images/turntable-button.png"
+                  alt="Vinyl Record"
+                  class="slider"
+                />
               </div>
-              <!-- Search bar ends -->
 
-          </form>
-        </div>
-        <div id="search-results" class="song-item container">
-          <ul id="search-results-list"></ul>
-        </div>
-        </div>
-        <!-- Buttons -->
-        <div>
-          <button class="btn" onclick="restart()">Start over</button>
-          <!-- restart list -->
-          <button class="btn" onclick="nextFunction()">Lets get jammin!</button>
-        </div>
-        <!-- TEMP -->
+            <div id="player">
+              <img id="cover" src="" alt="Album cover">
+              <p id="title">Title</p>
+              <br>
+              <p id="artist-name">Artist</p>
+              <audio id="audio" controls></audio>
+              <div class="controls">
+                <button id="next">⏭️ Next</button>
+                <a id="spotifyLink" href="#" target="_blank">Open in Spotify</a>
+              </div>
+            </div>
+        
       </section>
 
       <!-- playlist results from java -->
@@ -289,7 +287,7 @@
       </div>
     </footer>
 
-    <script src="/js/search.js"></script>
+    <script src="/js/script.js"></script>
 
     <!-- FontAwesome Icons -->
     <script
