@@ -193,6 +193,24 @@ document.getElementById("next").addEventListener("click", () => {
 // Initial load
 loadSong(current);
 
+function radioMood() {
+  const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
+  let selectedValue = null;
+  for (const radioButton of radioButtons) {
+    if (radioButton.checked) {
+      selectedValue = radioButton.value;
+      break;
+    }
+  }
+  if (selectedValue) {
+    alert(`You have selected: ${selectedValue}`);
+  } else {
+    alert("Please select a mood.");
+  }
+}
+
+
+
 
 
 
