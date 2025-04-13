@@ -48,10 +48,8 @@
         </div>
       </div>
 
-      <h1 class="hidden">JamJar</h1>
-
       <!-- Header Image -->
-      <div class="relative container header-image">
+      <div id="header-image" class="relative container header-image hidden active">
         <img
           src="images/turntable-base.jpg"
           alt="Vinyl Record"
@@ -176,7 +174,7 @@
             <div class="relative container header-image">
                 <img
                   src="../images/turntable-base.jpg"
-                  alt="Vinyl Record"
+                  alt="Vinyl Record Player"
                   class="turntable"
                 />
                 <img
@@ -186,14 +184,16 @@
                 />
                 <img
                   src="../images/turntable-front.png"
-                  alt="Vinyl Record"
+                  alt="Vinyl Record Player"
                   class="foreground"
                 />
+                <div >
                 <img
                   src="../images/turntable-button.png"
-                  alt="Vinyl Record"
-                  class="slider"
+                  alt="Vinyl Record slider for volume"
+                  id="mydiv"
                 />
+              </div>
               </div>
 
             <div id="player">
@@ -203,6 +203,7 @@
               <p id="artist-name">Artist</p>
               <audio id="audio" controls></audio>
               <div class="controls">
+                <button id="back">⏭️ Back</button>
                 <button id="next">⏭️ Next</button>
                 <a id="spotifyLink" href="#" target="_blank">Open in Spotify</a>
               </div>
@@ -287,7 +288,7 @@
       </div>
     </footer>
 
-    <script src="/js/script.js"></script>
+    <script src="js/script.js"></script>
 
     <!-- FontAwesome Icons -->
     <script
@@ -296,21 +297,6 @@
     ></script>
 
     <!-- Spotify API -->
-    <!--  <script>
-      const clientId = "YOUR_SPOTIFY_CLIENT_ID";
-      const redirectUri = "http://localhost:5500/callback";
-      const authEndpoint = "https://accounts.spotify.com/authorize";
-      const scopes = ["playlist-read-private", "playlist-read-collaborative"];
 
-      function loginWithSpotify() {
-        window.location = ${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
-          "%20"
-        )}&response_type=token&show_dialog=true;
-      }
-
-      document
-        .querySelector(".btn--big")
-        .addEventListener("click", loginWithSpotify);
-    </script>-->
   </body>
 </html>

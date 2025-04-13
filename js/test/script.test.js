@@ -6,13 +6,14 @@ const {
   input,
   songList,
   nextFunction,
+  headerImage,
   logInWithSpotify,
   signInWithSpotify,
   noLogIn,
   showDropdown,
 showListItems,
 searchSong,
-} = require("../search.js");
+} = require("../script.js"); 
 
 beforeEach(() => {
   // Set up the initial DOM state for each test
@@ -37,6 +38,20 @@ describe("currentStep to show correct number", () => {
 });
 
 describe("nextFunction working correctly", () => {
+
+  beforeEach(() => {
+    stepTracker.currentStep = 0; // reset to start each test fresh
+  
+    document.body.innerHTML = `
+      <div id="step0" class="step active">Step 1</div>
+      <div id="step1" class="step">Step 2</div>
+      <div id="step2" class="step">Step 3</div>
+      <div id="step3" class="step">Step 4</div>
+      <div id="header-image" class="active">Header Image</div>
+    `;
+  });
+  
+
   test("nextFunction should find the current step element", () => {
     let currentPage = document.getElementById(`step${stepTracker.currentStep}`);
     expect(currentPage).not.toBeNull();
@@ -49,6 +64,13 @@ describe("nextFunction working correctly", () => {
     expect(currentPage.classList.contains("active")).toBe(false);
   });
 
+  test("nextFunction should remove active class from header-image at step 2", () => {
+    stepTracker.currentStep = 2; // Set to step 2
+    headerImage(); // Call headerImage function
+    let headerImageElement = document.getElementById("header-image");
+    expect(headerImageElement.classList.contains("active")).toBe(false);
+  });
+
   test("nextFunction should increment currentStep", () => {
     nextFunction();
     expect(stepTracker.currentStep).toEqual(1);
@@ -59,13 +81,15 @@ describe("nextFunction working correctly", () => {
     let nextPage = document.getElementById(`step${stepTracker.currentStep}`);
     expect(nextPage.classList.contains("active")).toBe(true);
   });
+
+  test("nextFunction should not exceed the number of steps", () => {
+    stepTracker.currentStep = 5; // Set to the last step
+    nextFunction(); // Call nextFunction to try to go to the next step
+    expect(stepTracker.currentStep).toEqual(5); // Should not exceed the last step
+  });
 });
 
-test("nextFunction should not exceed the number of steps", () => {
-  stepTracker.currentStep = 5; // Set to the last step
-  nextFunction(); // Call nextFunction to try to go to the next step
-  expect(stepTracker.currentStep).toEqual(5); // Should not exceed the last step
-});
+
 
 describe("noLogIn function conntinues sequence correctly", () => {
   beforeEach(() => {
@@ -87,7 +111,23 @@ describe("noLogIn function conntinues sequence correctly", () => {
     noLogIn();
     expect(global.alert).toHaveBeenCalled(nextFunction());
   });
+
+  test("noLogIn should call nextFunction", () => {
+    global.alert = jest.fn(); // Still mock alert
+  
+    // Mock nextFunction
+    global.nextFunction = jest.fn();
+  
+    // Run your function
+    noLogIn();
+  
+    // Now check if nextFunction was called
+    expect(global.nextFunction).toHaveBeenCalled();
+  });
 });
+
+
+
 
 describe("logInWithSpotify function conntinues sequence correctly", () => {
   beforeEach(() => {

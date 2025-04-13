@@ -314,12 +314,14 @@ main > section {
   box-shadow: var(--shadow);
 }
 
-#step2 .slider {
-  width: 2.6%;
+#mydiv {
+  width: 51px;
   position: absolute;
-  top: 64%;
-  left: 24.5%;
+  top: 364px;
+  left: 313px;
+  cursor: move;
 }
+
 
 #step2 .foreground {
   position: relative;
