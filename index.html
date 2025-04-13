@@ -131,43 +131,45 @@
 <!-- Radio Controls -->
 
           <div class="radio-container">
-            <p class="text-medium">Choose a playlist type:</p>
+            <p class="text-medium">Choose a mood for your radio:</p>
             <div class="radio-option">
               <input
                 type="radio"
-                id="mood"
+                id="happy"
                 name="playlist-type"
-                value="mood"
+                value="happy"
                 checked
               />
-              <label for="mood">Mood</label>
+              <label for="happy">Happy</label>
             </div>
             <div class="radio-option">
               <input
                 type="radio"
-                id="genre"
+                id="sad"
                 name="playlist-type"
-                value="genre"
+                value="sad"
               />
-              <label for="genre">Genre</label>
+              <label for="sad">Somber</label>
             </div>
             <div class="radio-option">
               <input
                 type="radio"
-                id="artist"
+                id="fury"
                 name="playlist-type"
-                value="artist"
+                value="fury"
               />
-              <label for="artist">Artist</label>
+              <label for="fury">Fury</label>
+            </div>
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="chill"
+                name="playlist-type"
+                value="chill"
+              />
+              <label for="chill">Chill</label>
             </div>
 
-
-          <!-- Search bar -->
-          <input
-            type="text"
-            id="search-input"
-            placeholder="Search for songs, artists, or albums..."
-          />
           <button class="btn" onclick="search()">Search</button>
         </div>
           
@@ -202,9 +204,10 @@
               <p id="artist-name">Artist</p>
               <audio id="audio" controls></audio>
               <div class="controls">
-                <button id="back">⏭️ Back</button>
-                <button id="next">⏭️ Next</button>
-                <a id="spotifyLink" href="#" target="_blank">Open in Spotify</a>
+                <button id="back" class="controls-btn"><i class="fa-solid fa-backward"></i> Back</button>
+                <button id="next" class="controls-btn"><i class="fa-solid fa-forward"></i> Next</button>
+                <br>
+                <a id="spotifyLink" class="controls-btn" href="#" target="_blank">Open in Spotify</a>
               </div>
             </div>
         

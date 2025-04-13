@@ -8,7 +8,7 @@
   --background-color-1: #15b7c2;
   /* Turquoise */
   --bacground-color-2: #ade2ea;
-  --Nav-color: #4f5c5b;
+  --Nav-color: #3b6267;
   /* Mute GReen */
   --primary-color: #2a2a2a;
   /* Dark Brown */
@@ -243,67 +243,82 @@ main > section {
   font-size: 104.6px;
   padding-bottom: 7px;
 }
+
 #player {
   position: relative;
   top: 4rem;
   left: -3rem;
   max-height: 50px;
   margin: auto;
-  background: #2a2a40;
+  background: var(--Nav-color);
   padding: 2rem;
   border-radius: 1rem;
+  box-shadow: var(--shadow);
 }
 
 #player img {
-  width: 100%;
+  position: absolute;
+  top: 0.8rem;
+  left: 2rem;
+  width: 7%;
   border-radius: 0.5rem;
   margin-bottom: 1rem;
   margin-right: 65rem;
 }
+
 #artist-name {
   font-size: 1.6rem;
   margin-top: -2.5rem;
   margin-left: 15rem;
+  color: var(--white);
 }
 
 #title {
   margin-left: 15rem;
   font-size: 1.6rem;
-  margin-top: -2.5rem;
+  margin-top: -1rem;
+  color: var(--white);
 }
 
 #audio {
   width: 25rem;
   position: relative;
-  bottom: 6rem;
+  bottom: 5.4rem;
   margin-left: 34rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--highlight-color);
+  background-color: transparent;
 }
 
 .controls {
   position: absolute;
-  left: 63rem;
+  left: 65rem;
   bottom: 2.8rem;
 }
 
-#next {
+.controls-btn{
   padding: 0.5rem 1rem;
-  background: #4caf50;
-  color: white;
+  background: var(--white);
+  color: var(--highlight-color);
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 30px;
   text-decoration: none;
+  font-weight: 700;
+}
+
+.controls-btn:hover {
+  background: var(--highlight-color);
+  color: var(--white);
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
 
 #spotifyLink {
-    padding: 0.5rem 1rem;
-    background: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    cursor: pointer;
-    margin-left: 18px;
+  position: relative;
+  top: 19px;
+  left: 9px;
 }
 
 #step2 .turntable {
@@ -357,6 +372,7 @@ main > section {
 }
 
 .radio-container {
+  top: 18rem;
   position: absolute;
   left: 6rem;
 }
