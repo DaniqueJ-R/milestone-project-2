@@ -125,54 +125,59 @@ const scopes = [
 //   }
 // });
 
-//Dragging slider for step2 radio
-dragElement(document.getElementById("mydiv"));
 
-function dragElement(elmnt) {
-  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-  let initialY = 0; // Store the initial Y position
+//STEP 2 Functions
+//Dragging slider
+dragSlider(document.getElementById("slider-knob"));
 
-  if (document.getElementById(elmnt.id)) {
-    elmnt.onmousedown = dragMouseDown;
-  }
+function dragSlider(knob) {
+  let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  let container = knob.parentElement;
+
+  knob.onmousedown = dragMouseDown;
 
   function dragMouseDown(e) {
-    e = e || window.event;
     e.preventDefault();
-    // get the mouse cursor position at startup:
     pos3 = e.clientX;
     pos4 = e.clientY;
-    initialY = elmnt.offsetTop; // Store the initial Y position
     document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
     document.onmousemove = elementDrag;
   }
 
   function elementDrag(e) {
-    e = e || window.event;
     e.preventDefault();
-
-    // calculate the new cursor position:
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
     pos3 = e.clientX;
     pos4 = e.clientY;
 
-    // Calculate the new Y position, constrained to 50px above and below the initial position
-    let newY = elmnt.offsetTop - pos2;
-    newY = Math.max(initialY - 50, Math.min(initialY + 50, newY));  //Clamp the value
+    // Calculate new top position
+    let newTop = knob.offsetTop - pos2;
 
-    // set the element's new position:
-    elmnt.style.top = newY + "px";
-    elmnt.style.left = elmnt.offsetLeft + "px"; // Keep the left position the same
+    // Clamp within container
+    newTop = Math.max(0, Math.min(container.clientHeight - knob.clientHeight, newTop));
+
+    knob.style.top = newTop + "px";
   }
 
   function closeDragElement() {
-    /* stop moving when mouse button is released:*/
     document.onmouseup = null;
     document.onmousemove = null;
   }
 }
+
+
+//Make slider volume control
+function volumeControl() {
+  const volumeSlider = document.getElementById("volume-slider");
+  const audio = document.getElementById("audio");
+
+  volumeSlider.addEventListener("input", function () {
+    audio.volume = this.value / 100; // Set volume based on slider value (0-100)
+  });
+}
+
+
 
 let current = 0;
   
@@ -215,6 +220,8 @@ function radioMood() {
 
 
 
+
+
 module.exports = {
   stepTracker,
   list,
@@ -227,4 +234,5 @@ module.exports = {
   logInWithSpotify,
   signInWithSpotify,
   noLogIn,
+  radioMood,
 };

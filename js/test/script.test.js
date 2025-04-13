@@ -10,10 +10,8 @@ const {
   logInWithSpotify,
   signInWithSpotify,
   noLogIn,
-  showDropdown,
-showListItems,
-searchSong,
-} = require("../script.js"); 
+  radioMood,
+} = require("../script.js");
 
 beforeEach(() => {
   // Set up the initial DOM state for each test
@@ -38,10 +36,9 @@ describe("currentStep to show correct number", () => {
 });
 
 describe("nextFunction working correctly", () => {
-
   beforeEach(() => {
     stepTracker.currentStep = 0; // reset to start each test fresh
-  
+
     document.body.innerHTML = `
       <div id="step0" class="step active">Step 1</div>
       <div id="step1" class="step">Step 2</div>
@@ -50,7 +47,6 @@ describe("nextFunction working correctly", () => {
       <div id="header-image" class="active">Header Image</div>
     `;
   });
-  
 
   test("nextFunction should find the current step element", () => {
     let currentPage = document.getElementById(`step${stepTracker.currentStep}`);
@@ -89,8 +85,6 @@ describe("nextFunction working correctly", () => {
   });
 });
 
-
-
 describe("noLogIn function conntinues sequence correctly", () => {
   beforeEach(() => {
     stepTracker.currentStep = 0; // Reset currentStep before each test
@@ -114,20 +108,17 @@ describe("noLogIn function conntinues sequence correctly", () => {
 
   test("noLogIn should call nextFunction", () => {
     global.alert = jest.fn(); // Still mock alert
-  
+
     // Mock nextFunction
     global.nextFunction = jest.fn();
-  
+
     // Run your function
     noLogIn();
-  
+
     // Now check if nextFunction was called
     expect(global.nextFunction).toHaveBeenCalled();
   });
 });
-
-
-
 
 describe("logInWithSpotify function conntinues sequence correctly", () => {
   beforeEach(() => {

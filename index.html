@@ -170,7 +170,7 @@
               <label for="Chill">Chill</label>
             </div>
 
-          <button class="btn" onclick="search()">Search</button>
+          <button class="btn" onclick="playMoodList()">Start</button>
         </div>
           
             <div class="relative container header-image">
@@ -190,10 +190,14 @@
                   class="foreground"
                 />
                 <div id="mydiv">
-                <img
-                  src="../images/turntable-button.png"
-                  alt="Vinyl Record slider for volume"
-                />
+                <div id="slider-container">
+                  <img
+                  onchange="volumeControl()"
+                    id="slider-knob"
+                    src="../images/turntable-button.png"
+                    alt="Vinyl Record slider for volume"
+                  />
+                </div>
               </div>
               </div>
 
