@@ -10,7 +10,7 @@ let songs = [
     spotify:
       "https://open.spotify.com/track/2OrucC3HEPmZpkaQ05Nx0V?si=ab10c6c164284d0b",
   },
-chill= [
+  (chill = [
     {
       title: "Novacaine",
       artist: "Shiloh Dynasty",
@@ -31,8 +31,8 @@ chill= [
       spotify:
         "https://open.spotify.com/track/6j5CGg09rZ0Vv2vlnMMMpV?si=3bbace628a104cf6",
     },
-  ],
-  fury = [
+  ]),
+  (fury = [
     {
       title: "Rage",
       artist: "Rico Nasty",
@@ -53,8 +53,8 @@ chill= [
       spotify:
         "https://open.spotify.com/track/2vWBUC9djv6BtiGlmKiQaH?si=c00eafd560a44135",
     },
-  ],
-somber= [
+  ]),
+  (somber = [
     {
       title: "Candles",
       artist: "Daughter",
@@ -75,8 +75,8 @@ somber= [
       spotify:
         "https://open.spotify.com/track/2vWBUC9djv6BtiGlmKiQaH?si=c00eafd560a44135",
     },
-  ],
-  happy= [
+  ]),
+  (happy = [
     {
       title: "I Can't Wait To Get There",
       artist: "The Weeknd",
@@ -97,7 +97,7 @@ somber= [
       spotify:
         "https://open.spotify.com/track/2vWBUC9djv6BtiGlmKiQaH?si=c00eafd560a44135",
     },
-  ],
+  ]),
 ];
 
 function nextFunction() {
@@ -135,7 +135,7 @@ function logInWithSpotify() {
   // After successful login, call nextFunction to continue the sequence;
   window.open("https://www.spotify.com/uk/signup");
   nextFunction();
-  };
+}
 
 function signInWithSpotify() {
   window.open("https://www.spotify.com/uk/signup");
@@ -252,7 +252,6 @@ function volumeControl() {
   });
 }
 
-
 //Select PLaylist mood
 
 let currentPlaylist = []; // this will hold the selected mood's song array
@@ -275,15 +274,20 @@ loadSong(current);
 function radioMood() {
   const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
   let selectedValue = null;
-  
+
   for (const radioButton of radioButtons) {
     if (radioButton.checked) {
       selectedValue = radioButton.value;
       break;
     }
   }
-  
-  if (selectedValue == "happy"|| selectedValue == "fury" || selectedValue == "somber"|| selectedValue == "chill") {
+
+  if (
+    selectedValue == "happy" ||
+    selectedValue == "fury" ||
+    selectedValue == "somber" ||
+    selectedValue == "chill"
+  ) {
     alert(`You have selected: ${selectedValue}`);
     currentPlaylist = songs[selectedValue]; // assign the song list
     current = 0;
@@ -302,7 +306,30 @@ function prevSong() {
   loadSong(current);
 }
 
+//Makes vinyl clickable to play or pause song
+function playPause() {
+  let audio = document.getElementById("audio");
+  let vinyl = document.getElementById("vinyl");
+  if (audio.paused) {
+    audio.pause();
+    vinyl.classList.toggle("paused"); // Toggle paused if already spinning
+  } else {
+    audio.play();
+    vinyl.classList.add("spinning");// Start spinning if not already
+  }
+}
 
+function songList() {
+  const songListElement = document.getElementById("song-list");
+  songListElement.innerHTML = ""; // Clear existing list
+
+  currentPlaylist.forEach((song, index) => {
+    const li = document.createElement("li");
+    li.textContent = `${song.title} - ${song.artist}`;
+    li.addEventListener("click", () => loadSong(index));
+    songListElement.appendChild(li);
+  });
+}
 
 module.exports = {
   stepTracker,

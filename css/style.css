@@ -133,25 +133,33 @@ section {
 }
 
 .vinyl {
-  width: 27.3%;
+  width: 25.3%;
   height: auto;
   position: absolute;
-  animation: spin 10s linear infinite;
-  transform-origin: center; /* Spins around its own center */
-  top: 8.45%;
-  left: 2.45%;
+  top: 47.45%;
+  left: 16%;
   transform: translate(-50%, -50%);
 }
 
-/* Turntable arm styles */
+.spinning {
+  animation: spin 10s linear infinite;
+  animation-play-state: running;
+  transform-origin: center;
+}
+
+.paused {
+  animation-play-state: paused;
+}
+
 @keyframes spin {
   from {
-    transform: rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg);
   }
   to {
-    transform: rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
+
 
 .foreground {
   position: relative;
@@ -365,17 +373,9 @@ main > section {
   width: 32.3%;
   height: auto;
   position: absolute;
-  animation: spin 10s linear infinite;
-  transform-origin: center;
-  top: 10.6%;
-  left: -12.2%;
-  transform: translate(-50%, -50%);
+  top: 46.6%;
+  left: 3.8%;
 }
-/*
-#step2 .vinyl:hover {
-  animation-play-state: paused;
-  cursor: pointer;
-}*/
 
 #step2 .btn {
   position: absolute;
