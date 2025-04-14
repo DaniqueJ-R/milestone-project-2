@@ -135,39 +135,39 @@
             <div class="radio-option">
               <input
                 type="radio"
-                id="Happy"
+                id="happy"
                 name="playlist-type"
-                value="Happy" 
+                value="happy" 
                 checked
               />
-              <label for="Happy">Happy</label>
+              <label for="happy">Happy</label>
             </div>
             <div class="radio-option">
               <input
                 type="radio"
-                id="Somber"
+                id="somber"
                 name="playlist-type"
-                value="Somber"
+                value="somber"
               />
-              <label for="Somber">Somber</label>
+              <label for="somber">Somber</label>
             </div>
             <div class="radio-option">
               <input
                 type="radio"
-                id="Fury"
+                id="fury"
                 name="playlist-type"
-                value="Fury"
+                value="fury"
               />
-              <label for="Fury">Fury</label>
+              <label for="fury">Fury</label>
             </div>
             <div class="radio-option">
               <input
                 type="radio"
-                id="Chill"
+                id="chill"
                 name="playlist-type"
-                value="Chill"
+                value="chill"
               />
-              <label for="Chill">Chill</label>
+              <label for="chill">Chill</label>
             </div>
 
           <button class="btn" onclick="playMoodList()">Start</button>
@@ -208,8 +208,8 @@
               <p id="artist-name">Artist</p>
               <audio id="audio" controls></audio>
               <div class="controls">
-                <button id="back" class="controls-btn"><i class="fa-solid fa-backward"></i>Back</button>
-                <button id="next" class="controls-btn"><i class="fa-solid fa-forward"></i>Next</button>
+                <button id="back" class="controls-btn" onclick="prevSong()"><i class="fa-solid fa-backward"></i>Back</button>
+                <button id="next" class="controls-btn" ><i class="fa-solid fa-forward"></i>Next</button>
                 <br>
                 <a id="spotifyLink" class="controls-btn" href="#" target="_blank">Open in Spotify</a>
               </div>

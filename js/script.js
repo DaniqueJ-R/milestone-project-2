@@ -1,6 +1,16 @@
 const stepTracker = { currentStep: 0 };
 let songs = [
-  (chill = [
+  {
+    title: "Blue",
+    artist: "Chezile",
+    cover:
+      "https://lh3.googleusercontent.com/gvoUGPANON8HBwQj2NkpKEVUK5Dxf1pGH_BcJ6p6mkRFHj3ScjwJ5vXMsyoISfqCJ5-rrYIWHAw48xu1=w544-h544-l90-rj",
+    preview:
+      "https://rr1---sn-aigl6nl7.googlevideo.com/videoplayback?expire=1744530684&ei=nBj7Z_fGO8CDi9oPgP6j6Ak&ip=45.39.148.108&id=o-AN6ZFiTSv0aUD4upaj3cTt_ZZX745_KvUvD0SkOUtNPJ&itag=249&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&bui=AccgBcMPLhH4gVfkcXPM9KcPFjpo0S9Q5BrLyplUy7hY3-_1YzXvSEqmtaPtUcN5fXPd6z6hIKu7CPH6&vprv=1&svpuc=1&mime=audio%2Fwebm&ns=NfBpDLh8Cp8DmpY8k3hfzmkQ&rqh=1&gir=yes&clen=1104642&dur=161.421&lmt=1737912144734379&keepalive=yes&lmw=1&c=TVHTML5&sefc=1&txp=5532534&n=dNyvsDNQ8c8ulg&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AJfQdSswRgIhAN8Cfg1L7UeTP9CxiNN2afMo15oitH7J7WiIe-JUfTyRAiEAxPwNeZYeiTfY7ANN6nXOxlN4MsGonXQaEnGKNaS-mbE%3D&rm=sn-8xgn5uxa-4g567s,sn-8xgn5uxa-quhz7l,sn-4g5ezs7l&rrc=79,79,104&fexp=24350590,24350737,24350827,24350961,24351147,24351149,24351173,24351230,24351283,24351398,24351523,24351528,24351543,24351545,24351606,24351638&req_id=242a0c8f1cd7a3ee&rms=nxu,au&redirect_counter=3&cms_redirect=yes&cmsv=e&ipbypass=yes&met=1744509093,&mh=ei&mip=2.96.149.249&mm=30&mn=sn-aigl6nl7&ms=nxu&mt=1744508358&mv=u&mvi=1&pl=20&lsparams=ipbypass,met,mh,mip,mm,mn,ms,mv,mvi,pl,rms&lsig=ACuhMU0wRgIhAMjWH_XWj8CxLysdYLypynq4HG9ma9kShSByq7xZn9uVAiEA7gnygEdzeI4d49_ech_l3iPrYanhapsrE6gotSTVqw0%3Dhttps://p.scdn.co/mp3-preview/81f95dfb9ea839bc9e.mp3",
+    spotify:
+      "https://open.spotify.com/track/2OrucC3HEPmZpkaQ05Nx0V?si=ab10c6c164284d0b",
+  },
+chill= [
     {
       title: "Novacaine",
       artist: "Shiloh Dynasty",
@@ -21,8 +31,8 @@ let songs = [
       spotify:
         "https://open.spotify.com/track/6j5CGg09rZ0Vv2vlnMMMpV?si=3bbace628a104cf6",
     },
-  ]),
-  (angry = [
+  ],
+  fury = [
     {
       title: "Rage",
       artist: "Rico Nasty",
@@ -43,8 +53,8 @@ let songs = [
       spotify:
         "https://open.spotify.com/track/2vWBUC9djv6BtiGlmKiQaH?si=c00eafd560a44135",
     },
-  ]),
-  (somber = [
+  ],
+somber= [
     {
       title: "Candles",
       artist: "Daughter",
@@ -65,8 +75,8 @@ let songs = [
       spotify:
         "https://open.spotify.com/track/2vWBUC9djv6BtiGlmKiQaH?si=c00eafd560a44135",
     },
-  ]),
-  (happy = [
+  ],
+  happy= [
     {
       title: "I Can't Wait To Get There",
       artist: "The Weeknd",
@@ -87,7 +97,7 @@ let songs = [
       spotify:
         "https://open.spotify.com/track/2vWBUC9djv6BtiGlmKiQaH?si=c00eafd560a44135",
     },
-  ]),
+  ],
 ];
 
 function nextFunction() {
@@ -242,11 +252,16 @@ function volumeControl() {
   });
 }
 
+
+//Select PLaylist mood
+
+let currentPlaylist = []; // this will hold the selected mood's song array
 let current = 0;
 
-// Load song info to player 
 function loadSong(index) {
-  const song = songs[index];
+  const song = currentPlaylist[index];
+  if (!song) return;
+
   document.getElementById("title").textContent = song.title;
   document.getElementById("artist-name").textContent = song.artist;
   document.getElementById("cover").src = song.cover;
@@ -254,38 +269,40 @@ function loadSong(index) {
   document.getElementById("spotifyLink").href = song.spotify;
 }
 
-document.getElementById("next").addEventListener("click", () => {
-  current = (current + 1) % songs.length;
-  loadSong(current);
-});
+// Initial load
+loadSong(current);
 
 function radioMood() {
   const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
   let selectedValue = null;
+  
   for (const radioButton of radioButtons) {
     if (radioButton.checked) {
       selectedValue = radioButton.value;
       break;
     }
   }
-
   
-  if (selectedValue === "happy") {
+  if (selectedValue == "happy"|| selectedValue == "fury" || selectedValue == "somber"|| selectedValue == "chill") {
     alert(`You have selected: ${selectedValue}`);
-    songs = happy;
-  } else if (selectedValue === "chill") {
-    alert(`You have selected: ${selectedValue}`);
-    songs = chill;
-  } else if (selectedValue === "angry") {
-    alert(`You have selected: ${selectedValue}`);
-    songs = angry;
-  } else if (selectedValue === "somber") {
-    alert(`You have selected: ${selectedValue}`);
-    songs = somber;
+    currentPlaylist = songs[selectedValue]; // assign the song list
+    current = 0;
   } else {
     alert("Please select a mood.");
   }
 }
+
+function nextSong() {
+  current = (current + 1) % currentPlaylist.length;
+  loadSong(current);
+}
+
+function prevSong() {
+  current = (current - 1 + currentPlaylist.length) % currentPlaylist.length;
+  loadSong(current);
+}
+
+
 
 module.exports = {
   stepTracker,
