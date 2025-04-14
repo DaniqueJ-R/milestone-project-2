@@ -49,7 +49,7 @@
       </div>
 
       <!-- Header Image -->
-      <div id="header-image" class="relative container header-image hidden active">
+      <span id="header-image" class="relative container header-image hidden active">
         <img
           src="images/turntable-base.jpg"
           alt="Vinyl Record"
@@ -70,7 +70,7 @@
           alt="Vinyl Record"
           class="slider"
         />
-      </div>
+      </span>
     </header>
 
     <!-- Main Content -->
@@ -86,12 +86,10 @@
         <div>
           <div class="starter steps">
             <p class="steps text-medium">
-              Connect your Spotify > Choose artists/songs > Generate your custom
-              playlist
+              Connect your Spotify > Select a vibe for your playlist > Get results on how you have been listening> Find your playlist!
             </p>
             <p class="instructions">
-              Click the button below to log in and start creating your
-              personalized playlists.
+              Click the button below to log in and start your session. 
             </p>
             <button class="btn" onclick="nextFunction()">Jam me up!</button>
           </div>
@@ -135,42 +133,43 @@
             <div class="radio-option">
               <input
                 type="radio"
-                id="happy"
+                id="focus"
                 name="playlist-type"
-                value="happy" 
+                value="focus" 
                 checked
               />
-              <label for="happy">Happy</label>
+              <label for="focus">Focus</label>
             </div>
             <div class="radio-option">
               <input
                 type="radio"
-                id="somber"
+                id="study"
                 name="playlist-type"
-                value="somber"
+                value="study"
               />
-              <label for="somber">Somber</label>
+              <label for="study">Study</label>
             </div>
             <div class="radio-option">
               <input
                 type="radio"
-                id="fury"
+                id="workout"
                 name="playlist-type"
-                value="fury"
+                value="workout"
               />
-              <label for="fury">Fury</label>
+              <label for="workout">Workout</label>
             </div>
             <div class="radio-option">
               <input
                 type="radio"
-                id="chill"
+                id="meditation"
                 name="playlist-type"
-                value="chill"
+                value="meditation"
               />
-              <label for="chill">Chill</label>
+              <label for="meditation">Meditation</label>
             </div>
 
-          <button class="btn" onclick="playMoodList()">Start</button>
+          <button class="btn" onclick="StopListening()">Finish Session</button>
+
         </div>
           
             <div class="relative container header-image">
@@ -224,31 +223,38 @@
       <section id="step3" class="container relative hidden">
         <div class="intro-text">
           <span class="text-big">Step 3</span>
-          <h2>🎶 Song Results</h2>
-          <p>Search for your favorite songs, artists, or albums.</p>
-          <ul id="search-results-list"></ul>
+          <h2>🎶 Results</h2>
+          <p>See a breakdown of how you have been listening: </p>
+          <section id="profile">
+            <h2>Logged in as <span id="displayName"></span></h2>
+            <span id="avatar"></span>
+            <ul>
+              <li>User ID: <span id="id"></span></li>
+              <li>Email: <span id="email"></span></li>
+              <li>Spotify URI: <a id="uri" href="#"></a></li>
+              <li>Link: <a id="url" href="#"></a></li>
+              <li>Profile Image: <span id="imgUrl"></span></li>
+            </ul>
+          </section>
           <button class="btn btn--big" onclick="prevPage()">Go Back</button>
-          <button class="btn btn--big" onclick="nextFunction()">
-            <!-- TEMP -->
-            Let's get jammin!
-          </button>
+          <button class="btn btn--big" onclick="nextFunction()">Complete</button>
         </div>
       </section>
 
       <!-- Final page, show playlist/link to playlist -->
       <section id="step4" class="container relative hidden">
         <div class="intro-text">
-          <span class="text-big">Wooh!</span>
-          <h2>🎶 Your Playlist is ready!</h2>
-          <p>Go to your spotify and start the party!</p>
+          <span class="text-big">Way to go!</span>
+          <h2>🎶 Thank you for listening with us</h2>
+          <p>Go to the spotify spotify playlist yourself!</p>
           <ul id="search-results-list"></ul>
           <!-- Show playlist? -->
           <button class="btn btn--big" onclick="newPlaylist()">
-            Make a new playlist
+            Listen Again
           </button>
           <button class="btn btn--big" onclick="goToPlaylist()">
             <!-- Shows playlist in spotify? -->
-            Let's get jammin!
+            Go to Spotify Playlist
           </button>
         </div>
       </section>

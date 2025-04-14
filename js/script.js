@@ -205,7 +205,10 @@ function dragSlider(knob) {
     pos2 = 0,
     pos3 = 0,
     pos4 = 0;
-  let container = knob.parentElement;
+  // let container = knob.parentElement;
+  let container = knob ? knob.parentElement : null;
+if (!container) return;
+  // Set initial position of knob
 
   knob.onmousedown = dragMouseDown;
 
@@ -333,10 +336,6 @@ function songList() {
 
 module.exports = {
   stepTracker,
-  list,
-  icon,
-  span,
-  input,
   songList,
   nextFunction,
   headerImage,

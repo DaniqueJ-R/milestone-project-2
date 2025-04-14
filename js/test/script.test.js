@@ -1,9 +1,6 @@
 const {
   stepTracker,
-  list,
-  icon,
-  span,
-  input,
+  parentElement,
   songList,
   nextFunction,
   headerImage,
@@ -85,77 +82,136 @@ describe("nextFunction working correctly", () => {
   });
 });
 
-describe("noLogIn function conntinues sequence correctly", () => {
+describe("noLogIn function continues sequence correctly", () => {
   beforeEach(() => {
-    stepTracker.currentStep = 0; // Reset currentStep before each test
-    document.body.innerHTML = `
-                <button onclick="noLogIn()">Next</button>
-            `;
+    stepTracker.currentStep = 0;
+    document.body.innerHTML = `<button onclick="noLogIn()">Next</button>`;
+    global.alert = jest.fn(); // Reset alert mock
+    global.nextFunction = jest.fn(); // Reset nextFunction mock
   });
 
-  test("noLogIn should alert the user", () => {
-    global.alert = jest.fn(); // Mock the alert function
+  test("should alert the user", () => {
     noLogIn();
     expect(global.alert).toHaveBeenCalledWith(
       "Please remeber if you don't log in, you will have limited use!"
     );
   });
 
-  test("noLogIn should call nextFunction", () => {
+  test("should call nextFunction", () => {
     noLogIn();
-    expect(global.alert).toHaveBeenCalled(nextFunction());
-  });
-
-  test("noLogIn should call nextFunction", () => {
-    global.alert = jest.fn(); // Still mock alert
-
-    // Mock nextFunction
-    global.nextFunction = jest.fn();
-
-    // Run your function
-    noLogIn();
-
-    // Now check if nextFunction was called
     expect(global.nextFunction).toHaveBeenCalled();
   });
 });
 
-describe("logInWithSpotify function conntinues sequence correctly", () => {
+describe("logInWithSpotify function continues sequence correctly", () => {
   beforeEach(() => {
     stepTracker.currentStep = 0;
-    document.body.innerHTML = `
-                <button onclick="logInWithSpotify()">Next</button>
-            `;
-  });
-
-  test("logInWithSpotify should call nextFunction", () => {
-    logInWithSpotify();
-    expect(global.alert).toHaveBeenCalled(nextFunction());
-  });
-
-  test("logInWithSpotify should open new tab/popup to log in", () => {
+    document.body.innerHTML = `<button onclick="logInWithSpotify()">Next</button>`;
     window.open = jest.fn();
+    global.nextFunction = jest.fn();
+  });
+
+  test("should call nextFunction", () => {
+    logInWithSpotify();
+    expect(global.nextFunction).toHaveBeenCalled();
+  });
+
+  test("should open new tab/popup to log in", () => {
     logInWithSpotify();
     expect(window.open).toHaveBeenCalledTimes(1);
   });
 });
 
-describe("signInWithSpotify function conntinues sequence correctly", () => {
+describe("signInWithSpotify function continues sequence correctly", () => {
   beforeEach(() => {
     stepTracker.currentStep = 0;
-    document.body.innerHTML = `
-                <button onclick="logInWithSpotify()">Next</button>
-            `;
-  });
-
-  test("signInWithSpotify should call nextFunction", () => {
-    signInWithSpotify();
-    expect(global.alert).toHaveBeenCalled();
-  });
-
-  test("signInWithSpotify should open new tab/popup to log in", () => {
+    document.body.innerHTML = `<button onclick="signInWithSpotify()">Next</button>`;
     window.open = jest.fn();
+    global.nextFunction = jest.fn();
+  });
+
+  test("should open new tab/popup to log in", () => {
     signInWithSpotify();
     expect(window.open).toHaveBeenCalledTimes(1);
+  });
+
+  test("should call nextFunction", () => {
+    signInWithSpotify();
+    expect(global.nextFunction).toHaveBeenCalled();
+  });
+});
+
+
+
+
+
+beforeEach(() => {
+  // Reset step tracker
+  stepTracker.currentStep = 0;
+
+  // Setup DOM
+  document.body.innerHTML = `
+    <div id="step0" class="active"></div>
+    <div id="step1"></div>
+    <div id="step2"></div>
+    <div id="step3"></div>
+    <div id="step4"></div>
+    <div id="step5"></div>
+    <div id="header-image" class="active"></div>
+  `;
+});
+
+describe('Navigation Flow', () => {
+  test('nextFunction increments step and updates classes', () => {
+    nextFunction();
+
+    expect(stepTracker.currentStep).toBe(1);
+
+    const currentStep = document.getElementById('step0');
+    const nextStep = document.getElementById('step1');
+
+    expect(currentStep.classList.contains('active')).toBe(false);
+    expect(nextStep.classList.contains('active')).toBe(true);
+  });
+
+  test('headerImage removes active class on step 2', () => {
+    stepTracker.currentStep = 2;
+    headerImage();
+
+    const header = document.getElementById('header-image');
+    expect(header.classList.contains('active')).toBe(false);
+  });
+
+  test('headerImage adds active class on steps other than 2', () => {
+    stepTracker.currentStep = 3;
+    headerImage();
+
+    const header = document.getElementById('header-image');
+    expect(header.classList.contains('active')).toBe(true);
+  });
+
+  test('step does not go beyond 5', () => {
+    stepTracker.currentStep = 5;
+    nextFunction();
+
+    expect(stepTracker.currentStep).toBe(5); // doesn't increment past 5
+  });
+
+  test('logInWithSpotify opens Spotify and calls nextFunction', () => {
+    window.open = jest.fn();
+
+    logInWithSpotify();
+
+    expect(window.open).toHaveBeenCalledWith("https://www.spotify.com/uk/signup");
+    expect(stepTracker.currentStep).toBe(1);
+  });
+
+  test('signInWithSpotify works like login', () => {
+    window.open = jest.fn();
+
+    signInWithSpotify();
+
+    expect(window.open).toHaveBeenCalledWith("https://www.spotify.com/uk/signup");
+    expect(stepTracker.currentStep).toBe(1);
   });
 });
