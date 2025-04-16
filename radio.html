@@ -156,6 +156,10 @@
               <li>Profile Image: <span id="imgUrl"></span></li>
             </ul>
           </div>
+          <div id="generateSession">
+<!-- JS to append metrics once button clicked -->
+<button onclick="generateSessionReport(accessToken)">Get Session Report</button>
+          </div>
           <button class="btn btn--big" onclick="prevPage()">Go Back</button>
           <button class="btn btn--big" onclick="nextFunction()">
             Complete
@@ -168,14 +172,14 @@
         <div class="intro-text">
           <span class="text-big">Way to go!</span>
           <h2>🎶 Thank you for listening with us</h2>
-          <p>Go to the spotify spotify playlist yourself!</p>
+          <p>Go to the spotify playlist yourself!</p>
           <ul id="search-results-list"></ul>
-          <!-- Show playlist? -->
-          <button class="btn btn--big" onclick="newPlaylist()">
+          <!-- Starts new session -->
+          <button class="btn btn--big" onclick="newSession()">
             Listen Again
           </button>
           <button class="btn btn--big" onclick="goToPlaylist()">
-            <!-- Shows playlist in spotify? -->
+            <!-- Shows last playlist in spotify? -->
             Go to Spotify Playlist
           </button>
         </div>

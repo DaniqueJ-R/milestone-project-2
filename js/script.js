@@ -177,7 +177,7 @@ async function logInWithSpotify() {
         params.append("client_id", clientId);
         params.append("grant_type", "authorization_code");
         params.append("code", code);
-        params.append("redirect_uri", "http://127.0.0.1:5500/test/text.html");
+        params.append("redirect_uri", "http://127.0.0.1:5501/radio.html");
         params.append("code_verifier", verifier);
     
         const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -223,7 +223,7 @@ async function logInWithSpotify() {
         const params = new URLSearchParams();
         params.append("client_id", clientId);
         params.append("response_type", "code");
-        params.append("redirect_uri", "http://127.0.0.1:5500/test/text.html");
+        params.append("redirect_uri", "http://127.0.0.1:5501/radio.html");
         params.append("scope", "user-read-private user-read-email");
         params.append("code_challenge_method", "S256");
         params.append("code_challenge", challenge);
