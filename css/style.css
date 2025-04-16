@@ -116,15 +116,8 @@ section {
 /* Header turn table styles */
 
 
-.header-imag {
-  margin-left: 62rem;
-  margin-top: -14rem;
-  max-width: 1562px;
-/* position: relative;
-top: 36px; */
-
-/* left: 597px;
-left: 788px; */
+.header-image {
+  z-index: 1;
 }
 
 .turntable {
@@ -398,6 +391,7 @@ main > section {
   top: 18rem;
   position: absolute;
   left: 6rem;
+  z-index: 3;
 }
 
 .radio-container p {
