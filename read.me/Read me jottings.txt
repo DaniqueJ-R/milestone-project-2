@@ -7,10 +7,19 @@ Find colour pallet - https://mycolor.space/?hex=%23E5615A&sub=1
 helped understand tests - https://www.youtube.com/watch?v=x6NUZ8dc9Qg
 Helped with Overall JS functionings - 
 https://www.w3schools.com/js/js_htmldom_events.asp
-
+https://stackoverflow.com/questions/195951/how-can-i-change-an-elements-class-with-javascript/196038#196038
+https://stackoverflow.com/questions/31580789/play-and-pause-audio-onclick-by-js-library?rq=3
+https://stackoverflow.com/questions/47754451/html-how-to-play-and-pause-audio-when-clicking-an-image
 
 https://stackoverflow.com/questions/34515121/make-a-div-containing-an-img-draggable - drag in container
 https://www.w3schools.com/howto/howto_js_draggable.asp - draggable feature
 
 
 Decided to make a playlist generator as I love music and finding new songs. Torn between this and Recipe finder
+
+
+
+JamJar is a Site that allows users to play a related playlist based on the work they want to get done 
+(Work, Study, Workout, meditate [moods to be added soon]). Once completed, they can see how long they listened for,
+ as well as how many breaks they took. how many songs they played and/or skipped. They can then listen again or find 
+ the playlis on spotify directly via a link.

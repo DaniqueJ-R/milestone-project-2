@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Store your favorite jams in one place. JamJar is a mood-based playlist generator that creates personalized playlists based on your current mood."
+    />
+    <meta
+      name="keywords"
+      content="JamJar, playlist generator, mood-based playlists, Spotify, music"
+    />
+
+    <!-- Favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="images/favicon-16x16.png"
+    />
+    <!-- <link rel="manifest" href="/site.webmanifest"/> -->
+
+    <title>JamJar | Home</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main>
+      <!-- Radio Page -->
+      <section id="step2" class="container relative">
+        <div class="intro-text">
+          <span class="text-big">Step 2</span>
+          <h2>Choose your station</h2>
+        </div>
+
+        <!-- Radio Controls -->
+
+        <div class="radio-container" onchange="radioMood()">
+          <p class="text-medium">Choose a mood for your radio:</p>
+          <div class="radio-option">
+            <input
+              type="radio"
+              id="focus"
+              name="playlist-type"
+              value="focus"
+              checked
+            />
+            <label for="focus">Focus</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="study" name="playlist-type" value="study" />
+            <label for="study">Study</label>
+          </div>
+          <div class="radio-option">
+            <input
+              type="radio"
+              id="workout"
+              name="playlist-type"
+              value="workout"
+            />
+            <label for="workout">Workout</label>
+          </div>
+          <div class="radio-option">
+            <input
+              type="radio"
+              id="meditation"
+              name="playlist-type"
+              value="meditation"
+            />
+            <label for="meditation">Meditation</label>
+          </div>
+
+          <button class="btn" onclick="nextFunction()">Finish Session</button>
+        </div>
+
+        <div class="relative container header-image">
+          <img
+            src="images/turntable-base.jpg"
+            alt="Vinyl Record Player"
+            class="turntable"
+          />
+          <img
+            src="images/turntable-vinyl.png"
+            alt="Vinyl Record"
+            id="vinyl"
+            class="vinyl spinning"
+            onclick="playPause()"
+          />
+          <img
+            src="images/turntable-front.png"
+            alt="Vinyl Record Player"
+            class="foreground"
+          />
+          <div id="mydiv">
+            <div id="slider-container">
+              <img
+                onchange="volumeControl()"
+                id="slider-knob"
+                src="images/turntable-button.png"
+                alt="Vinyl Record slider for volume"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div id="player">
+          <img id="cover" src="images/favicon-32x32.png" alt="Album cover"/>
+          <p id="title">Title</p>
+          <br />
+          <p id="artist-name">Artist</p>
+          <audio id="audio" controls></audio>
+          <div class="controls">
+            <button id="back" class="controls-btn" onclick="prevSong()">
+              <i class="fa-solid fa-backward"></i>Back
+            </button>
+            <button id="like" class="controls-btn" onclick="likeSong()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+            <button id="next" class="controls-btn">
+              <i class="fa-solid fa-forward"></i>Next
+            </button>
+            <br />
+            <a id="spotifyLink" class="controls-btn" href="#" target="_blank"
+              >Open in Spotify</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- playlist results from java -->
+      <!-- Fix as its not staying on page? -->
+      <section id="step3" class="container relative hidden">
+        <div class="intro-text">
+          <span class="text-big">Step 3</span>
+          <h2>🎶 Results</h2>
+          <p>See a breakdown of how you have been listening:</p>
+          <div id="profile">
+            <h2>Logged in as <span id="displayName"></span></h2>
+            <span id="avatar"></span>
+            <ul>
+              <li>User ID: <span id="id"></span></li>
+              <li>Email: <span id="email"></span></li>
+              <li>Spotify URI: <a id="uri" href="#"></a></li>
+              <li>Link: <a id="url" href="#"></a></li>
+              <li>Profile Image: <span id="imgUrl"></span></li>
+            </ul>
+          </div>
+          <button class="btn btn--big" onclick="prevPage()">Go Back</button>
+          <button class="btn btn--big" onclick="nextFunction()">
+            Complete
+          </button>
+        </div>
+      </section>
+
+      <!-- Final page, show playlist/link to playlist -->
+      <section id="step4" class="container relative hidden">
+        <div class="intro-text">
+          <span class="text-big">Way to go!</span>
+          <h2>🎶 Thank you for listening with us</h2>
+          <p>Go to the spotify spotify playlist yourself!</p>
+          <ul id="search-results-list"></ul>
+          <!-- Show playlist? -->
+          <button class="btn btn--big" onclick="newPlaylist()">
+            Listen Again
+          </button>
+          <button class="btn btn--big" onclick="goToPlaylist()">
+            <!-- Shows playlist in spotify? -->
+            Go to Spotify Playlist
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="container section">
+      <div class="footer-links">
+        <span class="follow-us">
+          <span>Follow us on social media:</span>
+          <a href="https://www.youtube.com" target="_blank"
+            ><i class="fa-brands fa-youtube"></i
+          ></a>
+          <a href="https://open.spotify.com" target="_blank"
+            ><i class="fa-brands fa-spotify"></i
+          ></a>
+        </span>
+        <span class="important">
+          |
+          <a
+            href="https://www.universal-music.de/rechtliche-hinweise/imprint"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Imprint</a
+          >
+          |
+          <a
+            href="https://www.universal-music.de/rechtliche-hinweise/security-and-privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Security &amp; Privacy</a
+          >
+        </span>
+      </div>
+
+      <div class="ast-small-footer-wrap">
+        <div class="copyright">Copyright © 2025 JamJar</div>
+        <div class="ast-footer-credits">
+          <span class="ast-footer-credits-text"
+            >All rights reserved. Music data on our tools and pages (except
+            Music Downloads pages) is provided by Spotify AB. jamjar.com is not
+            affiliated with Spotify AB in any way.</span
+          >
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+
+    <!-- FontAwesome Icons -->
+    <script
+      src="https://kit.fontawesome.com/9e540e0242.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Spotify API -->
+  </body>
+</html>

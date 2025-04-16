@@ -130,12 +130,12 @@ function headerImage() {
   }
 }
 
-function logInWithSpotify() {
-  // Add your Spotify login logic here/ add API call to get user data
-  // After successful login, call nextFunction to continue the sequence;
-  window.open("https://www.spotify.com/uk/signup");
-  nextFunction();
-}
+// function logInWithSpotify() {
+//   // Add your Spotify login logic here/ add API call to get user data
+//   // After successful login, call nextFunction to continue the sequence;
+//   window.open("https://www.spotify.com/uk/signup");
+//   nextFunction();
+// }
 
 function signInWithSpotify() {
   window.open("https://www.spotify.com/uk/signup");
@@ -147,54 +147,125 @@ function noLogIn() {
   nextFunction();
 }
 
-// const clientId = "d831bf8c8a594eaeb5d37469c14d13fe";
-// const redirectUri = "http://localhost:5500/callback";
-// const authEndpoint = "https://accounts.spotify.com/authorize";
-// const scopes = [
-//   "user-read-private",
-//   "playlist-read-private",
-//   "playlist-read-collaborative",
-// ];
+      // Attach signIn to the global window for inline HTML onclick usage.
+async function logInWithSpotify() {
+        const clientId = "d831bf8c8a594eaeb5d37469c14d13fe";
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get("code");
+        console.log("signIn function called");
+    
+        if (!code) {
+          redirectToAuthCodeFlow(clientId);
+        } else {
+          const accessToken = await getAccessToken(clientId, code);
+          const profile = await fetchProfile(accessToken);
+          populateUI(profile);
+        }
+      };
+    
+      async function getAccessToken(clientId, code) {
+        const verifier = localStorage.getItem("verifier");
+        console.log("Verifier loaded:", verifier);
+        console.log("Code received:", code);
+    
+        if (!verifier || !code) {
+          console.error("Missing verifier or code");
+          return;
+        }
+    
+        const params = new URLSearchParams();
+        params.append("client_id", clientId);
+        params.append("grant_type", "authorization_code");
+        params.append("code", code);
+        params.append("redirect_uri", "http://127.0.0.1:5500/test/text.html");
+        params.append("code_verifier", verifier);
+    
+        const result = await fetch("https://accounts.spotify.com/api/token", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: params,
+        });
+    
+        const responseText = await result.text();
+        console.log("Token response", responseText);
+        const data = JSON.parse(responseText);
+    
+        if (data.error) {
+          console.error("Error obtaining token:", data.error_description);
+          // Re-initiate the auth flow if the authorization code has expired
+          redirectToAuthCodeFlow(clientId);
+          return;
+        }
+        return data.access_token;
+      }
+    
+      async function fetchProfile(token) {
+        const result = await fetch("https://api.spotify.com/v1/me", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        return await result.json();
+      }
 
-// function loginWithSpotify() {
-//   window.open = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`;
-// }
-
-// document
-//   .querySelector(".btn--big")
-//   .addEventListener("click", loginWithSpotify);
-
-// document.getElementById("login").addEventListener("click", () => {
-//   const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes.join('%20')}&show_dialog=true`;
-//   window.location.href = authUrl;
-// });
-
-// window.addEventListener("load", () => {
-//   const hash = window.location.hash;
-//   if (hash) {
-//     const params = new URLSearchParams(hash.substring(1));
-//     const accessToken = params.get("access_token");
-
-//     if (accessToken) {
-//       fetch("https://api.spotify.com/v1/me/playlists", {
-//         headers: {
-//           Authorization: "Bearer " + accessToken
-//         }
-//       })
-//         .then((res) => res.json())
-//         .then((data) => {
-//           const output = document.getElementById("output");
-//           output.innerHTML = "<h2>Your Playlists:</h2>";
-//           data.items.forEach((playlist) => {
-//             output.innerHTML += `<p>${playlist.name}</p>`;
-//           });
-//         })
-//         .catch((err) => {
-//           console.error("Error fetching playlists", err);
-//         });
-//     }
-//   }
-// });
+      async function fetchPlaylists(token) {
+        const result = await fetch("https://api.spotify.com/v1/browse/categories/dinner/playlists", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        return await result.json();
+      }
+    
+      async function redirectToAuthCodeFlow(clientId) {
+        const verifier = generateCodeVerifier(128);
+        const challenge = await generateCodeChallenge(verifier);
+        localStorage.setItem("verifier", verifier);
+    
+        const params = new URLSearchParams();
+        params.append("client_id", clientId);
+        params.append("response_type", "code");
+        params.append("redirect_uri", "http://127.0.0.1:5500/test/text.html");
+        params.append("scope", "user-read-private user-read-email");
+        params.append("code_challenge_method", "S256");
+        params.append("code_challenge", challenge);
+    
+        document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
+      }
+    
+      function generateCodeVerifier(length) {
+        let text = "";
+        let possible =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (let i = 0; i < length; i++) {
+          text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
+      }
+    
+      async function generateCodeChallenge(codeVerifier) {
+        const data = new TextEncoder().encode(codeVerifier);
+        const digest = await window.crypto.subtle.digest("SHA-256", data);
+        return btoa(String.fromCharCode(...new Uint8Array(digest)))
+          .replace(/\+/g, "-")
+          .replace(/\//g, "_")
+          .replace(/=+$/, "");
+      }
+    
+      function populateUI(profile) {
+        document.getElementById("displayName").innerText = profile.display_name;
+        if (profile.images && profile.images[0]) {
+          const profileImage = new Image(200, 200);
+          profileImage.src = profile.images[0].url;
+          document.getElementById("avatar").appendChild(profileImage);
+          document.getElementById("imgUrl").innerText = profile.images[0].url;
+        }
+        document.getElementById("id").innerText = profile.id;
+        document.getElementById("email").innerText = profile.email;
+        document.getElementById("followers").innerText = profile.followers.total;
+        document.getElementById("uri").innerText = profile.uri;
+        document.getElementById("uri").setAttribute("href", profile.external_urls.spotify);
+        document.getElementById("url").innerText = profile.href;
+        document.getElementById("url").setAttribute("href", profile.href);
+      }
 
 //STEP 2 Functions
 //Dragging slider

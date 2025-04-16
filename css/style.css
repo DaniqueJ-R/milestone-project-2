@@ -255,9 +255,9 @@ main > section {
 #player {
   position: relative;
   top: 4rem;
-  left: -3rem;
+  left: -2rem;
   max-height: 50px;
-  margin: auto;
+  margin: 0rem 1rem;
   background: var(--Nav-color);
   padding: 2rem;
   border-radius: 1rem;
@@ -379,7 +379,7 @@ main > section {
 
 #step2 .btn {
   position: absolute;
-  right: -12rem;
+  right: -8rem;
   width: 26rem;
   height: 4rem;
   border-radius: 100px;

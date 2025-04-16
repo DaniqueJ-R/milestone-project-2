@@ -49,7 +49,10 @@
       </div>
 
       <!-- Header Image -->
-      <span id="header-image" class="relative container header-image hidden active">
+      <span
+        id="header-image"
+        class="relative container header-image hidden active"
+      >
         <img
           src="images/turntable-base.jpg"
           alt="Vinyl Record"
@@ -75,7 +78,6 @@
 
     <!-- Main Content -->
     <main class="container">
-
       <!-- Header Text -->
       <section id="step0" class="relative container hidden active">
         <div class="relative intro-text">
@@ -86,10 +88,11 @@
         <div>
           <div class="starter steps">
             <p class="steps text-medium">
-              Connect your Spotify > Select a vibe for your playlist > Get results on how you have been listening> Find your playlist!
+              Connect your Spotify > Select a vibe for your playlist > Get
+              results on how you have been listening> Find your playlist!
             </p>
             <p class="instructions">
-              Click the button below to log in and start your session. 
+              Click the button below to log in and start your session.
             </p>
             <button class="btn" onclick="nextFunction()">Jam me up!</button>
           </div>
@@ -115,146 +118,6 @@
           <!-- pop up to sign up for spotify -->
           <button class="btn btn--big" onclick="noLogIn()">
             Continue without login(limited Fuctionality)
-          </button>
-        </div>
-      </section>
-
-      <!-- Radio Page -->
-      <section id="step2" class="container relative hidden">
-        <div class="intro-text" class="container">
-          <span class="text-big">Step 2</span>
-          <h2>Choose your station</h2>
-
-
-<!-- Radio Controls -->
-
-          <div class="radio-container" onchange="radioMood()">
-            <p class="text-medium">Choose a mood for your radio:</p>
-            <div class="radio-option">
-              <input
-                type="radio"
-                id="focus"
-                name="playlist-type"
-                value="focus" 
-                checked
-              />
-              <label for="focus">Focus</label>
-            </div>
-            <div class="radio-option">
-              <input
-                type="radio"
-                id="study"
-                name="playlist-type"
-                value="study"
-              />
-              <label for="study">Study</label>
-            </div>
-            <div class="radio-option">
-              <input
-                type="radio"
-                id="workout"
-                name="playlist-type"
-                value="workout"
-              />
-              <label for="workout">Workout</label>
-            </div>
-            <div class="radio-option">
-              <input
-                type="radio"
-                id="meditation"
-                name="playlist-type"
-                value="meditation"
-              />
-              <label for="meditation">Meditation</label>
-            </div>
-
-          <button class="btn" onclick="StopListening()">Finish Session</button>
-
-        </div>
-          
-            <div class="relative container header-image">
-                <img
-                  src="images/turntable-base.jpg"
-                  alt="Vinyl Record Player"
-                  class="turntable"
-                />
-                <img
-                  src="images/turntable-vinyl.png"
-                  alt="Vinyl Record"
-                  id="vinyl"
-                  class="vinyl spinning"
-                  onclick="playPause()"
-                />
-                <img
-                  src="images/turntable-front.png"
-                  alt="Vinyl Record Player"
-                  class="foreground"
-                />
-                <div id="mydiv">
-                <div id="slider-container">
-                  <img
-                  onchange="volumeControl()"
-                    id="slider-knob"
-                    src="images/turntable-button.png"
-                    alt="Vinyl Record slider for volume"
-                  />
-                </div>
-              </div>
-              </div>
-
-            <div id="player">
-              <img id="cover" src="" alt="Album cover">
-              <p id="title">Title</p>
-              <br>
-              <p id="artist-name">Artist</p>
-              <audio id="audio" controls></audio>
-              <div class="controls">
-                <button id="back" class="controls-btn" onclick="prevSong()"><i class="fa-solid fa-backward"></i>Back</button>
-                <button id="next" class="controls-btn" ><i class="fa-solid fa-forward"></i>Next</button>
-                <br>
-                <a id="spotifyLink" class="controls-btn" href="#" target="_blank">Open in Spotify</a>
-              </div>
-            </div>
-        
-      </section>
-
-      <!-- playlist results from java -->
-      <!-- Fix as its not staying on page? -->
-      <section id="step3" class="container relative hidden">
-        <div class="intro-text">
-          <span class="text-big">Step 3</span>
-          <h2>🎶 Results</h2>
-          <p>See a breakdown of how you have been listening: </p>
-          <section id="profile">
-            <h2>Logged in as <span id="displayName"></span></h2>
-            <span id="avatar"></span>
-            <ul>
-              <li>User ID: <span id="id"></span></li>
-              <li>Email: <span id="email"></span></li>
-              <li>Spotify URI: <a id="uri" href="#"></a></li>
-              <li>Link: <a id="url" href="#"></a></li>
-              <li>Profile Image: <span id="imgUrl"></span></li>
-            </ul>
-          </section>
-          <button class="btn btn--big" onclick="prevPage()">Go Back</button>
-          <button class="btn btn--big" onclick="nextFunction()">Complete</button>
-        </div>
-      </section>
-
-      <!-- Final page, show playlist/link to playlist -->
-      <section id="step4" class="container relative hidden">
-        <div class="intro-text">
-          <span class="text-big">Way to go!</span>
-          <h2>🎶 Thank you for listening with us</h2>
-          <p>Go to the spotify spotify playlist yourself!</p>
-          <ul id="search-results-list"></ul>
-          <!-- Show playlist? -->
-          <button class="btn btn--big" onclick="newPlaylist()">
-            Listen Again
-          </button>
-          <button class="btn btn--big" onclick="goToPlaylist()">
-            <!-- Shows playlist in spotify? -->
-            Go to Spotify Playlist
           </button>
         </div>
       </section>
@@ -311,6 +174,5 @@
     ></script>
 
     <!-- Spotify API -->
-
   </body>
 </html>
