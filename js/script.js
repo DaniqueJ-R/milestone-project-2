@@ -108,7 +108,7 @@ function nextFunction() {
 
   stepTracker.currentStep++;
 
-  headerImage();
+  // headerImage();
 
   let nextPage = document.getElementById(`step${stepTracker.currentStep}`);
   if (nextPage) {
@@ -121,20 +121,13 @@ function nextFunction() {
   }
 }
 
-function headerImage() {
-  let headerImage = document.getElementById("header-image");
-  if (stepTracker.currentStep === 2) {
-    headerImage.classList.remove("active");
-  } else {
-    headerImage.classList.add("active");
-  }
-}
-
-// function logInWithSpotify() {
-//   // Add your Spotify login logic here/ add API call to get user data
-//   // After successful login, call nextFunction to continue the sequence;
-//   window.open("https://www.spotify.com/uk/signup");
-//   nextFunction();
+// function headerImage() {
+//   let headerImage = document.getElementById("header-image");
+//   if (stepTracker.currentStep === 2) {
+//     headerImage.classList.remove("active");
+//   } else {
+//     headerImage.classList.add("active");
+//   }
 // }
 
 function signInWithSpotify() {
@@ -147,7 +140,9 @@ function noLogIn() {
   nextFunction();
 }
 
-      // Attach signIn to the global window for inline HTML onclick usage.
+   // Attach signIn to the global window for inline HTML onclick usage.
+   // Add your Spotify login logic here/ add API call to get user data
+   // After successful login, call nextFunction to continue the sequence;
 async function logInWithSpotify() {
         const clientId = "d831bf8c8a594eaeb5d37469c14d13fe";
         const params = new URLSearchParams(window.location.search);

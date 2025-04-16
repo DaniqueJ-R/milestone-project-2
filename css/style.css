@@ -115,64 +115,73 @@ section {
 
 /* Header turn table styles */
 
-.header-image {
-  position: relative;
-  top: 36px;
+
+.header-imag {
+  margin-left: 62rem;
+  margin-top: -14rem;
   max-width: 1562px;
-  left: 788px;
-  right: 50px;
+/* position: relative;
+top: 36px; */
+
+/* left: 597px;
+left: 788px; */
 }
 
 .turntable {
-  width: 50%;
-  height: auto;
+width: 50%;
+height: auto;
+position: relative;
+margin-bottom: 20px;
+max-width: 520px;
+box-shadow: var(--shadow);
   position: relative;
-  margin-bottom: 20px;
-  max-width: 520px;
-  box-shadow: var(--shadow);
+top: 36px;
+left: 788px; 
 }
 
 .vinyl {
-  width: 25.3%;
-  height: auto;
-  position: absolute;
-  top: 47.45%;
-  left: 16%;
-  transform: translate(-50%, -50%);
+width: 25.3%;
+height: auto;
+width: 25.3%;
+height: auto;
+position: absolute;
+top: 15.69rem;
+left: 62.3rem;
+transform: translate(-50%, -50%);
 }
 
 .spinning {
-  animation: spin 10s linear infinite;
-  animation-play-state: running;
-  transform-origin: center;
+animation: spin 10s linear infinite;
+animation-play-state: running;
+transform-origin: center;
 }
 
 .paused {
-  animation-play-state: paused;
+animation-play-state: paused;
 }
 
 @keyframes spin {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
+from {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+to {
+  transform: translate(-50%, -50%) rotate(360deg);
+}
 }
 
 
 .foreground {
-  position: relative;
-  left: -16.8rem;
-  top: -5.6rem;
-  width: 16%;
+position: relative;
+left: 32.5rem;
+top: -3.3rem;
+width: 16%;
 }
 
 .slider {
-  width: 2.2%;
-  position: absolute;
-  top: 18.5rem;
-  left: 26.45rem;
+width: 2.2%;
+position: absolute;
+top: 20.85rem;
+left: 75.67rem;
 }
 
 /* Turntable styles ends*/
@@ -330,7 +339,7 @@ main > section {
 }
 
 #step2 .turntable {
-  right: 13rem;
+  left: 38rem;
   position: relative;
   margin-bottom: 32px;
   max-width: 100%;
@@ -340,12 +349,12 @@ main > section {
 #mydiv {
   width: 51px;
   position: absolute;
-  top: 364px;
-  left: 313px;
+  top: 25rem;
+  left: 71.4rem;
 }
 
 #slider-container {
-  top: -80px;
+  top: -72px;
   position: relative;
   width: 33px;
   height: 145px;
@@ -364,8 +373,8 @@ main > section {
 
 #step2 .foreground {
   position: relative;
-  left: -41.87%;
-  top: -118px;
+  left: 17.06rem;
+  top: -5.3rem;
   width: 20%;
 }
 
@@ -373,8 +382,8 @@ main > section {
   width: 32.3%;
   height: auto;
   position: absolute;
-  top: 46.6%;
-  left: 3.8%;
+  top: 19.4rem;
+  left: 54.5rem;
 }
 
 #step2 .btn {
@@ -465,8 +474,8 @@ footer {
   text-align: center;
 }
 
-/*to delete*/
-/*.container {
+/* to delete
+.container {
   border: 1px solid black;
 }
 main .container {
@@ -475,5 +484,5 @@ main .container {
 
 section .container {
   border: 1px solid rgb(202, 168, 168);
-}
-*/
+} */
+
