@@ -8,7 +8,7 @@ const {
   signInWithSpotify,
   noLogIn,
   radioMood,
-} = require("../script.js");
+} = require("../../../js/script.js");
 
 beforeEach(() => {
   // Set up the initial DOM state for each test

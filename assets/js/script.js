@@ -4,7 +4,7 @@ const stepTracker = { currentStep: 0 };
 function nextFunction() {
   let currentPage = document.getElementById(`step${stepTracker.currentStep}`);
   if (currentPage) {
-    currentPage.classList.remove("active");
+    currentPage.classList.add("hidden");
   }
 
   stepTracker.currentStep++;
@@ -13,7 +13,7 @@ function nextFunction() {
 
   let nextPage = document.getElementById(`step${stepTracker.currentStep}`);
   if (nextPage) {
-    nextPage.classList.add("active");
+    nextPage.classList.remove("hidden");
   }
 
   if (stepTracker.currentStep > 5) {
@@ -22,14 +22,6 @@ function nextFunction() {
   }
 }
 
-// function headerImage() {
-//   let headerImage = document.getElementById("header-image");
-//   if (stepTracker.currentStep === 2) {
-//     headerImage.classList.remove("active");
-//   } else {
-//     headerImage.classList.add("active");
-//   }
-// }
 
 // *** STEP 1 Log in Functions ** //
 function signInWithSpotify() {
@@ -59,6 +51,7 @@ async function logInWithSpotify() {
     populateUI(profile);
   }
 }
+
 
 async function getAccessToken(clientId, code) {
   const verifier = localStorage.getItem("verifier");
@@ -256,7 +249,6 @@ async function fetchPlaylists(token) {
   );
   return await result.json();
 }
-
 
 
 

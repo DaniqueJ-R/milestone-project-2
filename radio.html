@@ -33,7 +33,7 @@
     <!-- <link rel="manifest" href="/site.webmanifest"/> -->
 
     <title>JamJar | Radio</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
         <!-- Header Section -->
@@ -49,7 +49,7 @@
     </header>
     <main>
       <!-- Radio Page -->
-      <section id="step2" class="container relative">
+      <section id="step2" class="container relative hidden">
         <div class="intro-text">
           <span class="text-big">Step 2</span>
           <h2>Choose your station</h2>
@@ -151,13 +151,13 @@
 
       <!-- playlist results from java -->
       <!-- Fix as its not staying on page? -->
-      <section id="step3" class="container relative hidden">
+      <section id="step3" class="container  ">
         <div class="intro-text">
           <span class="text-big">Step 3</span>
-          <h2>🎶 Results</h2>
-          <p>See a breakdown of how you have been listening:</p>
+          <h2>Results🎶</h2>
+          <p class="text-medium">See a breakdown of how you have been listening:</p>
           <div id="profile">
-            <h2>Logged in as <span id="displayName"></span></h2>
+            <p>Logged in as <span id="displayName"></span></p>
             <span id="avatar"></span>
             <ul>
               <li>User ID: <span id="id"></span></li>
@@ -169,11 +169,11 @@
           </div>
           <div id="generateSession">
 <!-- JS to append metrics once button clicked -->
-<button onclick="generateSessionReport(accessToken)">Get Session Report</button>
+<button class="btn btn--big"  onclick="generateSessionReport(accessToken)">Get Session Report</button>
           </div>
           <button class="btn btn--big" onclick="prevPage()">Go Back</button>
           <button class="btn btn--big" onclick="nextFunction()">
-            Complete
+            Complete Session
           </button>
         </div>
       </section>

@@ -52,6 +52,11 @@ h3 {
 section {
   max-width: 60%;
 }
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
 
 .sub-heading {
   color: var(--additional-color);
@@ -63,12 +68,12 @@ section {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 } /* Hide all steps initially */
 
-.active {
+/*.active {
   display: block;
-} /* Show only active step */
+}  Show only active step */
 
 /* Heading section */
 
@@ -216,10 +221,10 @@ main > section {
 
 /* Buttons ends */
 
-/* Step 0 styles */
+/* Step 0 styles 
 #step0 {
   max-height: 100px;
-}
+}*/
 
 #step0 .btn {
   padding: 1.2% 0%;
@@ -377,6 +382,7 @@ main > section {
   position: absolute;
   top: 19.4rem;
   left: 54.5rem;
+  cursor: pointer;
 }
 
 #step2 .btn {
@@ -423,7 +429,30 @@ main > section {
   transition: all 0.3s ease-in-out;
 }
 
-/* Step 4 styles */
+/* Step 3 styles */
+
+#step3 .text-medium{
+  margin-left: 31px;
+}
+
+#profile { 
+  margin-left: 12rem;
+  margin-top: 2rem;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+#profile p {
+  text-decoration: underline;
+  color: var(--highlight-color);
+}
+
+#generateSession {
+  margin-left: 12rem;
+  margin-top: 2rem;
+  font-size: 20px;
+  font-weight: 500;
+}
 
 /* Footer section */
 footer {
