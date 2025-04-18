@@ -43,34 +43,34 @@ async function fetchPlaylists(token) {
 
 
 
-// Simulated list of playlists from the Spotify API
-const playlists = [
-  {
-    id: "medit37i9dQZF1DXcBWIGoYBM5M",
-    name: "Peaceful Meditation",
-    description: "Relax and breathe",
-    owner: { id: "spotify" },
-  },
-  {
-    id: "focus37i9dQZF1DXcBWIGoYBM5M",
-    name: "My Focus Mix",
-    description: "Just for you",
-    owner: { id: "spotify" },
-  },
-  {
-    id: "exerc37i9dQZF1DXcBWIGoYBM5M",
-    name: "Intense Workout Beats",
-    description: "Pump it up",
-    owner: { id: "spotify" },
-  },
-  {
-    id: "study37i9dQZF1DXcBWIGoYBM5M",
-    name: "Cool school Session",
-    description: "Hit the books and Study hard",
-    owner: { id: "spotify" },
-  },
+// // Simulated list of playlists from the Spotify API
+// const playlists = [
+//   {
+//     id: "medit37i9dQZF1DXcBWIGoYBM5M",
+//     name: "Peaceful Meditation",
+//     description: "Relax and breathe",
+//     owner: { id: "spotify" },
+//   },
+//   {
+//     id: "focus37i9dQZF1DXcBWIGoYBM5M",
+//     name: "My Focus Mix",
+//     description: "Just for you",
+//     owner: { id: "spotify" },
+//   },
+//   {
+//     id: "exerc37i9dQZF1DXcBWIGoYBM5M",
+//     name: "Intense Workout Beats",
+//     description: "Pump it up",
+//     owner: { id: "spotify" },
+//   },
+//   {
+//     id: "study37i9dQZF1DXcBWIGoYBM5M",
+//     name: "Cool school Session",
+//     description: "Hit the books and Study hard",
+//     owner: { id: "spotify" },
+//   },
 
-];
+// ];
 
 // This function will be called when the user selects a mood
 // and clicks the button to fetch playlists

@@ -1,5 +1,6 @@
 const stepTracker = { currentStep: 0 };
 let accessToken = null; // make it a global variable
+window.callPlaylists = callPlaylists;
 
 
 function nextFunction() {
@@ -47,11 +48,24 @@ async function logInWithSpotify() {
   if (!code) {
     redirectToAuthCodeFlow(clientId);
   } else {
-    accessToken = await getAccessToken(clientId, code); // <-- Set global token here
+    accessToken = await getAccessToken(clientId, code); // Get and store token once
+    localStorage.setItem("access_token", accessToken); // Store it
     const profile = await fetchProfile(accessToken);
-    populateUI(profile);
+    callPlaylists();
   }
 }
+
+window.onload = async function () {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    accessToken = token;
+    console.log("Access token loaded from localStorage");
+    const profile = await fetchProfile(accessToken);
+    // populateUI();
+  } else {
+    logInWithSpotify();
+  }
+};
 
 
 
@@ -255,60 +269,38 @@ async function fetchPlaylists(token) {
 
 
 
-// Simulated list of playlists from the Spotify API
-const playlists = [
-  {
-    id: "medit37i9dQZF1DXcBWIGoYBM5M",
-    name: "Peaceful Meditation",
-    description: "Relax and breathe",
-    owner: { id: "spotify" },
-  },
-  {
-    id: "focus37i9dQZF1DXcBWIGoYBM5M",
-    name: "My Focus Mix",
-    description: "Just for you",
-    owner: { id: "spotify" },
-  },
-  {
-    id: "exerc37i9dQZF1DXcBWIGoYBM5M",
-    name: "Intense Workout Beats",
-    description: "Pump it up",
-    owner: { id: "spotify" },
-  },
-  {
-    id: "study37i9dQZF1DXcBWIGoYBM5M",
-    name: "Cool school Session",
-    description: "Hit the books and Study hard",
-    owner: { id: "spotify" },
-  },
-
-];
 
 // This function will be called when the user selects a mood
 // and clicks the button to fetch playlists
-function handleMoodSelection() {
-  const mood = radioMood(); // will return the selected value
-
+async function handleMoodSelection() {
+  const mood = radioMood();
   if (!mood) return;
 
-  const sessionKeyword = mood.toLowerCase(); // just in case it's not lowercase
+  const sessionKeyword = mood.toLowerCase();
+  const allPlaylists = await fetchPlaylists(accessToken); // ← call and await here
 
-  const matchingPlaylists = playlists.filter((playlist) => {
+  const matchingPlaylists = allPlaylists.items.filter((playlist) => {
     const name = playlist.name.toLowerCase();
     const desc = playlist.description?.toLowerCase() || "";
-
     return (
       playlist.owner.id === "spotify" &&
       (name.includes(sessionKeyword) || desc.includes(sessionKeyword))
     );
   });
-  console.log("Matching playlists:", matchingPlaylists);
-return matchingPlaylists;
 
+  console.log("Matching playlists:", matchingPlaylists);
+  return matchingPlaylists;
 }
 
-function callPlaylists() {
-  const matchingPlaylists = handleMoodSelection();
+
+async function callPlaylists() {
+  if (!accessToken) {
+    console.error("Access token is missing!");
+    return;
+  }
+
+  const matchingPlaylists = await handleMoodSelection(); // Call the function to get matching playlists
+
 
   if (matchingPlaylists && matchingPlaylists.length > 0) {
     const playlistId = matchingPlaylists[0].id;
@@ -411,21 +403,21 @@ module.exports = {
 
 
 
-function populateUI(profile) {
-  document.getElementById("displayName").innerText = profile.display_name;
-  if (profile.images && profile.images[0]) {
-    const profileImage = new Image(200, 200);
-    profileImage.src = profile.images[0].url;
-    document.getElementById("avatar").appendChild(profileImage);
-    document.getElementById("imgUrl").innerText = profile.images[0].url;
-  }
-  document.getElementById("id").innerText = profile.id;
-  document.getElementById("email").innerText = profile.email;
-  document.getElementById("followers").innerText = profile.followers.total;
-  document.getElementById("uri").innerText = profile.uri;
-  document
-    .getElementById("uri")
-    .setAttribute("href", profile.external_urls.spotify);
-  document.getElementById("url").innerText = profile.href;
-  document.getElementById("url").setAttribute("href", profile.href);
-}
+// function populateUI(profile) {
+//   document.getElementById("displayName").innerText = profile.display_name;
+//   if (profile.images && profile.images[0]) {
+//     const profileImage = new Image(200, 200);
+//     profileImage.src = profile.images[0].url;
+//     document.getElementById("avatar").appendChild(profileImage);
+//     document.getElementById("imgUrl").innerText = profile.images[0].url;
+//   }
+//   document.getElementById("id").innerText = profile.id;
+//   document.getElementById("email").innerText = profile.email;
+//   document.getElementById("followers").innerText = profile.followers.total;
+//   document.getElementById("uri").innerText = profile.uri;
+//   document
+//     .getElementById("uri")
+//     .setAttribute("href", profile.external_urls.spotify);
+//   document.getElementById("url").innerText = profile.href;
+//   document.getElementById("url").setAttribute("href", profile.href);
+// }
