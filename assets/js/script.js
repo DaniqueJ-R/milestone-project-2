@@ -1,4 +1,5 @@
 const stepTracker = { currentStep: 0 };
+let accessToken = null; // make it a global variable
 
 
 function nextFunction() {
@@ -46,11 +47,12 @@ async function logInWithSpotify() {
   if (!code) {
     redirectToAuthCodeFlow(clientId);
   } else {
-    const accessToken = await getAccessToken(clientId, code);
+    accessToken = await getAccessToken(clientId, code); // <-- Set global token here
     const profile = await fetchProfile(accessToken);
     populateUI(profile);
   }
 }
+
 
 
 async function getAccessToken(clientId, code) {
@@ -229,13 +231,14 @@ function radioMood() {
     selectedValue == "meditation"
   ) {
     alert(`You have selected: ${selectedValue}`);
-    currentPlaylist = songs[selectedValue]; // assign the song list
+    // currentPlaylist = songs[selectedValue]; // assign the song list
     // current = 0;
     
   } else {
     alert("Please select a mood.");
   }
-  return selectedValue; 
+  
+  return selectedValue; // Return the selected value
 }
 
 // This function will be called when the user clicks the button to fetch playlists
@@ -255,21 +258,25 @@ async function fetchPlaylists(token) {
 // Simulated list of playlists from the Spotify API
 const playlists = [
   {
+    id: "medit37i9dQZF1DXcBWIGoYBM5M",
     name: "Peaceful Meditation",
     description: "Relax and breathe",
     owner: { id: "spotify" },
   },
   {
+    id: "focus37i9dQZF1DXcBWIGoYBM5M",
     name: "My Focus Mix",
     description: "Just for you",
     owner: { id: "spotify" },
   },
   {
+    id: "exerc37i9dQZF1DXcBWIGoYBM5M",
     name: "Intense Workout Beats",
     description: "Pump it up",
     owner: { id: "spotify" },
   },
   {
+    id: "study37i9dQZF1DXcBWIGoYBM5M",
     name: "Cool school Session",
     description: "Hit the books and Study hard",
     owner: { id: "spotify" },
@@ -295,10 +302,40 @@ function handleMoodSelection() {
       (name.includes(sessionKeyword) || desc.includes(sessionKeyword))
     );
   });
-
   console.log("Matching playlists:", matchingPlaylists);
+return matchingPlaylists;
+
 }
 
+function callPlaylists() {
+  const matchingPlaylists = handleMoodSelection();
+
+  if (matchingPlaylists && matchingPlaylists.length > 0) {
+    const playlistId = matchingPlaylists[0].id;
+    console.log("Selected playlist ID:", playlistId);
+
+    // ✅ Do the fetch here, now that you have the playlistId
+    fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, { // send request
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+                 
+    .then(res => res.json())    // parse JSON response
+    .then(data => {             // do something with the data
+      console.log(data);
+    })
+    .catch(err => {             // handle any errors
+      console.error(err);
+    });
+  
+
+    return playlistId;
+  } else {
+    console.log("No matching playlists found.");
+    return null;
+  }
+}
 
 
 

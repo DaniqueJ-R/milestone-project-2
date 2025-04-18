@@ -16,19 +16,19 @@
     <link
       rel="apple-touch-icon"
       sizes="180x180"
-      href="images/apple-touch-icon.png"
+      href="assets/images/apple-touch-icon.png"
     />
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="images/favicon-32x32.png"
+      href="assets/images/favicon-32x32.png"
     />
     <link
       rel="icon"
       type="image/png"
       sizes="16x16"
-      href="images/favicon-16x16.png"
+      href="assets/images/favicon-16x16.png"
     />
     <!-- <link rel="manifest" href="/site.webmanifest"/> -->
 
@@ -49,7 +49,7 @@
     </header>
     <main>
       <!-- Radio Page -->
-      <section id="step2" class="container relative hidden">
+      <section id="step2" class="container relative">
         <div class="intro-text">
           <span class="text-big">Step 2</span>
           <h2>Choose your station</h2>
@@ -57,7 +57,7 @@
 
         <!-- Radio Controls -->
 
-        <div class="radio-container" onchange="radioMood()">
+        <div class="radio-container" onchange="callPlaylists()">
           <p class="text-medium">Choose a mood for your radio:</p>
           <div class="radio-option">
             <input
@@ -97,19 +97,19 @@
 
         <div class="relative container header-image">
           <img
-            src="images/turntable-base.jpg"
+            src="assets/images/turntable-base.jpg"
             alt="Vinyl Record Player"
             class="turntable"
           />
           <img
-            src="images/turntable-vinyl.png"
+            src="assets/images/turntable-vinyl.png"
             alt="Vinyl Record"
             id="vinyl"
             class="vinyl spinning"
             onclick="playPause()"
           />
           <img
-            src="images/turntable-front.png"
+            src="assets/images/turntable-front.png"
             alt="Vinyl Record Player"
             class="foreground"
           />
@@ -118,7 +118,7 @@
               <img
                 onchange="volumeControl()"
                 id="slider-knob"
-                src="images/turntable-button.png"
+                src="assets/images/turntable-button.png"
                 alt="Vinyl Record slider for volume"
               />
             </div>
@@ -126,7 +126,7 @@
         </div>
 
         <div id="player">
-          <img id="cover" src="images/favicon-32x32.png" alt="Album cover"/>
+          <img id="cover" src="assets/images/favicon-32x32.png" alt="Album cover"/>
           <p id="title">Title</p>
           <br />
           <p id="artist-name">Artist</p>
@@ -151,7 +151,7 @@
 
       <!-- playlist results from java -->
       <!-- Fix as its not staying on page? -->
-      <section id="step3" class="container  ">
+      <section id="step3" class="container hidden">
         <div class="intro-text">
           <span class="text-big">Step 3</span>
           <h2>Results🎶</h2>
@@ -239,7 +239,7 @@
       </div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="assets/js/script.js"></script>
 
     <!-- FontAwesome Icons -->
     <script
