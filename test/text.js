@@ -1,5 +1,8 @@
+//Somewhere in codee the age will not pass the log in if already logged in and token is valid, please debug//
+
 const stepTracker = { currentStep: 0 };
 let accessToken = null; // make it a global variable
+let playlistId = null;
 // window.callPlaylists = callPlaylists;
 const scopes = `
 user-read-private
@@ -7,10 +10,40 @@ user-read-email
 playlist-read-private
 playlist-read-collaborative
 user-top-read
-user-library-read
-`.trim().split(/\s+/).join(' ');
+user-library-read`
 
+  .trim()
+  .split(/\s+/)
+  .join(" ");
 
+//ensure accessToken gets initialized properly on load
+window.onload = async function () {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    accessToken = token;
+    console.log("Access token loaded from localStorage");
+  } else {
+    await logInWithSpotify(); // Ensure this updates the global token
+  }
+};
+
+// window.onload = async function () {
+//   const token = localStorage.getItem("access_token");
+//   if (token) {
+//     accessToken = token;
+//     console.log("Access token loaded from localStorage");
+//     console.log("Access token being used1:", accessToken);DELETE LATER
+//     populateUI();
+//     Validate token by hitting /me
+//     const valid = await isTokenValid(token);
+//     if (!valid) {
+//       console.warn("Stored token is invalid, redirecting...");
+//       redirectToAuthCodeFlow("d831bf8c8a594eaeb5d37469c14d13fe");
+//     }
+//   } else {
+//     logInWithSpotify();
+//   }
+// };
 
 function nextFunction() {
   let currentPage = document.getElementById(`step${stepTracker.currentStep}`);
@@ -33,7 +66,6 @@ function nextFunction() {
   }
 }
 
-
 // *** STEP 1 Log in Functions ** //
 function signInWithSpotify() {
   window.open("https://www.spotify.com/uk/signup");
@@ -46,23 +78,38 @@ function noLogIn() {
 }
 
 // Attach signIn to the global window for inline HTML onclick usage.
-// Add your Spotify login logic here/ add API call to get user data
-// After successful login, call nextFunction to continue the sequence;
 async function logInWithSpotify() {
   const clientId = "d831bf8c8a594eaeb5d37469c14d13fe";
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
-  console.log("signIn function called");
 
-  if (!code) {
-    redirectToAuthCodeFlow(clientId);
-  } else {
-    accessToken = await getAccessToken(clientId, code);
-    localStorage.setItem("access_token", accessToken);
-    console.log("✅ Access token set:", accessToken); // Add this
-    // const profile = await fetchProfile(accessToken);
-    callPlaylists(); 
+  accessToken = localStorage.getItem("access_token");
+
+  if (!accessToken || isTokenExpired()) {
+    console.log("🔐 Access token expired or not found. Re-authenticating...");
+    if (!code) {
+      redirectToAuthCodeFlow(clientId);
+      return;
+    } else {
+      accessToken = await getAccessToken(clientId, code);
+      setTokenWithExpiration(accessToken, 3600); // Spotify token expires in 3600 seconds
+      window.history.replaceState({}, document.title, "/"); // Clean URL
+    }
   }
+
+  console.log("✅ Access token valid:", accessToken);
+  callPlaylists();
+}
+
+function isTokenExpired() {
+  const expiresAt = localStorage.getItem("access_token_expires_at");
+  return !expiresAt || Date.now() > parseInt(expiresAt);
+}
+
+function setTokenWithExpiration(token, expiresInSeconds) {
+  const expiresAt = Date.now() + expiresInSeconds * 1000;
+  localStorage.setItem("access_token", token);
+  localStorage.setItem("access_token_expires_at", expiresAt.toString());
 }
 
 // window.onload = async function () {
@@ -78,34 +125,14 @@ async function logInWithSpotify() {
 //   }
 // };
 
-window.onload = async function () {
-  const token = localStorage.getItem("access_token");
-  if (token) {
-    accessToken = token;
-    console.log("Access token loaded from localStorage");
-    // console.log("Access token being used1:", accessToken);DELETE LATER
-    // populateUI();
-    //Validate token by hitting /me
-    // const valid = await isTokenValid(token);
-    // if (!valid) {
-    //   console.warn("Stored token is invalid, redirecting...");
-    //   redirectToAuthCodeFlow("d831bf8c8a594eaeb5d37469c14d13fe");
-    // }
-  } else {
-    logInWithSpotify();
-  }
-};
-
 async function isTokenValid(token) {
   const res = await fetch("https://api.spotify.com/v1/me", {
     headers: {
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
   return res.ok;
 }
-
-
 
 async function getAccessToken(clientId, code) {
   const verifier = localStorage.getItem("verifier");
@@ -128,7 +155,6 @@ async function getAccessToken(clientId, code) {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: params,
-
   });
 
   const responseText = await result.text();
@@ -182,7 +208,6 @@ function generateCodeVerifier(length) {
 }
 
 // *** Step 1 Functions Log in End** //
-
 
 // step 2 Functions Radio Start //
 //Dragging slider
@@ -247,22 +272,8 @@ function volumeControl() {
 
 
 
-let currentPlaylist = []; // this will hold the selected mood's song array
-let current = 0;
-
-function loadSong(index) {
-  const song = currentPlaylist[index];
-  if (!song) return;
-
-  document.getElementById("title").textContent = song.title;
-  document.getElementById("artist-name").textContent = song.artist;
-  document.getElementById("cover").src = song.cover;
-  document.getElementById("audio").src = song.preview;
-  document.getElementById("spotifyLink").href = song.spotify;
-}
-
 // Initial load
-loadSong(current);
+// loadSong(current);
 
 // Selecting mood for playlist
 // This function will be called when the user selects a mood
@@ -286,34 +297,41 @@ function radioMood() {
     alert(`You have selected: ${selectedValue}`);
     // currentPlaylist = songs[selectedValue]; // assign the song list
     // current = 0;
-    
   } else {
     alert("Please select a mood.");
   }
-  
+
   return selectedValue; // Return the selected value
 }
 
 // This function will be called when the user clicks the button to fetch playlists
 async function fetchPlaylists(token) {
-  const result = await fetch(
-    // "https://api.spotify.com/v1/browse/categories/0JQ5DAt0tbjZptfcdMSKl3",DELETE LATER
-    // "https://api.spotify.com/v1/browse/categories",DELETE LATER
-    // 'https://api.spotify.com/v1/browse/categories/0JQ5DAt0tbjZptfcdMSKl3/playlists',  DELETE LATER
-    // 'https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFFzDl7qN9Apr/playlists',DELETE LATER
-    // 'https://api.spotify.com/v1/users/{user_id}/playlists', DELETE LATER
-    'https://api.spotify.com/v1/me/playlists',
-    {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
-  // console.log("Access token being used4:", accessToken); DELETE LATER
-  return await result.json();
+  const res = await fetch("https://api.spotify.com/v1/me/playlists", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  // const result = await fetch(
+  //   // "https://api.spotify.com/v1/browse/categories/0JQ5DAt0tbjZptfcdMSKl3",DELETE LATER
+  //   // "https://api.spotify.com/v1/browse/categories",DELETE LATER
+  //   // 'https://api.spotify.com/v1/browse/categories/0JQ5DAt0tbjZptfcdMSKl3/playlists',  DELETE LATER
+  //   // 'https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFFzDl7qN9Apr/playlists',DELETE LATER
+  //   // 'https://api.spotify.com/v1/users/{user_id}/playlists', DELETE LATER
+  //   'https://api.spotify.com/v1/me/playlists',
+  //   {
+  //     method: "GET",
+  //     headers: { Authorization: Bearer ${token} },
+  //   }
+  // );
+
+  if (res.status === 401) {
+    console.warn("⚠️ Token expired. Reauthenticating...");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("access_token_expires_at");
+    window.location.reload(); // Trigger login again
+    return;
+  }
+
+  return await res.json();
 }
-
-
-
 
 // This function will be called when the user selects a mood
 // and clicks the button to fetch playlists
@@ -324,23 +342,22 @@ async function handleMoodSelection() {
   const sessionKeyword = mood.toLowerCase();
   const allPlaylists = await fetchPlaylists(accessToken); // ← call and await here
 
-    // 🔍 Log ALL playlists for debugging
-    // console.log("All playlists returned:", allPlaylists.categories.items);
-    console.log("All playlists returned:", allPlaylists);
+  // 🔍 Log ALL playlists for debugging
+  // console.log("All playlists returned:", allPlaylists.categories.items);
+  console.log("All playlists returned:", allPlaylists);
 
   const matchingPlaylists = allPlaylists.items.filter((playlist) => {
     const name = playlist.name.toLowerCase();
     const desc = playlist.description?.toLowerCase() || "";
     return (
       // owner.display_name === "made" && //Need to figure out how to get the owner name
-      (name.includes(sessionKeyword) || desc.includes(sessionKeyword))
+      name.includes(sessionKeyword) || desc.includes(sessionKeyword)
     );
   });
 
   console.log("Matching playlists:", matchingPlaylists);
   return matchingPlaylists;
 }
-
 
 async function callPlaylists() {
   if (!accessToken) {
@@ -350,73 +367,126 @@ async function callPlaylists() {
 
   const matchingPlaylists = await handleMoodSelection(); // Call the function to get matching playlists
 
-
   if (matchingPlaylists && matchingPlaylists.length > 0) {
-    const playlistId = matchingPlaylists[0].id;
+    playlistId = matchingPlaylists[0].id;
     console.log("Selected playlist ID:", playlistId);
 
     // console.log("Access token being used5:", accessToken); DELETE LATER
-    fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, { // send request
+    fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
+      // send request
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-
-    })
-                 
-    .then(res => res.json())    // parse JSON response
-    .then(data => {             // do something with the data
-      console.log(data);
-    })
-    .catch(err => {             // handle any errors
-      console.error(err);
-    });
-  
-
+    // })
+      // .then((res) => res.json()) // parse JSON response
+      // .then((data) => {
+      //   // do something with the data
+      //   console.log("Playlist data??:", data);
+      //   console.log(data);
+      // })
+      // .catch((err) => {
+      //   // handle any errors
+      //   console.error(err);
+      });
+      loadSong()
     return playlistId;
   } else {
     console.log("No matching playlists found.");
     return null;
   }
+
 }
 
 // This function will be called when the user clicks the button to fetch songs
 async function fetchSongs(playlistId) {
+  console.log("Selected playlist ID for fetchSong:", playlistId);
   const result = await fetch(
-    `https://api.spotify.com/v1/playlists/${playlistId}/tracks`, // DELETE LATER
+    `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
     {
       method: "GET",
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken} `},
     }
   );
+
+  return await result.json();
 }
 
-function songList() {
-  const songListElement = document.getElementById("player");
-  songListElement.innerHTML = ""; // Clear existing list
+async function loadSong(index) {
+  if (!playlistId) {
+    console.error("No playlistId defined!");
+    return;
+  }
 
-  currentPlaylist.forEach((song, index) => {
-    const li = document.createElement("li");
-    li.textContent = `${song.title} - ${song.artist}`;
-    li.addEventListener("click", () => loadSong(index));
-    songListElement.appendChild(li);
+  const songsData = await fetchSongs(playlistId); // ← call and await playlist
+  const track = songsData.items[0].track;
+  console.log("Playlist being used:", songsData);
+  if (!track) {
+    console.error("Track not found at index:", index);
+    return;
+  }
+
+  let current = 0;
+  document.getElementById("title").textContent = track.name;
+  document.getElementById("artist-name").textContent = track.artists[0].name;
+  document.getElementById("audio").src = track.preview_url;
+  document.getElementById("cover").src = track.album.images[0].url || "assets/images/favicon-32x32.png"; // handle missing image
+  document.getElementById("spotifyLink").href = track.spotify;
+  // audio.play();
+
+  console.log("Now playing:", track);
+}
+
+//testing
+
+//initialize the player 
+window.onSpotifyWebPlaybackSDKReady = () => {
+  const token = accessToken;
+  const player = new Spotify.Player({
+      name: 'Web Playback SDK Quick Start Player',
+      getOAuthToken: cb => { cb(token); },
+      volume: 0.5
   });
+
+  // Ready
+  player.addListener('ready', ({ device_id }) => {
+      console.log('Ready with Device ID', device_id);
+  });
+
+  // Not Ready
+  player.addListener('not_ready', ({ device_id }) => {
+      console.log('Device ID has gone offline', device_id);
+  });
+
+  player.addListener('initialization_error', ({ message }) => {
+      console.error(message);
+  });
+
+  player.addListener('authentication_error', ({ message }) => {
+      console.error(message);
+  });
+
+  player.addListener('account_error', ({ message }) => {
+      console.error(message);
+  });
+
+  // document.getElementById('togglePlay').onclick = function() {
+  //   player.togglePlay();
+  // };
+
+  player.connect();
 }
 
+//testing
 
+// nextBtn.addEventListener('click', () => {
+//   currentIndex = (currentIndex + 1) % songs.length;
+//   loadSong(currentIndex);
+// });
 
-
-
-
-
-function nextSong() {
-  current = (current + 1) % currentPlaylist.length;
-  loadSong(current);
-}
-
-function prevSong() {
-  current = (current - 1 + currentPlaylist.length) % currentPlaylist.length;
-  loadSong(current);
-}
+// backBtn.addEventListener('click', () => {
+//   currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+//   loadSong(currentIndex);
+// });
 
 //Makes vinyl clickable to play or pause song
 function playPause() {
@@ -431,27 +501,16 @@ function playPause() {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
+//Profile functions+
 
 // async function fetchProfile(token) {
 //   const result = await fetch("https://api.spotify.com/v1/me", {
 //     method: "GET",
-//     headers: { Authorization: `Bearer ${token}` },
+//     headers: { Authorization: Bearer ${token} },
 //   });
 //   console.log("Access token being used:", accessToken);
 //   return await result.json();
 // }
-
 
 // function populateUI(profile) {
 //   document.getElementById("displayName").innerText = profile.display_name;
@@ -471,7 +530,6 @@ function playPause() {
 //   document.getElementById("url").innerText = profile.href;
 //   document.getElementById("url").setAttribute("href", profile.href);
 // }
-
 
 // module.exports = {
 //   stepTracker,

@@ -3,6 +3,7 @@
 const stepTracker = { currentStep: 0 };
 let accessToken = null; // make it a global variable
 let playlistId = null;
+let device_id = null;
 // window.callPlaylists = callPlaylists;
 const scopes = `
 user-read-private
@@ -11,7 +12,11 @@ playlist-read-private
 playlist-read-collaborative
 user-top-read
 user-library-read
+streaming
+user-read-playback-state
+user-modify-playback-state
 `
+
   .trim()
   .split(/\s+/)
   .join(" ");
@@ -318,7 +323,7 @@ async function fetchPlaylists(token) {
   //   'https://api.spotify.com/v1/me/playlists',
   //   {
   //     method: "GET",
-  //     headers: { Authorization: `Bearer ${token}` },
+  //     headers: { Authorization: Bearer ${token} },
   //   }
   // );
 
@@ -377,15 +382,16 @@ async function callPlaylists() {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-    })
-      .then((res) => res.json()) // parse JSON response
-      .then((data) => {
-        // do something with the data
-        console.log(data);
-      })
-      .catch((err) => {
-        // handle any errors
-        console.error(err);
+    // })
+      // .then((res) => res.json()) // parse JSON response
+      // .then((data) => {
+      //   // do something with the data
+      //   console.log("Playlist data??:", data);
+      //   console.log(data);
+      // })
+      // .catch((err) => {
+      //   // handle any errors
+      //   console.error(err);
       });
       loadSong()
     return playlistId;
@@ -403,26 +409,12 @@ async function fetchSongs(playlistId) {
     `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
     {
       method: "GET",
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken} `},
     }
   );
 
   return await result.json();
 }
-
-// async function loadSong(index) {
-//   const song = await fetchSongs(playlistId); // ← call and await playlist
-//   let currentPlaylist = []; // this will hold the selected mood's song array
-//   let current = 0;
-//   if (!song) return;
-//   document.getElementById("title").textContent = song.title;
-//   document.getElementById("artist-name").textContent = song.artist;
-//   document.getElementById("cover").src = song.cover;
-//   document.getElementById("audio").src = song.preview;
-//   document.getElementById("spotifyLink").href = song.spotify;
-//   audio.play();
-//   console.log("Playlist being used:", song);
-// }
 
 async function loadSong(index) {
   if (!playlistId) {
@@ -439,28 +431,101 @@ async function loadSong(index) {
   }
 
   let current = 0;
-  // if (!song) return;
-  // document.getElementById("title").textContent = track.name;
-  // document.getElementById("artist-name").textContent = track.artists;
-  // document.getElementById("cover").src = song.cover;
-  // document.getElementById("audio").src = song.preview;
-  // document.getElementById("spotifyLink").href = song.spotify;
-  // audio.play();
-  // console.log("Playlist being used:", songsData);
-
-  // title.textContent = track.name;
-  // artist-name.textContent = track.artists//[0].name;
-
-
- document.getElementById("title").textContent = track.name;
+  document.getElementById("title").textContent = track.name;
   document.getElementById("artist-name").textContent = track.artists[0].name;
+  // document.getElementById("audio").src = track.uri;
+  document.getElementById("cover").src = track.album.images[0].url || "assets/images/favicon-32x32.png"; // handle missing image
+  document.getElementById("spotifyLink").href = track.spotify;
+  playTrack("spotify:track:1W9mO8lVFD2AhsIRwwMQ8r");
 
-  audio.src = track.preview_url;
-  cover.src = track.album.images[0]?.url || "assets/images/favicon-32x32.png"; // handle missing image
-  audio.play();
 
   console.log("Now playing:", track);
 }
+
+async function checkIfPremium() {
+  const res = await fetch("https://api.spotify.com/v1/me", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const data = await res.json();
+  if (data.product === "premium") {
+    console.log("✅ You have Spotify Premium");
+  } else {
+    alert("⚠️ You need a Spotify Premium account to use playback.");
+  }
+}
+
+
+//testing
+
+//initialize the player 
+window.onSpotifyWebPlaybackSDKReady = () => {
+  const token = accessToken;
+  const player = new Spotify.Player({
+      name: 'Web Playback SDK Quick Start Player',
+      getOAuthToken: cb => { cb(token); },
+      volume: 0.5
+  });
+
+  // Ready
+  player.addListener('ready', ({ device_id }) => {
+    console.log('✅ Web Player ready with Device ID', device_id);
+    localStorage.setItem("spotify_device_id", device_id);
+    
+    // Should call Device ID before needed below
+    loadSong();
+  });
+
+  // Not Ready
+  player.addListener('not_ready', ({ device_id }) => {
+      console.log('Device ID has gone offline', device_id);
+  });
+  
+// Error handling
+  player.addListener('initialization_error', ({ message }) => { console.error(message); });
+  player.addListener('authentication_error', ({ message }) => { console.error(message); });
+  player.addListener('account_error', ({ message }) => { console.error(message); });
+  player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+  // document.getElementById('togglePlay').onclick = function() {
+  //   player.togglePlay();
+  // };
+
+  player.connect();
+}
+
+
+async function playTrack(trackUri) {
+    let device_id = localStorage.getItem("spotify_device_id");
+    
+    if (!device_id) {
+      console.warn("Waiting for device ID...");
+      // Retry after a short delay
+      setTimeout(() => playTrack(trackUri), 1000);
+      return;
+    }
+  
+    const res = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        uris: [trackUri],
+      }),
+    });
+  
+    if (res.status === 401) {
+      console.error("❌ Unauthorized. Possible token issue.");
+    }
+  }
+  
+
+
+//testing
 
 // nextBtn.addEventListener('click', () => {
 //   currentIndex = (currentIndex + 1) % songs.length;
@@ -490,7 +555,7 @@ function playPause() {
 // async function fetchProfile(token) {
 //   const result = await fetch("https://api.spotify.com/v1/me", {
 //     method: "GET",
-//     headers: { Authorization: `Bearer ${token}` },
+//     headers: { Authorization: Bearer ${token} },
 //   });
 //   console.log("Access token being used:", accessToken);
 //   return await result.json();
