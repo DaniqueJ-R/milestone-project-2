@@ -3,20 +3,21 @@
 const stepTracker = { currentStep: 0 };
 const playlistId = {
   focus: {
-    lofi: "1234CODEBUILD",
-    hype: "2345codeis",
+    lofi: "37i9dQZF1DX8Uebhn9wzrS",
+    hype: "37i9dQZF1EIhiz7ffTXlVH",
   },
   meditation: {
-    peace: "3456code",
-    guided: "4567guide",
+    peace: "37i9dQZF1DWZqd5JICZI0u",
+    guided: "37i9dQZF1DWVS1recTqXhf",
   },
   study: {
-    jazz: "568jazz",
-    nature: "234534543",
+    jazz: "37i9dQZF1DX8wWHvPMMfNA",
+    nature: "37i9dQZF1DWZ8HCIPoGGKp",
+    // cafe: "75avKVUUNDDMgPVCb5vUGh"
   },
   workout: {
-    beast: "394y2rfiuhr",
-    zone: "fsnfvons3r4",
+    beast: "4m0CG8CxcylD7I5ipKLvmA",
+    zone: "37i9dQZF1EIg56D8W4HZiC",
   },
 };
 const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
@@ -48,6 +49,10 @@ window.onload = async function () {
     await logInWithSpotify(); // Ensure this updates the global token
   }
 };
+
+//Calls all changed on mood buttons
+document.getElementById('radioContainer').addEventListener('click', callPlaylists);
+
 
 // window.onload = async function () { //DELETE??
 //   const token = localStorage.getItem("access_token");
@@ -86,28 +91,7 @@ function nextFunction() {
   }
 }
 
-radioButtons.forEach(btn => {
-  btn.addEventListener('change', subMoodChanger);
-});
 
-function subMoodChanger() {
-  // Get selected main mood
-  const selectedMood = document.querySelector('input[name="playlist-type"]:checked');
-
-  // Hide all sub-mood containers
-  document.querySelectorAll('.sub-mood-container').forEach(container => {
-    container.classList.add('hidden');
-  });
-
-  // Show the one that matches the selected main mood
-  if (selectedMood) {
-    const moodType = selectedMood.value; // e.g., "focus"
-    const subContainer = document.getElementById(`${moodType}-sub-options`);
-    if (subContainer) {
-      subContainer.classList.remove('hidden');
-    }
-  }
-}
 
 // *** STEP 1 Log in Functions ** //
 function signInWithSpotify() {
@@ -154,19 +138,6 @@ function setTokenWithExpiration(token, expiresInSeconds) {
   localStorage.setItem("access_token", token);
   localStorage.setItem("access_token_expires_at", expiresAt.toString());
 }
-
-// window.onload = async function () {
-//   const token = localStorage.getItem("access_token");
-//   if (token) {
-//     accessToken = token;
-//     console.log("Access token loaded from localStorage");
-//     // const profile = await fetchProfile(accessToken);
-//     console.log("Access token being used1:", accessToken); DELETE LATER
-
-//   } else {
-//     logInWithSpotify();
-//   }
-// };
 
 async function isTokenValid(token) {
   const res = await fetch("https://api.spotify.com/v1/me", {
@@ -252,14 +223,84 @@ function generateCodeVerifier(length) {
 
 // *** Step 1 Functions Log in End** //
 
-// step 2 Functions Radio Start //
+
+
+// Step 2 Functions Radio Start //
+
+// radioButtons.forEach(btn => {
+//   btn.addEventListener('change', subMoodChanger);
+// });
+
+function subMoodChanger() {
+  // Always hide all sub-mood containers first
+  document.querySelectorAll('.sub-mood').forEach(container => {
+    container.classList.add('hidden');
+  });
+
+  // Get selected main mood
+  const selectedMainMood = document.querySelector('input[name="playlist-type"]:checked');
+
+  // Show the matching sub-mood container
+  if (selectedMainMood) {
+    const moodType = selectedMainMood.value; // e.g., "focus"
+    const subContainer = document.getElementById(`${moodType}-sub-options`);
+    if (subContainer) {
+      subContainer.classList.remove('hidden');
+    }
+  }
+}
+
 
 // Selecting mood for playlist
 // This function will be called when the user selects a mood
+// function radioMood() {
+//   // const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
+//   const subButtons = document.querySelectorAll('input[name="sub-playlist-type"]');
+  
+//   let selectedValue = null;
+//   let subValue = null;
+
+//   // Get selected main mood
+//   for (const radioButton of radioButtons) {
+//     if (radioButton.checked) {
+//       selectedValue = radioButton.value;
+//       break;
+//     }
+//   }
+
+//   // Get selected sub-mood
+//   for (const subButton of subButtons) {
+//     if (subButton.checked) {
+//       subValue = subButton.value;
+//       break;
+//     }
+//   }
+
+//   // Check if both are selected and valid
+//   if (selectedValue && subValue) {
+//     // alert(`You have selected: ${selectedValue} - ${subValue}`);
+//       alert(`You have selected: ${subValue}${selectedValue}`);
+
+//     if (playlist[selectedValue] && playlist[selectedValue][subValue]) {
+//       // currentPlaylist = playlist[selectedValue][subValue]; 
+//       subMoodChanger() //reset options
+//       currentPlaylist = playlist.selectedValue.subValue; // assign the song list
+//       current = 0;
+//     } else {
+//       alert("That combo doesn't exist in the playlist.");
+//     }
+
+//   } else {
+//     alert("Please select a main mood and a sub mood.");
+//   }
+  
+//   return { selectedValue, subValue };
+// }
+
 function radioMood() {
   const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
   const subButtons = document.querySelectorAll('input[name="sub-playlist-type"]');
-  
+
   let selectedValue = null;
   let subValue = null;
 
@@ -279,16 +320,15 @@ function radioMood() {
     }
   }
 
+  // Reset/hide other sub-options
+  subMoodChanger(); 
+
   // Check if both are selected and valid
   if (selectedValue && subValue) {
-    // alert(`You have selected: ${selectedValue} - ${subValue}`);
-      alert(`You have selected: ${subValue}${selectedValue}`);
+    alert(`You have selected: ${subValue} - ${selectedValue}`);
 
-    // This assumes you have a global `playlist` object like:
-    // const playlist = { focus: { jazz: "abc123", hype: "def456" }, ... };
-    if (playlist[selectedValue] && playlist[selectedValue][subValue]) {
-      // currentPlaylist = playlist[selectedValue][subValue];
-      currentPlaylist = playlist.selectedValue.subValue; // assign the song list
+    if (/*playlist*/[selectedValue] && /*playlist*/[selectedValue][subValue]) {
+      currentPlaylist = /*playlist*/[selectedValue][subValue]; 
       current = 0;
     } else {
       alert("That combo doesn't exist in the playlist.");
@@ -298,52 +338,19 @@ function radioMood() {
     alert("Please select a main mood and a sub mood.");
   }
 
-  // Return both values as an object (cleaner than comma operator)
   return { selectedValue, subValue };
 }
 
 
-// This function will be called when the user clicks the button to fetch playlists
-// async function fetchPlaylists(token) {
-//   const res = await fetch("https://api.spotify.com/v1/me/playlists", {
-//     headers: { Authorization: `Bearer ${token}` },
-//   });
-// const result = await fetch(
-//   // "https://api.spotify.com/v1/browse/categories/0JQ5DAt0tbjZptfcdMSKl3",DELETE LATER
-//   // "https://api.spotify.com/v1/browse/categories",DELETE LATER
-//   // 'https://api.spotify.com/v1/browse/categories/0JQ5DAt0tbjZptfcdMSKl3/playlists',  DELETE LATER
-//   // 'https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFFzDl7qN9Apr/playlists',DELETE LATER
-//   // 'https://api.spotify.com/v1/users/{user_id}/playlists', DELETE LATER
-//   'https://api.spotify.com/v1/me/playlists',
-//   {
-//     method: "GET",
-//     headers: { Authorization: Bearer ${token} },
-//   }
-// );
-
-//   if (res.status === 401) {
-//     console.warn("⚠️ Token expired. Reauthenticating...");
-//     localStorage.removeItem("access_token");
-//     localStorage.removeItem("access_token_expires_at");
-//     window.location.reload(); // Trigger login again
-//     return;
-//   }
-
-//   return await res.json();
-// }
-
-// This function will be called when the user selects a mood
-// and clicks the button to fetch playlists
-
-async function handleMoodSelection() {
+//Matches mood to correct playlist
+ function handleMoodSelection() {
   const mood = radioMood();
   if (!mood) return;
 
   const sessionKeyword = mood.toLowerCase();
-  const allPlaylists = await fetchPlaylists(accessToken); // ← call and await here
+  const allPlaylists = playlistId;
 
   // 🔍 Log ALL playlists for debugging
-  // console.log("All playlists returned:", allPlaylists.categories.items);
   console.log("All playlists returned:", allPlaylists);
 
   const matchingPlaylists = allPlaylists.items.filter((playlist) => {
@@ -377,16 +384,6 @@ async function callPlaylists() {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      // })
-      // .then((res) => res.json()) // parse JSON response
-      // .then((data) => {
-      //   // do something with the data
-      //   console.log("Playlist data??:", data);
-      //   console.log(data);
-      // })
-      // .catch((err) => {
-      //   // handle any errors
-      //   console.error(err);
     });
     loadSong();
     return playlistId;

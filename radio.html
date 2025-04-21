@@ -57,7 +57,7 @@
 
         <!-- Radio Controls -->
 
-        <div class="radio-container" onchange="callPlaylists()">
+        <div id="radioContainer" class="radio-container">
           <p class="text-medium">Choose a mood for your radio:</p>
           <div class="radio-option">
             <input
@@ -68,7 +68,7 @@
               checked
             />
             <label for="focus">Focus</label>
-            <ul id="focus-sub-options" class="sub-mood">
+            <ul id="focus-sub-options" class="sub-mood hidden">
               <li>
                 <input
                 type="radio"
@@ -92,7 +92,7 @@
           <div class="radio-option">
             <input type="radio" id="study" name="playlist-type" value="study" />
             <label for="study">Study</label>
-            <ul id="study-sub-options" class="sub-mood">
+            <ul id="study-sub-options" class="sub-mood hidden">
               <li>
                 <input
                 type="radio"
@@ -121,7 +121,7 @@
               value="workout"
             />
             <label for="workout">Workout</label>
-            <ul id="workout-sub-options" class="sub-mood">
+            <ul id="workout-sub-options" class="sub-mood hidden">
               <li>
                 <input
                 type="radio"
@@ -145,12 +145,12 @@
           <div class="radio-option">
             <input
               type="radio"
-              id="meditation"
+              id="med"
               name="playlist-type"
-              value="meditation"
+              value="med"
             />
-            <label for="meditation">Meditation</label>
-            <ul id="meditation-sub-options" class="sub-mood">
+            <label for="med">Meditation</label>
+            <ul id="med-sub-options" class="sub-mood hidden">
               <li>
                 <input
                 type="radio"
