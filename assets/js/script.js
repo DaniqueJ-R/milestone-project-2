@@ -19,6 +19,7 @@ const playlistId = {
     zone: "fsnfvons3r4",
   },
 };
+const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
 let accessToken = null; // make it a global variable
 let device_id = null;
 // window.callPlaylists = callPlaylists; DELETE?
@@ -82,6 +83,29 @@ function nextFunction() {
   if (stepTracker.currentStep > 5) {
     // Assuming there are 3 steps (0, 1, 2) is actually 5 steps, update later
     stepTracker.currentStep = 5; // Prevent going beyond the last step
+  }
+}
+
+radioButtons.forEach(btn => {
+  btn.addEventListener('change', subMoodChanger);
+});
+
+function subMoodChanger() {
+  // Get selected main mood
+  const selectedMood = document.querySelector('input[name="playlist-type"]:checked');
+
+  // Hide all sub-mood containers
+  document.querySelectorAll('.sub-mood-container').forEach(container => {
+    container.classList.add('hidden');
+  });
+
+  // Show the one that matches the selected main mood
+  if (selectedMood) {
+    const moodType = selectedMood.value; // e.g., "focus"
+    const subContainer = document.getElementById(`${moodType}-sub-options`);
+    if (subContainer) {
+      subContainer.classList.remove('hidden');
+    }
   }
 }
 
@@ -230,25 +254,16 @@ function generateCodeVerifier(length) {
 
 // step 2 Functions Radio Start //
 
-function addSubMood() {
-  const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
-  const subButton = document.querySelectorAll(
-    'input[name="sub-playlist-type"]'
-  );
-
-
-}
-
 // Selecting mood for playlist
 // This function will be called when the user selects a mood
 function radioMood() {
   const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
-  const subButton = document.querySelectorAll(
-    'input[name="sub-playlist-type"]'
-  );
+  const subButtons = document.querySelectorAll('input[name="sub-playlist-type"]');
+  
   let selectedValue = null;
-  let subValue = subButton.value;
+  let subValue = null;
 
+  // Get selected main mood
   for (const radioButton of radioButtons) {
     if (radioButton.checked) {
       selectedValue = radioButton.value;
@@ -256,6 +271,7 @@ function radioMood() {
     }
   }
 
+  // Get selected sub-mood
   for (const subButton of subButtons) {
     if (subButton.checked) {
       subValue = subButton.value;
@@ -263,21 +279,29 @@ function radioMood() {
     }
   }
 
-  if (
-    (selectedValue == "focus" && subValue == "jazz" || subValue == "hype") ||
-    (selectedValue == "study" && subValue == "lofi" || subValue == "nature") ||
-    (selectedValue == "workout" && subValue == "beast" ||  subValue == "zone") ||
-    (selectedValue == "meditation" && subValue == "peaceful" || subValue == "guided")
-  ) {
-    alert(`You have selected: ${subValue}${selectedValue}`);
-    currentPlaylist = playlist.selectedValue.subValue; // assign the song list
-    current = 0;
+  // Check if both are selected and valid
+  if (selectedValue && subValue) {
+    // alert(`You have selected: ${selectedValue} - ${subValue}`);
+      alert(`You have selected: ${subValue}${selectedValue}`);
+
+    // This assumes you have a global `playlist` object like:
+    // const playlist = { focus: { jazz: "abc123", hype: "def456" }, ... };
+    if (playlist[selectedValue] && playlist[selectedValue][subValue]) {
+      // currentPlaylist = playlist[selectedValue][subValue];
+      currentPlaylist = playlist.selectedValue.subValue; // assign the song list
+      current = 0;
+    } else {
+      alert("That combo doesn't exist in the playlist.");
+    }
+
   } else {
-    alert("Please select a mood.");
+    alert("Please select a main mood and a sub mood.");
   }
 
-  return selectedValue, subValue; // Return the selected value
+  // Return both values as an object (cleaner than comma operator)
+  return { selectedValue, subValue };
 }
+
 
 // This function will be called when the user clicks the button to fetch playlists
 // async function fetchPlaylists(token) {
@@ -310,7 +334,6 @@ function radioMood() {
 
 // This function will be called when the user selects a mood
 // and clicks the button to fetch playlists
-
 
 async function handleMoodSelection() {
   const mood = radioMood();
