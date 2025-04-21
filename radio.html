@@ -68,10 +68,50 @@
               checked
             />
             <label for="focus">Focus</label>
+            <ul class="sub-mood">
+              <li>
+                <input
+                type="radio"
+                id="lofi"
+                name="sub-playlist-type"
+                value="lofi"
+              />
+              <label for="lofi">Lofi</label>
+              </li>
+              <li>
+                <input
+                type="radio"
+                id="hype"
+                name="sub-playlist-type"
+                value="hype"
+              />
+              <label for="hype">Hype</label>
+              </li>
+            </ul>
           </div>
           <div class="radio-option">
             <input type="radio" id="study" name="playlist-type" value="study" />
             <label for="study">Study</label>
+            <ul class="sub-mood hidden">
+              <li>
+                <input
+                type="radio"
+                id="jazz"
+                name="sub-playlist-type"
+                value="jazz"
+              />
+              <label for="jazz">Jazz</label>
+              </li>
+              <li>
+                <input
+                type="radio"
+                id="nature"
+                name="sub-playlist-type"
+                value="nature"
+              />
+              <label for="nature">Nature</label>
+              </li>
+            </ul>
           </div>
           <div class="radio-option">
             <input
@@ -81,6 +121,26 @@
               value="workout"
             />
             <label for="workout">Workout</label>
+            <ul class="sub-mood hidden">
+              <li>
+                <input
+                type="radio"
+                id="beast"
+                name="sub-playlist-type"
+                value="beast"
+              />
+              <label for="beast">BeastMode</label>
+              </li>
+              <li>
+                <input
+                type="radio"
+                id="zone"
+                name="sub-playlist-type"
+                value="zone"
+              />
+              <label for="zone">In The Zone</label>
+              </li>
+            </ul>
           </div>
           <div class="radio-option">
             <input
@@ -90,6 +150,26 @@
               value="meditation"
             />
             <label for="meditation">Meditation</label>
+            <ul class="sub-mood hidden">
+              <li>
+                <input
+                type="radio"
+                id="peaceful"
+                name="sub-playlist-type"
+                value="peaceful"
+              />
+              <label for="peaceful">Peaceful</label>
+              </li>
+              <li>
+                <input
+                type="radio"
+                id="guided"
+                name="sub-playlist-type"
+                value="guided"
+              />
+              <label for="guided">Guided</label>
+              </li>
+            </ul>
           </div>
 
           <button class="btn" onclick="nextFunction()">Finish Session</button>

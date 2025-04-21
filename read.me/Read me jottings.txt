@@ -23,3 +23,8 @@ JamJar is a Site that allows users to play a related playlist based on the work 
 (Work, Study, Workout, meditate [moods to be added soon]). Once completed, they can see how long they listened for,
  as well as how many breaks they took. how many songs they played and/or skipped. They can then listen again or find 
  the playlis on spotify directly via a link.
+
+
+Changing it to play pre-selected playlists instead of finding ones from each account. PLaylists may be personalized if logged in as they work off the persons account.
+
+Initally wanted to use JS to append each subratdio option, but HTML was quicker with so few options, plan to update to JS when expanding site?

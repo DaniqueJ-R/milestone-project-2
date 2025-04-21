@@ -400,13 +400,17 @@ main > section {
   z-index: 3;
 }
 
+.sub-mood {
+  margin: 0.5rem 2rem;
+}
+
 .radio-container p {
   margin-left: 0px;
 }
 
-.radio-option {
-  padding-bottom: 0.4rem;
-}
+/* .radio-option {
+  padding: 0.4rem 0rem;
+} */
 
 /* Search bar styles end */
 
