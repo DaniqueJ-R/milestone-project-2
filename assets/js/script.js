@@ -107,7 +107,6 @@ function nextFunction() {
   }
 
   if (stepTracker.currentStep > 5) {
-    // Assuming there are 3 steps (0, 1, 2) is actually 5 steps, update later
     stepTracker.currentStep = 5; // Prevent going beyond the last step
   }
 }
@@ -368,21 +367,21 @@ function radioMood() {
   const mood = radioMood();
   if (!mood) return;
 
-  const sessionKeyword = mood.toLowerCase();
+  const sessionKeyword = `${mood.selectedValue} ${mood.subValue}`.toLowerCase();
   const allPlaylists = playlistId;
 
   // 🔍 Log ALL playlists for debugging
   console.log("All playlists returned:", allPlaylists);
 
-  const matchingPlaylists = allPlaylists.items.filter((playlist) => {
-    const name = playlist.name.toLowerCase();
-    const desc = playlist.description?.toLowerCase() || "";
-    return (
+  const matchingPlaylists = sessionKeyword//.items.filter((playlist) => {
+    // const name = playlist.name.toLowerCase();
+    // const desc = playlist.description?.toLowerCase() || "";
+    // return (sessionKeyword);
       // owner.display_name === "made" && //Need to figure out how to get the owner name
-      name.includes(sessionKeyword) || desc.includes(sessionKeyword)
-    );
-  });
-
+  //     name.includes(sessionKeyword) || desc.includes(sessionKeyword)
+  //   );
+  // });
+ 
   console.log("Matching playlists:", matchingPlaylists);
   return matchingPlaylists;
 }
@@ -395,8 +394,8 @@ async function callPlaylists() {
 
   const matchingPlaylists = await handleMoodSelection(); // Call the function to get matching playlists
 
-  if (matchingPlaylists && matchingPlaylists.length > 0) {
-    playlistId = matchingPlaylists[0].id;
+  if (matchingPlaylists) {
+    playlistId = matchingPlaylists;
     console.log("Selected playlist ID:", playlistId);
 
     // console.log("Access token being used5:", accessToken); DELETE LATER
@@ -500,9 +499,9 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   player.addListener("initialization_error", ({ message }) => {
     console.error(message);
   });
-  player.addListener("authentication_error", ({ message }) => {
-    console.error(message);
-  });
+  // player.addListener("authentication_error", ({ message }) => {
+  //   console.error(message);
+  // });
   player.addListener("account_error", ({ message }) => {
     console.error(message);
   });
