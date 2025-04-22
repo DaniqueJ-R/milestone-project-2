@@ -40,15 +40,36 @@ user-modify-playback-state
   .join(" ");
 
 //ensure accessToken gets initialized properly on load
+// Skips log in if already logged in
 window.onload = async function () {
   const token = localStorage.getItem("access_token");
-  if (token) {
-    accessToken = token;
-    console.log("Access token loaded from localStorage");
+  const expiresAt = localStorage.getItem("access_token_expires_at");
+
+  if (token && expiresAt && Date.now() < parseInt(expiresAt)) {
+    const valid = await isTokenValid(token);
+    if (valid) {
+      accessToken = token;
+      console.log("✅ Access token is valid and not expired.");
+      
+      // Skip login step
+      if (!window.location.href.includes("radio.html")) {
+        document.location.href = 'http://127.0.0.1:5501/radio.html';
+        return;
+      }
+
+      callPlaylists();
+      return;
+    } else {
+      console.warn("⚠️ Token found but invalid, logging in again...");
+    }
   } else {
-    await logInWithSpotify(); // Ensure this updates the global token
+    console.log("🔒 No valid token found, logging in...");
   }
+
+  // Either no token or it's expired/invalid
+  await logInWithSpotify();
 };
+
 
 //Calls all changed on mood buttons
 document.getElementById('radioContainer').addEventListener('click', callPlaylists);
