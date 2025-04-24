@@ -1,5 +1,3 @@
-//Somewhere in codee the age will not pass the log in if already logged in and token is valid, please debug//
-
 const stepTracker = { currentStep: 0 };
 const playlistId = {
   focus: {
@@ -7,7 +5,7 @@ const playlistId = {
     hype: "37i9dQZF1EIhiz7ffTXlVH",
   },
   meditation: {
-    peace: "37i9dQZF1DWZqd5JICZI0u",
+    peaceful: "37i9dQZF1DWZqd5JICZI0u",
     guided: "37i9dQZF1DWVS1recTqXhf",
   },
   study: {
@@ -22,8 +20,8 @@ const playlistId = {
 };
 const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
 let accessToken = null; // make it a global variable
-let device_id = null;
-// window.callPlaylists = callPlaylists; DELETE?
+let device_id = window.device_id || localStorage.getItem("spotify_device_id");
+let trackUri = null;
 const scopes = `
 user-read-private
 user-read-email
@@ -50,10 +48,10 @@ window.onload = async function () {
     if (valid) {
       accessToken = token;
       console.log("✅ Access token is valid and not expired.");
-      
+
       // Skip login step
       if (!window.location.href.includes("radio.html")) {
-        document.location.href = 'http://127.0.0.1:5501/radio.html';
+        document.location.href = "http://127.0.0.1:5501/radio.html";
         return;
       }
 
@@ -70,28 +68,10 @@ window.onload = async function () {
   await logInWithSpotify();
 };
 
-
 //Calls all changed on mood buttons
-document.getElementById('radioContainer').addEventListener('click', callPlaylists);
-
-
-// window.onload = async function () { //DELETE??
-//   const token = localStorage.getItem("access_token");
-//   if (token) {
-//     accessToken = token;
-//     console.log("Access token loaded from localStorage");
-//     console.log("Access token being used1:", accessToken);DELETE LATER
-//     populateUI();
-//     Validate token by hitting /me
-//     const valid = await isTokenValid(token);
-//     if (!valid) {
-//       console.warn("Stored token is invalid, redirecting...");
-//       redirectToAuthCodeFlow("d831bf8c8a594eaeb5d37469c14d13fe");
-//     }
-//   } else {
-//     logInWithSpotify();
-//   }
-// };
+document
+  .getElementById("radioContainer")
+  .addEventListener("click", callPlaylists);
 
 function nextFunction() {
   let currentPage = document.getElementById(`step${stepTracker.currentStep}`);
@@ -110,8 +90,6 @@ function nextFunction() {
     stepTracker.currentStep = 5; // Prevent going beyond the last step
   }
 }
-
-
 
 // *** STEP 1 Log in Functions ** //
 function signInWithSpotify() {
@@ -243,83 +221,36 @@ function generateCodeVerifier(length) {
 
 // *** Step 1 Functions Log in End** //
 
-
-
 // Step 2 Functions Radio Start //
-
-// radioButtons.forEach(btn => {
-//   btn.addEventListener('change', subMoodChanger);
-// });
 
 function subMoodChanger() {
   // Always hide all sub-mood containers first
-  document.querySelectorAll('.sub-mood').forEach(container => {
-    container.classList.add('hidden');
+  document.querySelectorAll(".sub-mood").forEach((container) => {
+    container.classList.add("hidden");
   });
 
   // Get selected main mood
-  const selectedMainMood = document.querySelector('input[name="playlist-type"]:checked');
+  const selectedMainMood = document.querySelector(
+    'input[name="playlist-type"]:checked'
+  );
 
   // Show the matching sub-mood container
   if (selectedMainMood) {
     const moodType = selectedMainMood.value; // e.g., "focus"
     const subContainer = document.getElementById(`${moodType}-sub-options`);
     if (subContainer) {
-      subContainer.classList.remove('hidden');
+      subContainer.classList.remove("hidden");
     }
   }
 }
 
-
 // Selecting mood for playlist
 // This function will be called when the user selects a mood
-// function radioMood() {
-//   // const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
-//   const subButtons = document.querySelectorAll('input[name="sub-playlist-type"]');
-  
-//   let selectedValue = null;
-//   let subValue = null;
-
-//   // Get selected main mood
-//   for (const radioButton of radioButtons) {
-//     if (radioButton.checked) {
-//       selectedValue = radioButton.value;
-//       break;
-//     }
-//   }
-
-//   // Get selected sub-mood
-//   for (const subButton of subButtons) {
-//     if (subButton.checked) {
-//       subValue = subButton.value;
-//       break;
-//     }
-//   }
-
-//   // Check if both are selected and valid
-//   if (selectedValue && subValue) {
-//     // alert(`You have selected: ${selectedValue} - ${subValue}`);
-//       alert(`You have selected: ${subValue}${selectedValue}`);
-
-//     if (playlist[selectedValue] && playlist[selectedValue][subValue]) {
-//       // currentPlaylist = playlist[selectedValue][subValue]; 
-//       subMoodChanger() //reset options
-//       currentPlaylist = playlist.selectedValue.subValue; // assign the song list
-//       current = 0;
-//     } else {
-//       alert("That combo doesn't exist in the playlist.");
-//     }
-
-//   } else {
-//     alert("Please select a main mood and a sub mood.");
-//   }
-  
-//   return { selectedValue, subValue };
-// }
-
 function radioMood() {
   const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
-  const subButtons = document.querySelectorAll('input[name="sub-playlist-type"]');
+  const subButtons = document.querySelectorAll(
+    'input[name="sub-playlist-type"]'
+  );
 
   let selectedValue = null;
   let subValue = null;
@@ -341,19 +272,17 @@ function radioMood() {
   }
 
   // Reset/hide other sub-options
-  subMoodChanger(); 
+  subMoodChanger();
 
   // Check if both are selected and valid
   if (selectedValue && subValue) {
     alert(`You have selected: ${subValue} - ${selectedValue}`);
 
-    if (/*playlist*/[selectedValue] && /*playlist*/[selectedValue][subValue]) {
-      currentPlaylist = /*playlist*/[selectedValue][subValue]; 
-      current = 0;
+    if (playlistId[selectedValue] && playlistId[selectedValue][subValue]) {
+      currentPlaylist = playlistId[selectedValue][subValue];
     } else {
       alert("That combo doesn't exist in the playlist.");
     }
-
   } else {
     alert("Please select a main mood and a sub mood.");
   }
@@ -361,63 +290,56 @@ function radioMood() {
   return { selectedValue, subValue };
 }
 
-
 //Matches mood to correct playlist
- function handleMoodSelection() {
+function getPlaylistId() {
   const mood = radioMood();
   if (!mood) return;
 
-  const sessionKeyword = `${mood.selectedValue} ${mood.subValue}`.toLowerCase();
+  const sessionKeywordMain = `${mood.selectedValue}`.toLowerCase();
+  const sessionKeywordSub = `${mood.subValue}`.toLowerCase();
   const allPlaylists = playlistId;
 
   // 🔍 Log ALL playlists for debugging
   console.log("All playlists returned:", allPlaylists);
 
-  const matchingPlaylists = sessionKeyword//.items.filter((playlist) => {
-    // const name = playlist.name.toLowerCase();
-    // const desc = playlist.description?.toLowerCase() || "";
-    // return (sessionKeyword);
-      // owner.display_name === "made" && //Need to figure out how to get the owner name
-  //     name.includes(sessionKeyword) || desc.includes(sessionKeyword)
-  //   );
-  // });
- 
-  console.log("Matching playlists:", matchingPlaylists);
+  const matchingPlaylists = playlistId[sessionKeywordMain]?.[sessionKeywordSub];
+
+  console.log("Matching playlist:", matchingPlaylists);
   return matchingPlaylists;
 }
 
+// This function will be called when the user clicks the button to fetch songs
 async function callPlaylists() {
   if (!accessToken) {
     console.error("Access token is missing!");
     return;
   }
 
-  const matchingPlaylists = await handleMoodSelection(); // Call the function to get matching playlists
+  const selectedPlaylistId = getPlaylistId(); // This gets the correct ID
 
-  if (matchingPlaylists) {
-    playlistId = matchingPlaylists;
-    console.log("Selected playlist ID:", playlistId);
+  if (selectedPlaylistId) {
+    console.log("Selected playlist ID:", selectedPlaylistId);
 
-    // console.log("Access token being used5:", accessToken); DELETE LATER
-    fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
-      // send request
+    await fetch(`https://api.spotify.com/v1/playlists/${selectedPlaylistId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
     loadSong();
-    return playlistId;
+    return selectedPlaylistId;
   } else {
     console.log("No matching playlists found.");
     return null;
   }
 }
 
-// This function will be called when the user clicks the button to fetch songs
+//This finds each song in the playlist
 async function fetchSongs(playlistId) {
   console.log("Selected playlist ID for fetchSong:", playlistId);
   const result = await fetch(
     `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+    // `https://api.spotify.com/v1/users/{user_id}/playlists/${playlistId}/tracks`
     {
       method: "GET",
       headers: { Authorization: `Bearer ${accessToken} ` },
@@ -427,15 +349,16 @@ async function fetchSongs(playlistId) {
   return await result.json();
 }
 
-async function loadSong(index) {
-  if (!playlistId) {
-    console.error("No playlistId defined!");
+async function loadSong(index = 0) {
+  const currentPlaylistId = getPlaylistId();
+  if (!currentPlaylistId) {
+    console.error("No playlist ID found!");
     return;
   }
 
-  const songsData = await fetchSongs(playlistId); // ← call and await playlist
-  const track = songsData.items[0].track;
-  console.log("Playlist being used:", songsData);
+  const songsData = await fetchSongs(currentPlaylistId);
+  const track = songsData.items[index]?.track;
+
   if (!track) {
     console.error("Track not found at index:", index);
     return;
@@ -446,11 +369,16 @@ async function loadSong(index) {
   document.getElementById("artist-name").textContent = track.artists[0].name;
   // document.getElementById("audio").src = track.uri;
   document.getElementById("cover").src =
-    track.album.images[0].url || "assets/images/favicon-32x32.png"; // handle missing image
+    track.album.images[0]?.url || "assets/images/favicon-32x32.png"; // handles missing image
   document.getElementById("spotifyLink").href = track.spotify;
-  playTrack("spotify:track:1W9mO8lVFD2AhsIRwwMQ8r");
+  let trackUri = track.uri;
+  console.log("Track fetched:", track.uri);
+  document.getElementById("spotifyLink").href = track.external_urls.spotify;
 
   console.log("Now playing:", track);
+  console.log("Calling playTrack with URI:", trackUri);
+  playTrack(trackUri);
+  return loadSong;
 }
 
 async function checkIfPremium() {
@@ -470,9 +398,13 @@ async function checkIfPremium() {
 
 //testing
 
-//initialize the player
+
+// Initialize the player
+// Only call this when you KNOW accessToken is valid and fresh
+function initializePlayer(accessToken) {
 window.onSpotifyWebPlaybackSDKReady = () => {
   const token = accessToken;
+  console.log(`Access Token for playlback: ${accessToken}`)
   const player = new Spotify.Player({
     name: "Web Playback SDK Quick Start Player",
     getOAuthToken: (cb) => {
@@ -480,6 +412,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     },
     volume: 0.5,
   });
+  console.log(`Access Token for playlback: ${accessToken}`)
 
   // Ready
   player.addListener("ready", ({ device_id }) => {
@@ -499,9 +432,9 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   player.addListener("initialization_error", ({ message }) => {
     console.error(message);
   });
-  // player.addListener("authentication_error", ({ message }) => {
-  //   console.error(message);
-  // });
+  player.addListener("authentication_error", ({ message }) => {
+    console.error(message);
+  });
   player.addListener("account_error", ({ message }) => {
     console.error(message);
   });
@@ -515,35 +448,61 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 
   player.connect();
 };
+};
 
 async function playTrack(trackUri) {
-  let device_id = localStorage.getItem("spotify_device_id");
-
   if (!device_id) {
-    console.warn("Waiting for device ID...");
-    // Retry after a short delay
-    setTimeout(() => playTrack(trackUri), 1000);
+    console.error("Missing device ID.");
     return;
+  } else if (!accessToken) {
+    console.error("Missing device access token.");
+return;
   }
 
-  const res = await fetch(
-    `https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
-    {
+
+  console.log("Calling playTrack with URI in fnction:", trackUri);
+  try {
+    // First: Transfer playback to the Web Playback SDK
+    await fetch("https://api.spotify.com/v1/me/player", {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        uris: [trackUri],
+        device_ids: [device_id],
+        play: false, // let us control when to play
       }),
-    }
-  );
+    });
 
-  if (res.status === 401) {
-    console.error("❌ Unauthorized. Possible token issue.");
+    // Second: Actually play the track
+    const res = await fetch(
+      `https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uris: [trackUri],
+        }),
+      }
+    );
+
+    if (res.status === 401) {
+      console.error("❌ Unauthorized. Token may be expired.");
+    } else if (res.status === 404) {
+      console.warn("⚠️ Device Not Active Yet. Try interacting with the Spotify app first.");
+      alert("Please press play on any Spotify device first, then try again.");
+    } else if (!res.ok) {
+      console.error("Something else went wrong:", await res.text());
+    }
+  } catch (error) {
+    console.error("Playback error:", error);
   }
 }
+
 
 //testing
 
