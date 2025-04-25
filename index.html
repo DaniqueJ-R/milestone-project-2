@@ -38,48 +38,45 @@
   <body>
     <!-- Header Section -->
     <header id="header" class="container">
-      <div id="app">
-        <div class="container">
-          <div class="spotify-logo">
-            <span class="logo-text">made for</span>
-            <i class="fa-brands fa-spotify"></i>
-          </div>
-        </div>
+      <nav class="nav">
+          <a class="nav-link active" aria-current="page" href="#">Active</a>
+          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+          <span class="spotify-logo">
+              <span class="logo-text">made for</span>
+              <i class="fa-brands fa-spotify"></i>
+            </span>
+        </nav>
       </div>
 
-      <!-- Header Image -->
-      <div
-        id="header-image"
-        class="relative container"
-      >
-        <span class="header-image">
-        <img
-          src="assets/images/turntable-base.jpg"
-          alt="Vinyl Record"
-          class="turntable"
-        />
-        <img
-          src="assets/images/turntable-vinyl.png"
-          alt="Vinyl Record"
-          class="vinyl spinning"
-        />
-        <img
-          src="assets/images/turntable-front.png"
-          alt="Vinyl Record"
-          class="foreground"
-        />
-        <img
-          src="assets/images/turntable-button.png"
-          alt="Vinyl Record"
-          class="slider"
-        /></span>
-        </div>
-    </header>
+<!-- Header Image -->
+<div id="header-image" class="relative container">
+  <span class="header-image">
+    <img
+      src="assets/images/turntable-base.jpg"
+      alt="Vinyl Record"
+      class="turntable" />
+    <img
+      src="assets/images/turntable-vinyl.png"
+      alt="Vinyl Record"
+      class="vinyl spinning" />
+    <img
+      src="assets/images/turntable-front.png"
+      alt="Vinyl Record"
+      class="foreground" />
+    <img
+      src="assets/images/turntable-button.png"
+      alt="Vinyl Record"
+      class="slider"
+  /></span>
+</div>
+</header>
 
     <!-- Main Content -->
     <main class="container">
       <!-- Header Text -->
-      <section id="step0" class="relative container ">
+      <section id="step0" class="relative container">
         <div class="relative intro-text">
           <span class="text-big">Welcome to</span>
           <h1>JamJar</h1>
@@ -173,6 +170,8 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- Spotify API -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
   </body>
 </html>

@@ -39,34 +39,43 @@ user-modify-playback-state
 
 //ensure accessToken gets initialized properly on load
 // Skips log in if already logged in
-window.onload = async function () {
-  const token = localStorage.getItem("access_token");
-  const expiresAt = localStorage.getItem("access_token_expires_at");
+// async function authenticationProcess() {
+//   const token = localStorage.getItem("access_token");
+//   const expiresAt = localStorage.getItem("access_token_expires_at");
 
-  if (token && expiresAt && Date.now() < parseInt(expiresAt)) {
-    const valid = await isTokenValid(token);
-    if (valid) {
-      accessToken = token;
-      console.log("✅ Access token is valid and not expired.");
+//   if (token && expiresAt && Date.now() < parseInt(expiresAt)) {
+//     const valid = await isTokenValid(token);
+//     if (valid) {
+//       accessToken = token;
+//       console.log("✅ Access token is valid and not expired.");
 
-      // Skip login step
-      if (!window.location.href.includes("radio.html")) {
-        document.location.href = "http://127.0.0.1:5501/radio.html";
-        return;
-      }
+//       // Skip login step
+//       if (!window.location.href.includes("radio.html")) {
+//         document.location.href = "http://127.0.0.1:5501/radio.html";
+//         return;
+//       };
+      
+//       // if (window.Spotify) {
+//       //   initializePlayer(accessToken);
+//       // } else {
+//       //   window.onSpotifyWebPlaybackSDKReady = () => {
+//       //     initializePlayer(accessToken);
+//       //   };
+//       // }
+      
 
-      callPlaylists();
-      return;
-    } else {
-      console.warn("⚠️ Token found but invalid, logging in again...");
-    }
-  } else {
-    console.log("🔒 No valid token found, logging in...");
-  }
+//       callPlaylists();
+//       return;
+//     } else {
+//       console.warn("⚠️ Token found but invalid, logging in again...");
+//     }
+//   } else {
+//     console.log("🔒 No valid token found, logging in...");
+//   }
 
-  // Either no token or it's expired/invalid
-  await logInWithSpotify();
-};
+//   // Either no token or it's expired/invalid
+//   await logInWithSpotify();
+// };
 
 //Calls all changed on mood buttons
 document
@@ -220,372 +229,6 @@ function generateCodeVerifier(length) {
 }
 
 // *** Step 1 Functions Log in End** //
-
-// Step 2 Functions Radio Start //
-
-function subMoodChanger() {
-  // Always hide all sub-mood containers first
-  document.querySelectorAll(".sub-mood").forEach((container) => {
-    container.classList.add("hidden");
-  });
-
-  // Get selected main mood
-  const selectedMainMood = document.querySelector(
-    'input[name="playlist-type"]:checked'
-  );
-
-  // Show the matching sub-mood container
-  if (selectedMainMood) {
-    const moodType = selectedMainMood.value; // e.g., "focus"
-    const subContainer = document.getElementById(`${moodType}-sub-options`);
-    if (subContainer) {
-      subContainer.classList.remove("hidden");
-    }
-  }
-}
-
-// Selecting mood for playlist
-// This function will be called when the user selects a mood
-function radioMood() {
-  const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
-  const subButtons = document.querySelectorAll(
-    'input[name="sub-playlist-type"]'
-  );
-
-  let selectedValue = null;
-  let subValue = null;
-
-  // Get selected main mood
-  for (const radioButton of radioButtons) {
-    if (radioButton.checked) {
-      selectedValue = radioButton.value;
-      break;
-    }
-  }
-
-  // Get selected sub-mood
-  for (const subButton of subButtons) {
-    if (subButton.checked) {
-      subValue = subButton.value;
-      break;
-    }
-  }
-
-  // Reset/hide other sub-options
-  subMoodChanger();
-
-  // Check if both are selected and valid
-  if (selectedValue && subValue) {
-    alert(`You have selected: ${subValue} - ${selectedValue}`);
-
-    if (playlistId[selectedValue] && playlistId[selectedValue][subValue]) {
-      currentPlaylist = playlistId[selectedValue][subValue];
-    } else {
-      alert("That combo doesn't exist in the playlist.");
-    }
-  } else {
-    alert("Please select a main mood and a sub mood.");
-  }
-
-  return { selectedValue, subValue };
-}
-
-//Matches mood to correct playlist
-function getPlaylistId() {
-  const mood = radioMood();
-  if (!mood) return;
-
-  const sessionKeywordMain = `${mood.selectedValue}`.toLowerCase();
-  const sessionKeywordSub = `${mood.subValue}`.toLowerCase();
-  const allPlaylists = playlistId;
-
-  // 🔍 Log ALL playlists for debugging
-  console.log("All playlists returned:", allPlaylists);
-
-  const matchingPlaylists = playlistId[sessionKeywordMain]?.[sessionKeywordSub];
-
-  console.log("Matching playlist:", matchingPlaylists);
-  return matchingPlaylists;
-}
-
-// This function will be called when the user clicks the button to fetch songs
-async function callPlaylists() {
-  if (!accessToken) {
-    console.error("Access token is missing!");
-    return;
-  }
-
-  const selectedPlaylistId = getPlaylistId(); // This gets the correct ID
-
-  if (selectedPlaylistId) {
-    console.log("Selected playlist ID:", selectedPlaylistId);
-
-    await fetch(`https://api.spotify.com/v1/playlists/${selectedPlaylistId}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    loadSong();
-    return selectedPlaylistId;
-  } else {
-    console.log("No matching playlists found.");
-    return null;
-  }
-}
-
-//This finds each song in the playlist
-async function fetchSongs(playlistId) {
-  console.log("Selected playlist ID for fetchSong:", playlistId);
-  const result = await fetch(
-    `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-    // `https://api.spotify.com/v1/users/{user_id}/playlists/${playlistId}/tracks`
-    {
-      method: "GET",
-      headers: { Authorization: `Bearer ${accessToken} ` },
-    }
-  );
-
-  return await result.json();
-}
-
-async function loadSong(index = 0) {
-  const currentPlaylistId = getPlaylistId();
-  if (!currentPlaylistId) {
-    console.error("No playlist ID found!");
-    return;
-  }
-
-  const songsData = await fetchSongs(currentPlaylistId);
-  const track = songsData.items[index]?.track;
-
-  if (!track) {
-    console.error("Track not found at index:", index);
-    return;
-  }
-
-  let current = 0;
-  document.getElementById("title").textContent = track.name;
-  document.getElementById("artist-name").textContent = track.artists[0].name;
-  // document.getElementById("audio").src = track.uri;
-  document.getElementById("cover").src =
-    track.album.images[0]?.url || "assets/images/favicon-32x32.png"; // handles missing image
-  document.getElementById("spotifyLink").href = track.spotify;
-  let trackUri = track.uri;
-  console.log("Track fetched:", track.uri);
-  document.getElementById("spotifyLink").href = track.external_urls.spotify;
-
-  console.log("Now playing:", track);
-  console.log("Calling playTrack with URI:", trackUri);
-  playTrack(trackUri);
-  return loadSong;
-}
-
-async function checkIfPremium() {
-  const res = await fetch("https://api.spotify.com/v1/me", {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  const data = await res.json();
-  if (data.product === "premium") {
-    console.log("✅ You have Spotify Premium");
-  } else {
-    alert("⚠️ You need a Spotify Premium account to use playback.");
-  }
-}
-
-//testing
-
-
-// Initialize the player
-// Only call this when you KNOW accessToken is valid and fresh
-function initializePlayer(accessToken) {
-window.onSpotifyWebPlaybackSDKReady = () => {
-  const token = accessToken;
-  console.log(`Access Token for playlback: ${accessToken}`)
-  const player = new Spotify.Player({
-    name: "Web Playback SDK Quick Start Player",
-    getOAuthToken: (cb) => {
-      cb(token);
-    },
-    volume: 0.5,
-  });
-  console.log(`Access Token for playlback: ${accessToken}`)
-
-  // Ready
-  player.addListener("ready", ({ device_id }) => {
-    console.log("✅ Web Player ready with Device ID", device_id);
-    localStorage.setItem("spotify_device_id", device_id);
-
-    // Should call Device ID before needed below
-    loadSong();
-  });
-
-  // Not Ready
-  player.addListener("not_ready", ({ device_id }) => {
-    console.log("Device ID has gone offline", device_id);
-  });
-
-  // Error handling
-  player.addListener("initialization_error", ({ message }) => {
-    console.error(message);
-  });
-  player.addListener("authentication_error", ({ message }) => {
-    console.error(message);
-  });
-  player.addListener("account_error", ({ message }) => {
-    console.error(message);
-  });
-  player.addListener("playback_error", ({ message }) => {
-    console.error(message);
-  });
-
-  // document.getElementById('togglePlay').onclick = function() {
-  //   player.togglePlay();
-  // };
-
-  player.connect();
-};
-};
-
-async function playTrack(trackUri) {
-  if (!device_id) {
-    console.error("Missing device ID.");
-    return;
-  } else if (!accessToken) {
-    console.error("Missing device access token.");
-return;
-  }
-
-
-  console.log("Calling playTrack with URI in fnction:", trackUri);
-  try {
-    // First: Transfer playback to the Web Playback SDK
-    await fetch("https://api.spotify.com/v1/me/player", {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        device_ids: [device_id],
-        play: false, // let us control when to play
-      }),
-    });
-
-    // Second: Actually play the track
-    const res = await fetch(
-      `https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uris: [trackUri],
-        }),
-      }
-    );
-
-    if (res.status === 401) {
-      console.error("❌ Unauthorized. Token may be expired.");
-    } else if (res.status === 404) {
-      console.warn("⚠️ Device Not Active Yet. Try interacting with the Spotify app first.");
-      alert("Please press play on any Spotify device first, then try again.");
-    } else if (!res.ok) {
-      console.error("Something else went wrong:", await res.text());
-    }
-  } catch (error) {
-    console.error("Playback error:", error);
-  }
-}
-
-
-//testing
-
-//Dragging slider
-dragSlider(document.getElementById("slider-knob"));
-
-function dragSlider(knob) {
-  let pos1 = 0,
-    pos2 = 0,
-    pos3 = 0,
-    pos4 = 0;
-  // let container = knob.parentElement;
-  let container = knob ? knob.parentElement : null;
-  if (!container) return;
-  // Set initial position of knob
-
-  knob.onmousedown = dragMouseDown;
-
-  function dragMouseDown(e) {
-    e.preventDefault();
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    document.onmousemove = elementDrag;
-  }
-
-  function elementDrag(e) {
-    e.preventDefault();
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-
-    // Calculate new top position
-    let newTop = knob.offsetTop - pos2;
-
-    // Clamp within container
-    newTop = Math.max(
-      0,
-      Math.min(container.clientHeight - knob.clientHeight, newTop)
-    );
-
-    knob.style.top = newTop + "px";
-  }
-
-  function closeDragElement() {
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
-} //End of dragging slider
-
-//Make slider volume control
-function volumeControl() {
-  const volumeSlider = document.getElementById("volume-slider");
-  const audio = document.getElementById("audio");
-
-  volumeSlider.addEventListener("input", function () {
-    audio.volume = this.value / 100; // Set volume based on slider value (0-100)
-  });
-}
-
-// nextBtn.addEventListener('click', () => {
-//   currentIndex = (currentIndex + 1) % songs.length;
-//   loadSong(currentIndex);
-// });
-
-// backBtn.addEventListener('click', () => {
-//   currentIndex = (currentIndex - 1 + songs.length) % songs.length;
-//   loadSong(currentIndex);
-// });
-
-//Makes vinyl clickable to play or pause song
-function playPause() {
-  let audio = document.getElementById("audio");
-  let vinyl = document.getElementById("vinyl");
-  if (audio.paused) {
-    audio.pause();
-    vinyl.classList.toggle("paused"); // Toggle paused if already spinning
-  } else {
-    audio.play();
-    vinyl.classList.add("spinning"); // Start spinning if not already
-  }
-}
 
 //Profile functions+
 

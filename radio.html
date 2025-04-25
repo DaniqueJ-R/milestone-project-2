@@ -50,6 +50,39 @@
     <main>
       <!-- Radio Page -->
       <section id="step2" class="container relative">
+
+        <div class="intro-text">
+          <span class="text-big">Step 3</span>
+          <h2>Results🎶</h2>
+          <p class="text-medium">See a breakdown of how you have been listening:</p>
+          <div id="profile">
+            <p>Logged in as <span id="displayName"></span></p>
+            <span id="avatar"></span>
+            <ul>
+              <li>User ID: <span id="id"></span></li>
+              <li>Email: <span id="email"></span></li>
+              <li>Spotify URI: <a id="uri" href="#"></a></li>
+              <li>Link: <a id="url" href="#"></a></li>
+              <li>Profile Image: <span id="imgUrl"></span></li>
+            </ul>
+          </div>
+          <div id="generateSession">
+<!-- JS to append metrics once button clicked -->
+<button class="btn btn--big"  onclick="generateSessionReport(accessToken)">Get Session Report</button>
+          </div>
+          <button class="btn btn--big" onclick="prevPage()">Go Back</button>
+          <button class="btn btn--big" onclick="nextFunction()">
+            Complete Session
+          </button>
+        </div>
+
+
+      </section>
+
+      <!-- playlist results from java -->
+      <!-- Fix as its not staying on page? -->
+      <section id="step3" class="container hidden">
+<div>
         <div class="intro-text">
           <span class="text-big">Step 2</span>
           <h2>Choose your station</h2>
@@ -228,35 +261,7 @@
             >
           </div>
         </div>
-      </section>
-
-      <!-- playlist results from java -->
-      <!-- Fix as its not staying on page? -->
-      <section id="step3" class="container hidden">
-        <div class="intro-text">
-          <span class="text-big">Step 3</span>
-          <h2>Results🎶</h2>
-          <p class="text-medium">See a breakdown of how you have been listening:</p>
-          <div id="profile">
-            <p>Logged in as <span id="displayName"></span></p>
-            <span id="avatar"></span>
-            <ul>
-              <li>User ID: <span id="id"></span></li>
-              <li>Email: <span id="email"></span></li>
-              <li>Spotify URI: <a id="uri" href="#"></a></li>
-              <li>Link: <a id="url" href="#"></a></li>
-              <li>Profile Image: <span id="imgUrl"></span></li>
-            </ul>
-          </div>
-          <div id="generateSession">
-<!-- JS to append metrics once button clicked -->
-<button class="btn btn--big"  onclick="generateSessionReport(accessToken)">Get Session Report</button>
-          </div>
-          <button class="btn btn--big" onclick="prevPage()">Go Back</button>
-          <button class="btn btn--big" onclick="nextFunction()">
-            Complete Session
-          </button>
-        </div>
+      </div>
       </section>
 
       <!-- Final page, show playlist/link to playlist -->
@@ -328,6 +333,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="https://sdk.scdn.co/spotify-player.js"></script> <!-- installs the Web Playback SDK -->
+    <script src="https://sdk.scdn.co/spotify-player.js"></script><!-- installs the Web Playback SDK -->
   </body>
 </html>

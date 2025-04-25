@@ -28,3 +28,19 @@ JamJar is a Site that allows users to play a related playlist based on the work 
 Changing it to play pre-selected playlists instead of finding ones from each account. PLaylists may be personalized if logged in as they work off the persons account.
 
 Initally wanted to use JS to append each subratdio option, but HTML was quicker with so few options, plan to update to JS when expanding site?
+
+2. PUT https://api.spotify.com/v1/me/player returns 404
+📍 Problem:
+Spotify’s API says the device isn’t found, because your web player is not yet active.
+
+✅ Fix:
+Ensure the Spotify Web Player is open and active before calling the /play endpoint.
+
+Spotify only activates a device after:
+
+The SDK is fully initialized.
+
+The user has interacted with it (clicked play at least once).
+
+💡 Pro tip:
+You can programmatically “activate” the player by playing a silent track or prompting the user to click the play button once in the web UI.
