@@ -40,7 +40,7 @@ user-modify-playback-state
 
   //checks acces token before use
   async function checkAndRefreshAccessToken() {
-    let token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("access_token");
     const expiresAt = localStorage.getItem("access_token_expires_at");
     
     if (!token || !expiresAt || Date.now() > parseInt(expiresAt)) {
@@ -69,14 +69,38 @@ user-modify-playback-state
     }
   
     console.log("✅ Access token ready:", token);
+
     return token;
   }
 
+  document.addEventListener("DOMContentLoaded", function () {
+    const nextPageIntro = document.getElementById("nextPageIntro");
+    const signInWithSpotifybtn = document.getElementById("signInWithSpotify");
+    const noLogInbtn = document.getElementById("noLogIn");
+    const logInWithSpotifybtn = document.getElementById("logInWithSpotify");
+
+    if (nextPageIntro) {
+      nextPageIntro.addEventListener("click", nextFunction);
+    }
+    if (signInWithSpotifybtn) {
+      signInWithSpotifybtn.addEventListener("click", signInWithSpotify);
+    }
+    if (noLogInbtn) {
+      noLogInbtn.addEventListener("click", noLogIn);
+    }
+    if (logInWithSpotifybtn) {
+      logInWithSpotifybtn.addEventListener("click", logInWithSpotify);
+    }
+  });
+  
+  function isThisWorking() {
+    console.log("✅ Yes it is working!");
+  }
+ 
+  
+
   
 //calls next page
-document
-  .getElementById("nextPageIntro")
-  .addEventListener("click", nextFunction);
 
 function nextFunction() {
   let currentPage = document.getElementById(`step${stepTracker.currentStep}`);
@@ -98,32 +122,22 @@ function nextFunction() {
 
 // *** STEP 1 Log in Functions ** //
 
-document
-  .getElementById("signInWithSpotify")
-  .addEventListener("click", signInWithSpotify);
-
 function signInWithSpotify() {
   window.open("https://www.spotify.com/uk/signup");
   nextFunction();
 }
 
-document.getElementById("noLogIn").addEventListener("click", noLogIn);
 function noLogIn() {
   alert("Please remeber if you don't log in, you will have limited use!");
-  nextFunction();
+  window.location.href = 'http://127.0.0.1:5501/radio.html'
 }
 
 // Attach signIn to the global window for inline HTML onclick usage.
 
-document
-  .getElementById("logInWithSpotify")
-  .addEventListener("click", logInWithSpotify);
-
 async function logInWithSpotify() {
-
   console.log("signIn function called");
 
-  accessToken = await checkAndRefreshAccessToken();
+ accessToken = await checkAndRefreshAccessToken();
 
   if (!accessToken) {
     console.log("🔐 Access token expired or not found. Re-authenticating...");
@@ -132,17 +146,10 @@ async function logInWithSpotify() {
         console.error("❌ Failed to get access token. Stopping.");
         return;
       }
-
-      const profile = await fetchProfile(accessToken);
-      populateUI(profile);
     }
 
     console.log("✅ Access token valid:", accessToken);
-    // populateUI()
   }
-
-
-
 
 function setTokenWithExpiration(token, expiresInSeconds) {
   const expiresAt = Date.now() + expiresInSeconds * 1000;
@@ -150,7 +157,6 @@ function setTokenWithExpiration(token, expiresInSeconds) {
   localStorage.setItem("access_token_expires_at", expiresAt.toString());
 }
 
-//my code:
 async function getAccessToken(clientId, code) {
   const verifier = localStorage.getItem("verifier");
   console.log("Verifier loaded:", verifier);
@@ -186,50 +192,6 @@ async function getAccessToken(clientId, code) {
   }
   return data.access_token;
 }
-
-// //Chap update
-// async function getAccessToken(clientId, code) {
-//   const verifier = localStorage.getItem("verifier");
-//   console.log("Verifier loaded:", verifier);
-//   console.log("Code received:", code);
-
-//   if (!verifier || !code) {
-//     console.error("Missing verifier or code");
-//     return null; // <- explicit null
-//   }
-
-//   const params = new URLSearchParams();
-//   params.append("client_id", clientId);
-//   params.append("grant_type", "authorization_code");
-//   params.append("code", code);
-//   params.append("redirect_uri", "http://127.0.0.1:5501/radio.html");
-//   params.append("code_verifier", verifier);
-
-//   try {
-//     const result = await fetch("https://accounts.spotify.com/api/token", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-//       body: params,
-//     });
-
-//     if (!result.ok) {
-//       console.error("Error fetching token:", result.status, result.statusText);
-//       return null;
-//     }
-
-//     const data = await result.json();
-//     if (data.error) {
-//       console.error("Error in token response:", data.error_description);
-//       return null;
-//     }
-
-//     return data.access_token;
-
-//   } catch (err) {
-//     console.error("Exception while fetching token:", err);
-//     return null;
-//   }
-// }
 
 
 async function redirectToAuthCodeFlow(clientId) {
@@ -267,10 +229,31 @@ async function generateCodeChallenge(codeVerifier) {
     .replace(/=+$/, "");
 }
 
-async function fetchProfile(accessToken) {
+
+
+
+
+
+document.getElementById("getProf").addEventListener("click", async function() {
+  let token = checkAndRefreshAccessToken();
+  console.log('access token for getting profile', token)
+  //localStorage.getItem("access_token")  // or however you get it
+  if (!token) {
+    console.error("No token found!");
+    return;
+  }
+
+  const profile = await fetchProfile(token);
+  populateUI(profile, token);
+});
+
+
+
+async function fetchProfile(token) {
+  console.log("Token passed to fetchProfile:", token); 
   const result = await fetch("https://api.spotify.com/v1/me", {
     method: "GET",
-    headers: { Authorization: `Bearer ${accessToken}` },
+    headers: { Authorization: `Bearer ${token}` },
   });
   populateUI(profile)
   return await result.json();
@@ -278,8 +261,7 @@ async function fetchProfile(accessToken) {
 
 function populateUI(profile, accessToken) {
   console.log("Access Token used for profile", accessToken);
-  // fetchProfile(accessToken);
-  // console.log("Populating UI with profile:", profile);
+  console.log("Populating UI with profile:", profile);
   document.getElementById("displayName").innerText = profile.display_name;
   if (profile.images && profile.images[0]) {
     const profileImage = new Image(200, 200);
