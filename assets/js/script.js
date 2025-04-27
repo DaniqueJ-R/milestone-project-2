@@ -55,21 +55,23 @@ user-modify-playback-state
         await redirectToAuthCodeFlow(clientId);
         return null; // (page will redirect, this won't actually return)
       } else {
-        // Exchange the code for a fresh access token
-        token = await getAccessToken(clientId, code);
-  
-        if (!token) {
-          console.error("❌ Failed to refresh access token.");
-          return null;
-        }
-  
-        setTokenWithExpiration(accessToken, 3600); // Spotify token expires in 3600 seconds
-        window.history.replaceState({}, document.title, "/"); // Clean URL
+
+      } const newAccessToken = await getAccessToken(clientId, code);
+
+      if (!newAccessToken) {
+        console.error("❌ Failed to refresh access token.");
+        return null;
       }
+
+      setTokenWithExpiration(newAccessToken, 3600);
+      window.history.replaceState({}, document.title, "/");
+
+      localStorage.setItem("access_token", newAccessToken);
+      return newAccessToken;
     }
   
     console.log("✅ Access token ready:", token);
-
+    // localStorage.setItem("access_token", accessToken);
     return token;
   }
 
@@ -234,20 +236,38 @@ async function generateCodeChallenge(codeVerifier) {
 
 
 
-document.getElementById("getProf").addEventListener("click", async function() {
-  let token = checkAndRefreshAccessToken();
-  console.log('access token for getting profile', token)
-  //localStorage.getItem("access_token")  // or however you get it
-  if (!token) {
-    console.error("No token found!");
-    return;
-  }
+// document.getElementById("getProf").addEventListener("click", async function() {
+//   let token = await checkAndRefreshAccessToken();
+//   console.log('access token for getting profile', token)
+//   //localStorage.getItem("access_token")  
+//   if (!token) {
+//     console.error("No token found!");
+//     return;
+//   }
 
+//   const profile = await fetchProfile(token);
+//   populateUI(profile, token);
+// });
+
+document.getElementById("getProf").addEventListener("click", async () => {
+  let token = await checkAndRefreshAccessToken();
+  if (!token) return console.error("No token found!");
   const profile = await fetchProfile(token);
   populateUI(profile, token);
 });
 
 
+
+// // Mine
+// async function fetchProfile(token) {
+//   console.log("Token passed to fetchProfile:", token); 
+//   const result = await fetch("https://api.spotify.com/v1/me", {
+//     method: "GET",
+//     headers: { Authorization: `Bearer ${token}` },
+//   });
+//   populateUI(profile)
+//   return await result.json();
+// }
 
 async function fetchProfile(token) {
   console.log("Token passed to fetchProfile:", token); 
@@ -255,9 +275,11 @@ async function fetchProfile(token) {
     method: "GET",
     headers: { Authorization: `Bearer ${token}` },
   });
-  populateUI(profile)
-  return await result.json();
+
+  const profile = await result.json();
+  return profile; // return the actual profile object
 }
+
 
 function populateUI(profile, accessToken) {
   console.log("Access Token used for profile", accessToken);
@@ -270,7 +292,7 @@ function populateUI(profile, accessToken) {
     // document.getElementById("imgUrl").innerText = profile.images[0].url;
   }
   document.getElementById("id").innerText = profile.id;
-  // document.getElementById("followers").innerText = profile.followers.total;
+  document.getElementById("followers").innerText = profile.followers.total;
   document.getElementById("country").innerText = profile.country;
   document.getElementById("product").innerText = profile.product;
   document.getElementById("type").innerText = profile.type;
