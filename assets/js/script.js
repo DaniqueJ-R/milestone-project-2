@@ -18,6 +18,7 @@ const playlistId = {
     zone: "37i9dQZF1EIg56D8W4HZiC",
   },
 };
+const redirectUri = `${window.location.origin}/radio.html`;
 const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
 let accessToken = null;
 let device_id = window.device_id || localStorage.getItem("spotify_device_id");
@@ -173,7 +174,7 @@ async function getAccessToken(clientId, code) {
   params.append("client_id", clientId);
   params.append("grant_type", "authorization_code");
   params.append("code", code);
-  params.append("redirect_uri", "http://127.0.0.1:5501/radio.html");
+  params.append("redirect_uri", redirectUri);
   params.append("code_verifier", verifier);
 
   const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -204,7 +205,7 @@ async function redirectToAuthCodeFlow(clientId) {
   const params = new URLSearchParams();
   params.append("client_id", clientId);
   params.append("response_type", "code");
-  params.append("redirect_uri", "http://127.0.0.1:5501/radio.html");
+  params.append("redirect_uri", redirectUri);
   params.append("scope", scopes);
   params.append("code_challenge_method", "S256");
   params.append("code_challenge", challenge);
@@ -289,7 +290,6 @@ function populateUI(profile, accessToken) {
     const profileImage = new Image(200, 200);
     profileImage.src = profile.images[0].url;
     document.getElementById("avatar").appendChild(profileImage);
-    // document.getElementById("imgUrl").innerText = profile.images[0].url;
   }
   document.getElementById("id").innerText = profile.id;
   document.getElementById("followers").innerText = profile.followers.total;
@@ -302,6 +302,12 @@ function populateUI(profile, accessToken) {
     .setAttribute("href", profile.external_urls.spotify);
   document.getElementById("url").innerText = profile.href;
   document.getElementById("url").setAttribute("href", profile.href);
+
+  document.getElementById("avatar").appendChild(profileImage);
+  // <button class="btn btn--big" onclick="prevPage()">wrong account</button>
+  // <button class="btn btn--big" onclick="nextFunction()">
+  //   Start session
+  // </button>
 }
 
 //ensure accessToken gets initialized properly on load
