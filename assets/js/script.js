@@ -233,42 +233,12 @@ async function generateCodeChallenge(codeVerifier) {
 }
 
 
-
-
-
-
-// document.getElementById("getProf").addEventListener("click", async function() {
-//   let token = await checkAndRefreshAccessToken();
-//   console.log('access token for getting profile', token)
-//   //localStorage.getItem("access_token")  
-//   if (!token) {
-//     console.error("No token found!");
-//     return;
-//   }
-
-//   const profile = await fetchProfile(token);
-//   populateUI(profile, token);
-// });
-
 document.getElementById("getProf").addEventListener("click", async () => {
   let token = await checkAndRefreshAccessToken();
   if (!token) return console.error("No token found!");
   const profile = await fetchProfile(token);
   populateUI(profile, token);
 });
-
-
-
-// // Mine
-// async function fetchProfile(token) {
-//   console.log("Token passed to fetchProfile:", token); 
-//   const result = await fetch("https://api.spotify.com/v1/me", {
-//     method: "GET",
-//     headers: { Authorization: `Bearer ${token}` },
-//   });
-//   populateUI(profile)
-//   return await result.json();
-// }
 
 async function fetchProfile(token) {
   console.log("Token passed to fetchProfile:", token); 
@@ -278,7 +248,7 @@ async function fetchProfile(token) {
   });
 
   const profile = await result.json();
-  return profile; // return the actual profile object
+  return profile; 
 }
 
 
@@ -303,11 +273,14 @@ function populateUI(profile, accessToken) {
   document.getElementById("url").innerText = profile.href;
   document.getElementById("url").setAttribute("href", profile.href);
 
-  document.getElementById("avatar").appendChild(profileImage);
-  // <button class="btn btn--big" onclick="prevPage()">wrong account</button>
-  // <button class="btn btn--big" onclick="nextFunction()">
-  //   Start session
-  // </button>
+ 
+  const buttonContainer = document.getElementById("spotifyConfirm"); // id of where you want to put the buttons
+  if (buttonContainer) {
+    buttonContainer.innerHTML = `
+      <button class="btn btn--big" onclick="prevPage()">Wrong account</button>
+      <button class="btn btn--big" onclick="nextFunction()">Start session</button>
+    `;
+  }
 }
 
 //ensure accessToken gets initialized properly on load
