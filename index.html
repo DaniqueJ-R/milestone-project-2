@@ -38,16 +38,10 @@
   <body>
     <!-- Header Section -->
     <header id="header" class="container">
-      <nav class="nav">
-          <a class="nav-link active" aria-current="page" href="#">Active</a>
-          <a class="nav-link" href="#">Link</a>
-          <a class="nav-link" href="#">Link</a>
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
           <span class="spotify-logo">
               <span class="logo-text">made for</span>
               <i class="fa-brands fa-spotify"></i>
             </span>
-        </nav>
       </div>
 
 <!-- Header Image -->
@@ -91,7 +85,7 @@
             <p class="instructions">
               Click the button below to log in and start your session.
             </p>
-            <button class="btn" onclick="nextFunction()">Jam me up!</button>
+            <button class="btn" id="nextPageIntro">Jam me up!</button>
           </div>
         </div>
       </section>
@@ -104,16 +98,15 @@
           <span class="text-medium"
             >Click the button below to log in to your Spotify account.</span
           >
-
-          <button class="btn btn--big" onclick="logInWithSpotify()">
+          <button class="btn btn--big" id="logInWithSpotify">
             Log In
           </button>
           <!-- pop up to log into spotify. Set API log in  -->
-          <button class="btn btn--big" onclick="signInWithSpotify()">
+          <button class="btn btn--big" id="signInWithSpotify">
             Sign up
           </button>
           <!-- pop up to sign up for spotify -->
-          <button class="btn btn--big" onclick="noLogIn()">
+          <button class="btn btn--big" id="noLogIn">
             Continue without login(limited Fuctionality)
           </button>
         </div>

@@ -63,17 +63,20 @@
               <li>Email: <span id="email"></span></li>
               <li>Spotify URI: <a id="uri" href="#"></a></li>
               <li>Link: <a id="url" href="#"></a></li>
+              <li>Followers: <span id="followers"></span></li>
+              <li>Country: <span id="country"></span></li>
+              <li>Product: <span id="product"></span></li>
+              <li>Type: <span id="type"></span></li>
               <li>Profile Image: <span id="imgUrl"></span></li>
             </ul>
           </div>
-          <div id="generateSession">
-<!-- JS to append metrics once button clicked -->
-<button class="btn btn--big"  onclick="generateSessionReport(accessToken)">Get Session Report</button>
-          </div>
-          <button class="btn btn--big" onclick="prevPage()">Go Back</button>
-          <button class="btn btn--big" onclick="nextFunction()">
-            Complete Session
+          <button id="login-btn" class="btn" onclick="logInWithSpotify()">
+            Show Spotify
           </button>
+          <!-- <button class="btn btn--big" onclick="prevPage()">wrong account</button>
+          <button class="btn btn--big" onclick="nextFunction()">
+            Start session
+          </button> -->
         </div>
 
 

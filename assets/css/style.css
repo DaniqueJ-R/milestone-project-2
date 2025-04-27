@@ -386,8 +386,8 @@ main > section {
 }
 
 #step2 .btn {
-  position: absolute;
-  right: -8rem;
+  /* position: absolute;
+  right: -8rem; */
   width: 26rem;
   height: 4rem;
   border-radius: 100px;
