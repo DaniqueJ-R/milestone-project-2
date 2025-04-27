@@ -59,18 +59,19 @@
             <p>Logged in as <span id="displayName"></span></p>
             <span id="avatar"></span>
             <ul>
-              <li>User ID: <span id="id"></span></li>
-              <li>Email: <span id="email"></span></li>
-              <li>Spotify URI: <a id="uri" href="#"></a></li>
-              <li>Link: <a id="url" href="#"></a></li>
               <li>Followers: <span id="followers"></span></li>
               <li>Country: <span id="country"></span></li>
               <li>Product: <span id="product"></span></li>
               <li>Type: <span id="type"></span></li>
-              <li>Profile Image: <span id="imgUrl"></span></li>
+              <li>Link: <a id="url" href="#"></a></li>
+              <li>User ID: <span id="id"></span></li>              
+              <li>Spotify URI: <a id="uri" href="#"></a></li>
             </ul>
           </div>
-          <button id="login-btn" class="btn" onclick="logInWithSpotify()">
+          <!-- <button id="login-btn" class="btn" onclick="populateUI(profile)">
+            Show Spotify
+          </button> -->
+          <button id="login-btn" class="btn" onclick="fetchProfile(accessToken)">
             Show Spotify
           </button>
           <!-- <button class="btn btn--big" onclick="prevPage()">wrong account</button>
