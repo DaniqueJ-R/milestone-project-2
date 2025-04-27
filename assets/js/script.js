@@ -95,7 +95,7 @@ user-modify-playback-state
       logInWithSpotifybtn.addEventListener("click", logInWithSpotify);
     }
   });
-  
+
   function isThisWorking() {
     console.log("✅ Yes it is working!");
   }
@@ -126,13 +126,12 @@ function nextFunction() {
 // *** STEP 1 Log in Functions ** //
 
 function signInWithSpotify() {
-  window.open("https://www.spotify.com/uk/signup");
-  nextFunction();
+  logInWithSpotify()
 }
 
 function noLogIn() {
   alert("Please remeber if you don't log in, you will have limited use!");
-  window.location.href = 'http://127.0.0.1:5501/radio.html'
+  window.location.href = redirectUri
 }
 
 // Attach signIn to the global window for inline HTML onclick usage.
@@ -274,199 +273,119 @@ function populateUI(profile, accessToken) {
   document.getElementById("url").setAttribute("href", profile.href);
 
  
-  const buttonContainer = document.getElementById("spotifyConfirm"); // id of where you want to put the buttons
+  const buttonContainer = document.getElementById("spotifyConfirm"); 
   if (buttonContainer) {
     buttonContainer.innerHTML = `
-      <button class="btn btn--big" onclick="prevPage()">Wrong account</button>
-      <button class="btn btn--big" onclick="nextFunction()">Start session</button>
+      <button class="btn btn--big" id="tryAgain">Wrong account</button>
+      <button class="btn btn--big" id="goToRadio">Start session</button>
     `;
+
+    // Add the event listeners *after* the buttons exist
+    document.getElementById("goToRadio").addEventListener("click", async () => {
+      let token = await checkAndRefreshAccessToken();
+      if (!token) return console.error("No token found!");
+      nextFunction();
+      callPlaylists();
+    });
+
+    document.getElementById("tryAgain").addEventListener("click", () => {
+      prevPage(); // or whatever your "wrong account" logic is
+    });
   }
 }
 
-//ensure accessToken gets initialized properly on load
-// // Skips log in if already logged in
-// async function authenticationProcess() {
-//   const token = localStorage.getItem("access_token");
-//   const expiresAt = localStorage.getItem("access_token_expires_at");
+async function callPlaylists() {
 
-//   if (token && expiresAt && Date.now() < parseInt(expiresAt)) {
-//     const valid = await isTokenValid(token);
-//     if (valid) {
-//       accessToken = token;
-//       console.log("✅ Access token is valid and not expired.");
+  accessToken = await checkAndRefreshAccessToken();
 
-//       // Skip login step
-//       if (!window.location.href.includes("radio.html")) {
-//         document.location.href = "http://127.0.0.1:5501/radio.html";
-// // populateUI(profile);
-//         return;
-//       };
+  if (!accessToken) {
+    console.error("Access token is missing!");
+    return;
+  }
 
-//       // if (window.Spotify) {
-//       //   initializePlayer(accessToken);
-//       // } else {
-//       //   window.onSpotifyWebPlaybackSDKReady = () => {
-//       //     initializePlayer(accessToken);
-//       //   };
-//       // }
+  const matchingPlaylists = await handleMoodSelection(); // Call the function to get matching playlists
 
-//       // populateUI(profile);
-//       return;
-//     } else {
-//       console.warn("⚠️ Token found but invalid, logging in again...");
-//     }
-//   } else {
-//     console.log("🔒 No valid token found, logging in...");
-//   }
+  if (matchingPlaylists && matchingPlaylists.length > 0) {
+    playlistId = matchingPlaylists[0].id;
+    console.log("Selected playlist ID:", playlistId);
 
-//   // Either no token or it's expired/invalid
-//   await logInWithSpotify();
-// };
+    // console.log("Access token being used5:", accessToken); DELETE LATER
+    fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
+      // send request
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    // })
+      // .then((res) => res.json()) // parse JSON response
+      // .then((data) => {
+      //   // do something with the data
+      //   console.log("Playlist data??:", data);
+      //   console.log(data);
+      // })
+      // .catch((err) => {
+      //   // handle any errors
+      //   console.error(err);
+      });
+      loadSong()
+    return playlistId;
+  } else {
+    console.log("No matching playlists found.");
+    return null;
+  }
 
-// // document.getElementById("login-btn")
-// // .addEventListener("click", populateUI);
+}
 
-// //Calls all changed on mood buttons
-// // document
-// //   .getElementById("radioContainer")
-// //   .addEventListener("click", callPlaylists);
+// This function will be called when the user selects a mood
+// and clicks the button to fetch playlists
+async function handleMoodSelection() {
+  const mood = radioMood();
+  if (!mood) return;
 
-// function nextFunction() {
-//   let currentPage = document.getElementById(`step${stepTracker.currentStep}`);
-//   if (currentPage) {
-//     currentPage.classList.add("hidden");
-//   }
+  const sessionKeyword = mood.toLowerCase();
+  const allPlaylists = await fetchPlaylists(accessToken); // ← call and await here
 
-//   stepTracker.currentStep++;
+  // 🔍 Log ALL playlists for debugging
+  // console.log("All playlists returned:", allPlaylists.categories.items);
+  console.log("All playlists returned:", allPlaylists);
 
-//   let nextPage = document.getElementById(`step${stepTracker.currentStep}`);
-//   if (nextPage) {
-//     nextPage.classList.remove("hidden");
-//   }
+  const matchingPlaylists = allPlaylists.items.filter((playlist) => {
+    const name = playlist.name.toLowerCase();
+    const desc = playlist.description?.toLowerCase() || "";
+    return (
+      // owner.display_name === "made" && //Need to figure out how to get the owner name
+      name.includes(sessionKeyword) || desc.includes(sessionKeyword)
+    );
+  });
 
-//   if (stepTracker.currentStep > 5) {
-//     stepTracker.currentStep = 5; // Prevent going beyond the last step
-//   }
-// }
+  console.log("Matching playlists:", matchingPlaylists);
+  return matchingPlaylists;
+}
 
-// // Attach signIn to the global window for inline HTML onclick usage.
+// Selecting mood for playlist
+// This function will be called when the user selects a mood
+function radioMood() {
+  const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
+  let selectedValue = null;
 
-// async function isTokenValid(token) {
-//   const res = await fetch("https://api.spotify.com/v1/me", {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   return res.ok;
-// }
+  for (const radioButton of radioButtons) {
+    if (radioButton.checked) {
+      selectedValue = radioButton.value;
+      break;
+    }
+  }
 
-// async function getAccessToken(clientId, code) {
-//   const verifier = localStorage.getItem("verifier");
-//   console.log("Verifier loaded:", verifier);
-//   console.log("Code received:", code);
+  if (
+    selectedValue == "focus" ||
+    selectedValue == "study" ||
+    selectedValue == "workout" ||
+    selectedValue == "meditation"
+  ) {
+    alert(`You have selected: ${selectedValue}`);
+    // currentPlaylist = songs[selectedValue]; // assign the song list
+    // current = 0;
+  } else {
+    alert("Please select a mood.");
+  }
 
-//   if (!verifier || !code) {
-//     console.error("Missing verifier or code");
-//     return;
-//   }
-
-//   const params = new URLSearchParams();
-//   params.append("client_id", clientId);
-//   params.append("grant_type", "authorization_code");
-//   params.append("code", code);
-//   params.append("redirect_uri", "http://127.0.0.1:5501/radio.html");
-//   params.append("code_verifier", verifier);
-
-//   const result = await fetch("https://accounts.spotify.com/api/token", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-//     body: params,
-//   });
-
-//   const responseText = await result.text();
-//   console.log("Token response", responseText);
-//   const data = JSON.parse(responseText);
-
-//   if (data.error) {
-//     console.error("Error obtaining token:", data.error_description);
-//     // Re-initiate the auth flow if the authorization code has expired
-//     redirectToAuthCodeFlow(clientId);
-//     return;
-//   }
-//   return data.access_token;
-// }
-
-// async function generateCodeChallenge(codeVerifier) {
-//   const data = new TextEncoder().encode(codeVerifier);
-//   const digest = await window.crypto.subtle.digest("SHA-256", data);
-//   return btoa(String.fromCharCode(...new Uint8Array(digest)))
-//     .replace(/\+/g, "-")
-//     .replace(/\//g, "_")
-//     .replace(/=+$/, "");
-// }
-
-// async function redirectToAuthCodeFlow(clientId) {
-//   const verifier = generateCodeVerifier(128);
-//   const challenge = await generateCodeChallenge(verifier);
-//   localStorage.setItem("verifier", verifier);
-
-//   const params = new URLSearchParams();
-//   params.append("client_id", clientId);
-//   params.append("response_type", "code");
-//   params.append("redirect_uri", "http://127.0.0.1:5501/radio.html");
-//   params.append("scope", scopes);
-//   params.append("code_challenge_method", "S256");
-//   params.append("code_challenge", challenge);
-
-//   document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
-// }
-
-// function generateCodeVerifier(length) {
-//   let text = "";
-//   let possible =
-//     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-//   for (let i = 0; i < length; i++) {
-//     text += possible.charAt(Math.floor(Math.random() * possible.length));
-//   }
-//   return text;
-//   // Generate 128-character random string for outh code verifier
-//   // to be used in the authorization code flow.
-// }
-
-// // *** Step 1 Functions Log in End** //
-
-// // Step 2 - Profile functions//
-
-// async function fetchProfile(token) {
-//   const result = await fetch("https://api.spotify.com/v1/me", {
-//     method: "GET",
-//     headers: { Authorization: `Bearer ${token}` },
-//   });
-//   console.log("Access token being used:", accessToken);
-//   return await result.json();
-// }
-
-// function populateUI(profile) {
-
-//   // fetchProfile(token)
-
-//   document.getElementById("displayName").innerText = profile.display_name;
-//   if (profile.images && profile.images[0]) {
-//     const profileImage = new Image(200, 200);
-//     profileImage.src = profile.images[0].url;
-//     document.getElementById("avatar").appendChild(profileImage);
-//     document.getElementById("imgUrl").innerText = profile.images[0].url;
-//   }
-//   document.getElementById("id").innerText = profile.id;
-//   document.getElementById("email").innerText = profile.email;
-//   document.getElementById("followers").innerText = profile.followers.total;
-//   document.getElementById("uri").innerText = profile.uri;
-//   document
-//     .getElementById("uri")
-//     .setAttribute("href", profile.external_urls.spotify);
-//   document.getElementById("url").innerText = profile.href;
-//   document.getElementById("url").setAttribute("href", profile.href);
-// }
-
-// // onclick - ontinue from profile - callPlaylists();
-// // on click - wrong account - logInWithSpotify
+  return selectedValue; // Return the selected value
+}
