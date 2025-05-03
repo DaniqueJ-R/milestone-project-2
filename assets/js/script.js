@@ -38,36 +38,6 @@ user-modify-playback-state
   .trim()
   .split(/\s+/)
   .join(" ");
-
-
-  // async function checkAndRefreshAccessToken() {
-  //   let token = localStorage.getItem("access_token");
-  //   const expiresAt = localStorage.getItem("access_token_expires_at");
-  
-  //   // Still valid
-  //   if (token && expiresAt && Date.now() < parseInt(expiresAt)) {
-  //     console.log("✅ Access token ready:", token);
-  //     return token;
-  //   }
-  
-  //   // Need to exchange code
-  //   const params = new URLSearchParams(window.location.search);
-  //   const code = params.get("code");
-  
-  //   if (code) {
-  //     const clientId = "d831bf8c8a594eaeb5d37469c14d13fe";
-  //     token = await getAccessToken(clientId, code);
-  //     if (!token) return null;
-  
-  //     setTokenWithExpiration(token, 3600);
-  //     window.history.replaceState({}, document.title, "/radio.html"); // Clean URL
-  //     return token;
-  //   }
-  
-  //   // No token and no code, redirect to login
-  //   await redirectToAuthCodeFlow("d831bf8c8a594eaeb5d37469c14d13fe");
-  //   return null;
-  // }
   
 
   //checks acces token before use
@@ -323,94 +293,6 @@ function populateUI(profile, accessToken) {
   }
 }
 
-// // Fetch recommendations based on a seed (artist, track, or genre)
-
-// async function getRecommendations() {
-
-//   const token = await checkAndRefreshAccessToken();
-
-//   // Example seed - you can use an artist, track, or genre
-
-//   try {
-//     const artistSeed = "2YZyLoL8N0Wb9xBt1NhZWg"; // Kendrick Lamar
-//     const trackSeed = "4uLU6hMCjMI75M1A2tKUQC"; // DMX - X Gon' Give It To Ya
-//     const genreSeed = "rap"; // ✅ make sure this is valid!
-
-// const url = `https://api.spotify.com/v1/recommendations?seed_artists=${artistSeed}`;
-
-
-//     // const url = `https://api.spotify.com/v1/recommendations?seed_artists=${artistSeed}&seed_tracks=${trackSeed}&seed_genres=${genreSeed}&limit=10`;
-
-//     // const url = 'https://api.spotify.com/v1/recommendations?seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA';
-
-//     const response = await fetch(url, {
-//       headers: {
-//         Authorization: `Bearer ${token}`, // ✅ use the correct variable here
-//       },
-//     });
-
-
-    
-
-//     if (!response.ok) {
-//       const errorData = await response.json();
-//       console.error("API Error:", errorData);
-//       return;
-//     }
-
-//     const result = await response.json(); // ✅ now defined
-//     console.log("🎵 Recommendations:", result.tracks);
-//     return result.tracks;
-//   } catch (error) {
-//     console.error("❌ Error getting recommendations:", error);
-//   }
-//     // const response = await fetch('https://api.spotify.com/v1/recommendations?seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA', {
-
-//       // const seeds = await fetch('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
-//       // method: 'GET',
-
-//       // headers: {
-
-//       //     'Authorization': `Bearer ${accessToken}`,
-
-//           // 'Content-Type': 'application/json'
-
-//       }
-
-//   // });
-
-
-
-//   // const data = await response.json();
-
-  
-//   // const recommendations = await response.json();
-//   // console.log(recommendations);
-//   // return recommendations; 
-//   // Log the recommended tracks
-
-//   // data.tracks.forEach(track => {
-
-//   //     console.log(`Track: ${track.name}`);
-
-//   //     console.log(`Artist: ${track.artists[0].name}`);
-
-//   //     console.log(`Album: ${track.album.name}`);
-
-//   //     console.log(`Preview: ${track.preview_url}`);
-
-//   //     console.log('-----');
-
-//   // });
-
-// // }
-
-
-
-// // Call the function to get recommendations
-
-// getRecommendations();
-
 // Selecting mood for playlist
 // This function will be called when the user selects a mood
 function radioMood() {
@@ -624,7 +506,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   //   player.togglePlay();
   // };
 
-  player.connect();
+  playerconnect();
 }
 
 
@@ -653,6 +535,15 @@ async function playTrack(trackUri) {
       console.error("❌ Unauthorized. Possible token issue.");
     }
   }
+
+  document.getElementById('nextBtn').addEventListener('click', function() {
+    player.nextTrack().then(() => {
+      console.log('Skipped to next track!');
+    }).catch(error => {
+      console.error('Error skipping track:', error);
+    });
+  });
+  
   
 
 
