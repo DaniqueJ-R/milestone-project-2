@@ -1,29 +1,10 @@
+//Somewhere in codee the age will not pass the log in if already logged in and token is valid, please debug//
+
 const stepTracker = { currentStep: 0 };
-// let playlistId = {
-//   focus: {
-//     lofi: "37i9dQZF1DX8Uebhn9wzrS",
-//     hype: "37i9dQZF1EIhiz7ffTXlVH",
-//   },
-//   meditation: {
-//     peaceful: "37i9dQZF1DWZqd5JICZI0u",
-//     guided: "37i9dQZF1DWVS1recTqXhf",
-//   },
-//   study: {
-//     jazz: "37i9dQZF1DX8wWHvPMMfNA",
-//     nature: "37i9dQZF1DWZ8HCIPoGGKp",
-//     // cafe: "75avKVUUNDDMgPVCb5vUGh"
-//   },
-//   workout: {
-//     beast: "4m0CG8CxcylD7I5ipKLvmA",
-//     zone: "37i9dQZF1EIg56D8W4HZiC",
-//   },
-// };
+let accessToken = null; // make it a global variable
 let playlistId = null;
-const redirectUri = `${window.location.origin}/radio.html`;
-const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
-let accessToken = localStorage.getItem("access_token");
-let device_id = window.device_id || localStorage.getItem("spotify_device_id");
-let trackUri = null;
+let device_id = null;
+// window.callPlaylists = callPlaylists;
 const scopes = `
 user-read-private
 user-read-email
@@ -35,104 +16,39 @@ streaming
 user-read-playback-state
 user-modify-playback-state
 `
+
   .trim()
   .split(/\s+/)
   .join(" ");
 
-
-  // async function checkAndRefreshAccessToken() {
-  //   let token = localStorage.getItem("access_token");
-  //   const expiresAt = localStorage.getItem("access_token_expires_at");
-  
-  //   // Still valid
-  //   if (token && expiresAt && Date.now() < parseInt(expiresAt)) {
-  //     console.log("✅ Access token ready:", token);
-  //     return token;
-  //   }
-  
-  //   // Need to exchange code
-  //   const params = new URLSearchParams(window.location.search);
-  //   const code = params.get("code");
-  
-  //   if (code) {
-  //     const clientId = "d831bf8c8a594eaeb5d37469c14d13fe";
-  //     token = await getAccessToken(clientId, code);
-  //     if (!token) return null;
-  
-  //     setTokenWithExpiration(token, 3600);
-  //     window.history.replaceState({}, document.title, "/radio.html"); // Clean URL
-  //     return token;
-  //   }
-  
-  //   // No token and no code, redirect to login
-  //   await redirectToAuthCodeFlow("d831bf8c8a594eaeb5d37469c14d13fe");
-  //   return null;
-  // }
-  
-
-  //checks acces token before use
-  async function checkAndRefreshAccessToken() {
-    const token = localStorage.getItem("access_token");
-    const expiresAt = localStorage.getItem("access_token_expires_at");
-    
-    if (!token || !expiresAt || Date.now() > parseInt(expiresAt)) {
-      console.log("🔁 Token missing or expired. Redirecting for auth...");
-      
-      const clientId = "d831bf8c8a594eaeb5d37469c14d13fe";
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get("code");
-      
-      if (!code) {
-        // Redirect user to login
-        await redirectToAuthCodeFlow(clientId);
-        return null; // (page will redirect, this won't actually return)
-      } else {
-
-      } const newAccessToken = await getAccessToken(clientId, code);
-
-      if (!newAccessToken) {
-        console.error("❌ Failed to refresh access token.");
-        return null;
-      }
-
-      setTokenWithExpiration(newAccessToken, 3600);
-      window.history.replaceState({}, document.title, "/");
-
-      localStorage.setItem("access_token", newAccessToken);
-      return newAccessToken;
-    }
-  
-    console.log("✅ Access token ready:", token);
-    // localStorage.setItem("access_token", accessToken);
-    return token;
+//ensure accessToken gets initialized properly on load
+window.onload = async function () {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    accessToken = token;
+    console.log("Access token loaded from localStorage");
+  } else {
+    await logInWithSpotify(); // Ensure this updates the global token
   }
+};
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const nextPageIntro = document.getElementById("nextPageIntro");
-    const signInWithSpotifybtn = document.getElementById("signInWithSpotify");
-    const noLogInbtn = document.getElementById("noLogIn");
-    const logInWithSpotifybtn = document.getElementById("logInWithSpotify");
-
-    if (nextPageIntro) {
-      nextPageIntro.addEventListener("click", nextFunction);
-    }
-    if (signInWithSpotifybtn) {
-      signInWithSpotifybtn.addEventListener("click", signInWithSpotify);
-    }
-    if (noLogInbtn) {
-      noLogInbtn.addEventListener("click", noLogIn);
-    }
-    if (logInWithSpotifybtn) {
-      logInWithSpotifybtn.addEventListener("click", logInWithSpotify);
-    }
-  });
-
-  function isThisWorking() {
-    console.log("✅ Yes it is working!");
-  }
- 
-  
-//calls next page
+// window.onload = async function () {
+//   const token = localStorage.getItem("access_token");
+//   if (token) {
+//     accessToken = token;
+//     console.log("Access token loaded from localStorage");
+//     console.log("Access token being used1:", accessToken);DELETE LATER
+//     populateUI();
+//     Validate token by hitting /me
+//     const valid = await isTokenValid(token);
+//     if (!valid) {
+//       console.warn("Stored token is invalid, redirecting...");
+//       redirectToAuthCodeFlow("d831bf8c8a594eaeb5d37469c14d13fe");
+//     }
+//   } else {
+//     logInWithSpotify();
+//   }
+// };
 
 function nextFunction() {
   let currentPage = document.getElementById(`step${stepTracker.currentStep}`);
@@ -142,50 +58,85 @@ function nextFunction() {
 
   stepTracker.currentStep++;
 
+  // headerImage();
+
   let nextPage = document.getElementById(`step${stepTracker.currentStep}`);
   if (nextPage) {
     nextPage.classList.remove("hidden");
   }
 
   if (stepTracker.currentStep > 5) {
+    // Assuming there are 3 steps (0, 1, 2) is actually 5 steps, update later
     stepTracker.currentStep = 5; // Prevent going beyond the last step
   }
 }
 
 // *** STEP 1 Log in Functions ** //
-
 function signInWithSpotify() {
-  logInWithSpotify()
+  window.open("https://www.spotify.com/uk/signup");
+  nextFunction();
 }
 
 function noLogIn() {
   alert("Please remeber if you don't log in, you will have limited use!");
-  window.location.href = redirectUri
+  nextFunction();
 }
 
 // Attach signIn to the global window for inline HTML onclick usage.
-
 async function logInWithSpotify() {
-  console.log("signIn function called");
+  const clientId = "d831bf8c8a594eaeb5d37469c14d13fe";
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
 
- accessToken = await checkAndRefreshAccessToken();
+  accessToken = localStorage.getItem("access_token");
 
-  if (!accessToken) {
+  if (!accessToken || isTokenExpired()) {
     console.log("🔐 Access token expired or not found. Re-authenticating...");
-
-      if (!accessToken) {
-        console.error("❌ Failed to get access token. Stopping.");
-        return;
-      }
+    if (!code) {
+      redirectToAuthCodeFlow(clientId);
+      return;
+    } else {
+      accessToken = await getAccessToken(clientId, code);
+      setTokenWithExpiration(accessToken, 3600); // Spotify token expires in 3600 seconds
+      window.history.replaceState({}, document.title, "/"); // Clean URL
     }
-
-    console.log("✅ Access token valid:", accessToken);
   }
+
+  console.log("✅ Access token valid:", accessToken);
+  callPlaylists();
+}
+
+function isTokenExpired() {
+  const expiresAt = localStorage.getItem("access_token_expires_at");
+  return !expiresAt || Date.now() > parseInt(expiresAt);
+}
 
 function setTokenWithExpiration(token, expiresInSeconds) {
   const expiresAt = Date.now() + expiresInSeconds * 1000;
   localStorage.setItem("access_token", token);
   localStorage.setItem("access_token_expires_at", expiresAt.toString());
+}
+
+// window.onload = async function () {
+//   const token = localStorage.getItem("access_token");
+//   if (token) {
+//     accessToken = token;
+//     console.log("Access token loaded from localStorage");
+//     // const profile = await fetchProfile(accessToken);
+//     console.log("Access token being used1:", accessToken); DELETE LATER
+
+//   } else {
+//     logInWithSpotify();
+//   }
+// };
+
+async function isTokenValid(token) {
+  const res = await fetch("https://api.spotify.com/v1/me", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.ok;
 }
 
 async function getAccessToken(clientId, code) {
@@ -202,7 +153,7 @@ async function getAccessToken(clientId, code) {
   params.append("client_id", clientId);
   params.append("grant_type", "authorization_code");
   params.append("code", code);
-  params.append("redirect_uri", redirectUri);
+  params.append("redirect_uri", "http://127.0.0.1:5501/radio.html");
   params.append("code_verifier", verifier);
 
   const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -224,6 +175,14 @@ async function getAccessToken(clientId, code) {
   return data.access_token;
 }
 
+async function generateCodeChallenge(codeVerifier) {
+  const data = new TextEncoder().encode(codeVerifier);
+  const digest = await window.crypto.subtle.digest("SHA-256", data);
+  return btoa(String.fromCharCode(...new Uint8Array(digest)))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
 
 async function redirectToAuthCodeFlow(clientId) {
   const verifier = generateCodeVerifier(128);
@@ -233,7 +192,7 @@ async function redirectToAuthCodeFlow(clientId) {
   const params = new URLSearchParams();
   params.append("client_id", clientId);
   params.append("response_type", "code");
-  params.append("redirect_uri", redirectUri);
+  params.append("redirect_uri", "http://127.0.0.1:5501/radio.html");
   params.append("scope", scopes);
   params.append("code_challenge_method", "S256");
   params.append("code_challenge", challenge);
@@ -249,167 +208,77 @@ function generateCodeVerifier(length) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
+  // Generate 128-character random string for outh code verifier
+  // to be used in the authorization code flow.
 }
 
-async function generateCodeChallenge(codeVerifier) {
-  const data = new TextEncoder().encode(codeVerifier);
-  const digest = await window.crypto.subtle.digest("SHA-256", data);
-  return btoa(String.fromCharCode(...new Uint8Array(digest)))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
-}
+// *** Step 1 Functions Log in End** //
 
+// step 2 Functions Radio Start //
+//Dragging slider
+dragSlider(document.getElementById("slider-knob"));
 
-document.getElementById("getProf").addEventListener("click", async () => {
-  let token = await checkAndRefreshAccessToken();
-  if (!token) return console.error("No token found!");
-  const profile = await fetchProfile(token);
-  populateUI(profile, token);
-});
+function dragSlider(knob) {
+  let pos1 = 0,
+    pos2 = 0,
+    pos3 = 0,
+    pos4 = 0;
+  // let container = knob.parentElement;
+  let container = knob ? knob.parentElement : null;
+  if (!container) return;
+  // Set initial position of knob
 
-async function fetchProfile(token) {
-  console.log("Token passed to fetchProfile:", token); 
-  const result = await fetch("https://api.spotify.com/v1/me", {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
+  knob.onmousedown = dragMouseDown;
+
+  function dragMouseDown(e) {
+    e.preventDefault();
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e.preventDefault();
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+
+    // Calculate new top position
+    let newTop = knob.offsetTop - pos2;
+
+    // Clamp within container
+    newTop = Math.max(
+      0,
+      Math.min(container.clientHeight - knob.clientHeight, newTop)
+    );
+
+    knob.style.top = newTop + "px";
+  }
+
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+} //End of dragging slider
+
+//Make slider volume control
+function volumeControl() {
+  const volumeSlider = document.getElementById("volume-slider");
+  const audio = document.getElementById("audio");
+
+  volumeSlider.addEventListener("input", function () {
+    audio.volume = this.value / 100; // Set volume based on slider value (0-100)
   });
-
-  const profile = await result.json();
-  return profile; 
 }
 
-
-function populateUI(profile, accessToken) {
-  console.log("Access Token used for profile", accessToken);
-  console.log("Populating UI with profile:", profile);
-  document.getElementById("displayName").innerText = profile.display_name;
-  if (profile.images && profile.images[0]) {
-    const profileImage = new Image(200, 200);
-    profileImage.src = profile.images[0].url;
-    document.getElementById("avatar").appendChild(profileImage);
-  }
-  document.getElementById("id").innerText = profile.id;
-  document.getElementById("followers").innerText = profile.followers.total;
-  document.getElementById("country").innerText = profile.country;
-  document.getElementById("product").innerText = profile.product;
-  document.getElementById("type").innerText = profile.type;
-  document.getElementById("uri").innerText = profile.uri;
-  document
-    .getElementById("uri")
-    .setAttribute("href", profile.external_urls.spotify);
-  document.getElementById("url").innerText = profile.href;
-  document.getElementById("url").setAttribute("href", profile.href);
-
- 
-  const buttonContainer = document.getElementById("spotifyConfirm"); 
-  if (buttonContainer) {
-    buttonContainer.innerHTML = `
-      <button class="btn btn--big" id="tryAgain">Wrong account</button>
-      <button class="btn btn--big" id="goToRadio">Start session</button>
-    `;
-
-    // Add the event listeners *after* the buttons exist
-    document.getElementById("goToRadio").addEventListener("click", async () => {
-      let token = await checkAndRefreshAccessToken();
-      if (!token) return console.error("No token found!");
-      nextFunction();
-      getRecommendations();
-    });
-
-    document.getElementById("tryAgain").addEventListener("click", () => {
-      prevPage(); // or whatever your "wrong account" logic is
-    });
-  }
-}
-
-// // Fetch recommendations based on a seed (artist, track, or genre)
-
-// async function getRecommendations() {
-
-//   const token = await checkAndRefreshAccessToken();
-
-//   // Example seed - you can use an artist, track, or genre
-
-//   try {
-//     const artistSeed = "2YZyLoL8N0Wb9xBt1NhZWg"; // Kendrick Lamar
-//     const trackSeed = "4uLU6hMCjMI75M1A2tKUQC"; // DMX - X Gon' Give It To Ya
-//     const genreSeed = "rap"; // ✅ make sure this is valid!
-
-// const url = `https://api.spotify.com/v1/recommendations?seed_artists=${artistSeed}`;
-
-
-//     // const url = `https://api.spotify.com/v1/recommendations?seed_artists=${artistSeed}&seed_tracks=${trackSeed}&seed_genres=${genreSeed}&limit=10`;
-
-//     // const url = 'https://api.spotify.com/v1/recommendations?seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA';
-
-//     const response = await fetch(url, {
-//       headers: {
-//         Authorization: `Bearer ${token}`, // ✅ use the correct variable here
-//       },
-//     });
-
-
-    
-
-//     if (!response.ok) {
-//       const errorData = await response.json();
-//       console.error("API Error:", errorData);
-//       return;
-//     }
-
-//     const result = await response.json(); // ✅ now defined
-//     console.log("🎵 Recommendations:", result.tracks);
-//     return result.tracks;
-//   } catch (error) {
-//     console.error("❌ Error getting recommendations:", error);
-//   }
-//     // const response = await fetch('https://api.spotify.com/v1/recommendations?seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA', {
-
-//       // const seeds = await fetch('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
-//       // method: 'GET',
-
-//       // headers: {
-
-//       //     'Authorization': `Bearer ${accessToken}`,
-
-//           // 'Content-Type': 'application/json'
-
-//       }
-
-//   // });
+//Select PLaylist mood
 
 
 
-//   // const data = await response.json();
-
-  
-//   // const recommendations = await response.json();
-//   // console.log(recommendations);
-//   // return recommendations; 
-//   // Log the recommended tracks
-
-//   // data.tracks.forEach(track => {
-
-//   //     console.log(`Track: ${track.name}`);
-
-//   //     console.log(`Artist: ${track.artists[0].name}`);
-
-//   //     console.log(`Album: ${track.album.name}`);
-
-//   //     console.log(`Preview: ${track.preview_url}`);
-
-//   //     console.log('-----');
-
-//   // });
-
-// // }
-
-
-
-// // Call the function to get recommendations
-
-// getRecommendations();
+// Initial load
+// loadSong(current);
 
 // Selecting mood for playlist
 // This function will be called when the user selects a mood
@@ -680,3 +549,44 @@ function playPause() {
     vinyl.classList.add("spinning"); // Start spinning if not already
   }
 }
+
+//Profile functions+
+
+// async function fetchProfile(token) {
+//   const result = await fetch("https://api.spotify.com/v1/me", {
+//     method: "GET",
+//     headers: { Authorization: Bearer ${token} },
+//   });
+//   console.log("Access token being used:", accessToken);
+//   return await result.json();
+// }
+
+// function populateUI(profile) {
+//   document.getElementById("displayName").innerText = profile.display_name;
+//   if (profile.images && profile.images[0]) {
+//     const profileImage = new Image(200, 200);
+//     profileImage.src = profile.images[0].url;
+//     document.getElementById("avatar").appendChild(profileImage);
+//     document.getElementById("imgUrl").innerText = profile.images[0].url;
+//   }
+//   document.getElementById("id").innerText = profile.id;
+//   document.getElementById("email").innerText = profile.email;
+//   document.getElementById("followers").innerText = profile.followers.total;
+//   document.getElementById("uri").innerText = profile.uri;
+//   document
+//     .getElementById("uri")
+//     .setAttribute("href", profile.external_urls.spotify);
+//   document.getElementById("url").innerText = profile.href;
+//   document.getElementById("url").setAttribute("href", profile.href);
+// }
+
+// module.exports = {
+//   stepTracker,
+//   songList,
+//   nextFunction,
+//   headerImage,
+//   logInWithSpotify,
+//   signInWithSpotify,
+//   noLogIn,
+//   radioMood,
+// };

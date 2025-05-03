@@ -1,0 +1,515 @@
+/*Google Fonts*/
+@import url("https://fonts.googleapis.com/css2?family=Boldonse&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap");
+
+/* CSS Variables */
+:root {
+  --main-font: "Boldonse", sans-serif;
+  --paragraph-font: "IBM Plex Sans", sans-serif;
+  --background-color-1: #15b7c2;
+  /* Turquoise */
+  --bacground-color-2: #ade2ea;
+  --Nav-color: #3b6267;
+  /* Mute GReen */
+  --primary-color: #2a2a2a;
+  /* Dark Brown */
+  --secondary-color: #94548c;
+  /*pink*/
+  --highlight-color: #9a1663;
+  /* Purple */
+  --white: #ffffff;
+  /* White */
+  --shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+}
+
+/* Global styles */
+
+body {
+  max-width: 2000px;
+  max-height: 1500px;
+  margin: 0px auto;
+  background: radial-gradient(
+    farthest-corner at 58% 12%,
+    var(--bacground-color-2),
+    var(--background-color-1)
+  );
+  font-family: var(--paragraph-font);
+  color: var(--secondary-color);
+  padding: 20px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--primary-font);
+  color: var(--primary-color);
+  font-size: 150px;
+  margin-top: -28px;
+  margin-left: 59px;
+  margin-bottom: -18px;
+  list-style-type: none;
+}
+
+section {
+  max-width: 60%;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sub-heading {
+  color: var(--additional-color);
+  padding-top: 25px;
+}
+
+.relative {
+  position: relative;
+}
+
+.hidden {
+  display: none !important;
+} /* Hide all steps initially */
+
+/*.active {
+  display: block;
+}  Show only active step */
+
+/* Heading section */
+
+.spotify-logo {
+  margin-left: 1200px;
+  font-size: 20px;
+}
+
+/* Header Text */
+.text-big {
+  font-size: 37px;
+  font-weight: bold;
+}
+
+.text-medium {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 100px;
+}
+
+.intro-text {
+  padding-left: 30px;
+}
+
+.starter {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center; /* Centers the content horizontally */
+  align-items: left;
+  flex-direction: column; /* Aligns items under eachother */
+  padding-top: 30px;
+}
+
+.steps {
+  margin-left: 15px;
+}
+
+.instructions {
+  font-size: 17px;
+  margin-top: -18px;
+  margin-left: 73px;
+}
+
+/* Header turn table styles */
+
+
+.header-image {
+  z-index: 1;
+}
+
+.turntable {
+width: 50%;
+height: auto;
+position: relative;
+margin-bottom: 20px;
+max-width: 520px;
+box-shadow: var(--shadow);
+  position: relative;
+top: 36px;
+left: 788px; 
+}
+
+.vinyl {
+width: 25.3%;
+height: auto;
+width: 25.3%;
+height: auto;
+position: absolute;
+top: 15.69rem;
+left: 62.3rem;
+transform: translate(-50%, -50%);
+}
+
+.spinning {
+animation: spin 10s linear infinite;
+animation-play-state: running;
+transform-origin: center;
+}
+
+.paused {
+animation-play-state: paused;
+}
+
+@keyframes spin {
+from {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+to {
+  transform: translate(-50%, -50%) rotate(360deg);
+}
+}
+
+
+.foreground {
+position: relative;
+left: 32.5rem;
+top: -3.3rem;
+width: 16%;
+}
+
+.slider {
+width: 2.2%;
+position: absolute;
+top: 20.85rem;
+left: 75.67rem;
+}
+
+/* Turntable styles ends*/
+
+/* Main section */
+
+main > section {
+  top: -418px;
+  left: 0px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center; /* Centers the content horizontally */
+  align-items: left;
+  flex-direction: column; /* Aligns items under eachother */
+}
+
+/* Buttons */
+
+.btn {
+  background: #fff;
+  width: 45%;
+  padding: 2.2% 0%;
+  color: var(--highlight-color);
+  margin-left: 78px;
+  margin-top: 60px;
+  font-size: 25px;
+  font-weight: 700;
+  border-radius: 30px;
+  border: none;
+}
+
+.btn:hover {
+  background: var(--highlight-color);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Buttons ends */
+
+/* Step 0 styles 
+#step0 {
+  max-height: 100px;
+}*/
+
+#step0 .btn {
+  padding: 1.2% 0%;
+}
+
+/* Step 1 styles */
+
+#step1 {
+  max-height: 500px;
+}
+
+#step1 h2 {
+  font-size: 125px;
+  padding-bottom: 23px;
+}
+
+#step1 .btn {
+  width: 75%;
+}
+
+/* Step 2 styles */
+
+#step2 {
+  top: 0px;
+  max-width: 100%;
+  padding-left: 2rem;
+}
+
+#step2 h2 {
+  padding-top: 10px;
+  font-size: 104.6px;
+  padding-bottom: 7px;
+}
+
+#player {
+  position: relative;
+  top: 4rem;
+  left: -2rem;
+  max-height: 50px;
+  margin: 0rem 1rem;
+  background: var(--Nav-color);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+}
+
+#player img {
+  position: absolute;
+  top: 0.8rem;
+  left: 2rem;
+  width: 7%;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  margin-right: 65rem;
+}
+
+#artist-name {
+  font-size: 1.6rem;
+  margin-top: -2.5rem;
+  margin-left: 15rem;
+  color: var(--white);
+}
+
+#title {
+  margin-left: 15rem;
+  font-size: 1.6rem;
+  margin-top: -1rem;
+  color: var(--white);
+}
+
+#audio {
+  width: 25rem;
+  position: relative;
+  bottom: 5.4rem;
+  margin-left: 34rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--highlight-color);
+  background-color: transparent;
+}
+
+.controls {
+  position: absolute;
+  left: 65rem;
+  bottom: 2.8rem;
+}
+
+.controls-btn {
+  padding: 0.5rem 1rem;
+  background: var(--white);
+  color: var(--highlight-color);
+  border: none;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.controls-btn:hover {
+  background: var(--highlight-color);
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+#spotifyLink {
+  position: relative;
+  top: 19px;
+  left: 9px;
+}
+
+#step2 .turntable {
+  left: 38rem;
+  position: relative;
+  margin-bottom: 32px;
+  max-width: 100%;
+  box-shadow: var(--shadow);
+}
+
+#mydiv {
+  width: 51px;
+  position: absolute;
+  top: 25rem;
+  left: 71.4rem;
+}
+
+#slider-container {
+  top: -72px;
+  position: relative;
+  width: 33px;
+  height: 145px;
+  overflow: hidden;
+  border: 1px solid transparent; /* optional for debug */
+}
+
+#slider-knob {
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: grab;
+  box-shadow: var(--shadow);
+}
+
+
+#step2 .foreground {
+  position: relative;
+  left: 17rem;
+  top: -5.32rem;
+  width: 30%;
+}
+
+#step2 .vinyl {
+  width: 32.3%;
+  height: auto;
+  position: absolute;
+  top: 19.4rem;
+  left: 54.5rem;
+  cursor: pointer;
+}
+
+#step2 .btn {
+  /* position: absolute;
+  right: -8rem; */
+  width: 26rem;
+  height: 4rem;
+  border-radius: 100px;
+}
+
+.radio-container {
+  top: 18rem;
+  position: absolute;
+  left: 6rem;
+  z-index: 3;
+}
+
+.sub-mood {
+  margin: 0.5rem 2rem;
+}
+
+.radio-container p {
+  margin-left: 0px;
+}
+
+/* .radio-option {
+  padding: 0.4rem 0rem;
+} */
+
+/* Search bar styles end */
+
+/*Search items styles*/
+.song-item {
+  display: flex;
+  align-items: center;
+  margin-top: 50px;
+  justify-content: space-between;
+  padding-bottom: 1.5rem;
+  padding-left: 1.5rem;
+  font-size: 1rem;
+  color: var(--white);
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+}
+.song-item:hover {
+  background-color: var(--highlight-color);
+  color: var(--white);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Step 3 styles */
+
+#step3 .text-medium{
+  margin-left: 31px;
+}
+
+#profile { 
+  margin-left: 12rem;
+  margin-top: 2rem;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+#profile p {
+  text-decoration: underline;
+  color: var(--highlight-color);
+}
+
+#generateSession {
+  margin-left: 12rem;
+  margin-top: 2rem;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* Footer section */
+footer {
+  margin-top: 8rem;
+} /* Pushes the footer to the bottom */
+
+.footer-links {
+  display: flex;
+  justify-content: center; /* Centers the content horizontally */
+  align-items: left;
+  padding-right: 50px;
+}
+
+.follow-us {
+  margin-right: 20px;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+.follow-us i {
+  color: var(--additional-color);
+  padding-left: 3.5px;
+}
+
+.important {
+  margin-left: 20px;
+  font-size: 20px;
+  color: var(--primary-color);
+}
+.important a {
+  color: var(--additional-color);
+  text-decoration: none;
+}
+
+.important a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+.ast-small-footer-wrap {
+  padding-top: 10px;
+  text-align: center;
+}
+
+/* to delete
+.container {
+  border: 1px solid black;
+}
+main .container {
+  border: 1px solid rgb(255, 0, 0);
+}
+
+section .container {
+  border: 1px solid rgb(202, 168, 168);
+} */
+

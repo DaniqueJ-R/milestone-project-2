@@ -600,3 +600,181 @@ function playPause() {
 
 
 
+
+
+
+
+// Step 2 Functions Radio Start //
+
+function subMoodChanger() {
+  // Always hide all sub-mood containers first
+  document.querySelectorAll(".sub-mood").forEach((container) => {
+    container.classList.add("hidden");
+  });
+
+  // Get selected main mood
+  const selectedMainMood = document.querySelector(
+    'input[name="playlist-type"]:checked'
+  );
+
+  // Show the matching sub-mood container
+  if (selectedMainMood) {
+    const moodType = selectedMainMood.value; // e.g., "focus"
+    const subContainer = document.getElementById(`${moodType}-sub-options`);
+    if (subContainer) {
+      subContainer.classList.remove("hidden");
+    }
+  }
+}
+
+// Selecting mood for playlist
+// This function will be called when the user selects a mood
+function radioMood() {
+  const radioButtons = document.querySelectorAll('input[name="playlist-type"]');
+  const subButtons = document.querySelectorAll(
+    'input[name="sub-playlist-type"]'
+  );
+
+  let selectedValue = null;
+  let subValue = null;
+
+  // Get selected main mood
+  for (const radioButton of radioButtons) {
+    if (radioButton.checked) {
+      selectedValue = radioButton.value;
+      break;
+    }
+  }
+
+  // Get selected sub-mood
+  for (const subButton of subButtons) {
+    if (subButton.checked) {
+      subValue = subButton.value;
+      break;
+    }
+  }
+
+  // Reset/hide other sub-options
+  subMoodChanger();
+
+  // Check if both are selected and valid
+  if (selectedValue && subValue) {
+    alert(`You have selected: ${subValue} - ${selectedValue}`);
+
+    if (playlistId[selectedValue] && playlistId[selectedValue][subValue]) {
+      currentPlaylist = playlistId[selectedValue][subValue];
+    } else {
+      alert("That combo doesn't exist in the playlist.");
+    }
+  } else {
+    alert("Please select a main mood and a sub mood.");
+  }
+
+  return { selectedValue, subValue };
+}
+
+//Matches mood to correct playlist
+function getPlaylistId() {
+  const mood = radioMood();
+  if (!mood) return;
+
+  const sessionKeywordMain = `${mood.selectedValue}`.toLowerCase();
+  const sessionKeywordSub = `${mood.subValue}.toLowerCase()`;
+  const allPlaylists = playlistId;
+
+  // 🔍 Log ALL playlists for debugging
+  console.log("All playlists returned:", allPlaylists);
+
+  const matchingPlaylists = playlistId[sessionKeywordMain]?.[sessionKeywordSub];
+
+  console.log("Matching playlist:", matchingPlaylists);
+  return matchingPlaylists;
+}
+
+// This function will be called when the user clicks the button to fetch songs
+async function callPlaylists() {
+  if (!accessToken) {
+    console.error("Access token is missing!");
+    return;
+  }
+
+  const selectedPlaylistId = getPlaylistId(); // This gets the correct ID
+
+  if (selectedPlaylistId) {
+    console.log("Selected playlist ID:", selectedPlaylistId);
+
+    await fetch(`https://api.spotify.com/v1/playlists/${selectedPlaylistId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    loadSong();
+    return selectedPlaylistId;
+  } else {
+    console.log("No matching playlists found.");
+    return null;
+  }
+}
+
+//This finds each song in the playlist
+async function fetchSongs(playlistId) {
+  console.log("Selected playlist ID for fetchSong:", playlistId);
+  const result = await fetch(
+    `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+    // https://api.spotify.com/v1/users/{user_id}/playlists/${playlistId}/tracks
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}`  },
+    }
+  );
+
+  return await result.json();
+}
+
+async function loadSong(index = 0) {
+  const currentPlaylistId = getPlaylistId();
+  if (!currentPlaylistId) {
+    console.error("No playlist ID found!");
+    return;
+  }
+
+  const songsData = await fetchSongs(currentPlaylistId);
+  const track = songsData.items[index]?.track;
+
+  if (!track) {
+    console.error("Track not found at index:", index);
+    return;
+  }
+
+  let current = 0;
+  document.getElementById("title").textContent = track.name;
+  document.getElementById("artist-name").textContent = track.artists[0].name;
+  // document.getElementById("audio").src = track.uri;
+  document.getElementById("cover").src =
+    track.album.images[0]?.url || "assets/images/favicon-32x32.png"; // handles missing image
+  document.getElementById("spotifyLink").href = track.spotify;
+  let trackUri = track.uri;
+  console.log("Track fetched:", track.uri);
+  document.getElementById("spotifyLink").href = track.external_urls.spotify;
+
+  console.log("Now playing:", track);
+  console.log("Calling playTrack with URI:", trackUri);
+  playTrack(trackUri);
+  return loadSong;
+}
+
+async function checkIfPremium() {
+  const res = await fetch("https://api.spotify.com/v1/me", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const data = await res.json();
+  if (data.product === "premium") {
+    console.log("✅ You have Spotify Premium");
+  } else {
+    alert("⚠️ You need a Spotify Premium account to use playback.");
+  }
+}
